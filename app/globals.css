@@ -18,10 +18,10 @@
   --color-text-dim:   #5e5e7a;
 
   /* Accents */
-  --color-accent:  #7c5cfc;
-  --color-accent-2:#4f8ef7;
-  --color-amber:   #ff8c42;
-  --color-green:   #10d98a;
+  --color-accent:    #7c5cfc;
+  --color-accent-2:  #4f8ef7;
+  --color-amber:     #ff8c42;
+  --color-green:     #10d98a;
 
   /* Borders */
   --color-border:        rgba(255, 255, 255, 0.08);
@@ -32,7 +32,7 @@
   --font-head: var(--font-sora), var(--font-inter), sans-serif;
 }
 
-/* Base body styling — always dark, this is an internal product. */
+/* Always-dark base. This is an internal product. */
 html, body {
   background: var(--color-bg);
   color: var(--color-text);
@@ -46,3 +46,161 @@ html, body {
 .timion-gradient {
   background: linear-gradient(135deg, #7c5cfc, #4f8ef7);
 }
+
+/* ──────────────────────────────────────────────────────────
+   Tile system
+   Each tile picks up a colour by its position in a .tile-grid.
+   The tile reads `--tile-colour` and `--tile-glow` for its
+   accent and hover glow.
+   ────────────────────────────────────────────────────────── */
+.tile-grid > *:nth-child(4n+1) {
+  --tile-colour: #7c5cfc;
+  --tile-glow:   rgba(124, 92, 252, 0.45);
+}
+.tile-grid > *:nth-child(4n+2) {
+  --tile-colour: #10d98a;
+  --tile-glow:   rgba(16, 217, 138, 0.40);
+}
+.tile-grid > *:nth-child(4n+3) {
+  --tile-colour: #ff8c42;
+  --tile-glow:   rgba(255, 140, 66, 0.40);
+}
+.tile-grid > *:nth-child(4n+4) {
+  --tile-colour: #4f8ef7;
+  --tile-glow:   rgba(79, 142, 247, 0.45);
+}
+
+.tile {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--tile-colour, var(--color-accent));
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.22s, border-color 0.22s, transform 0.18s;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 170px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+/* Soft tile-colour wash in the top-left corner */
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, var(--tile-glow, transparent) 0%, transparent 55%);
+  opacity: 0.18;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+
+.tile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tile:hover:not(.tile--coming-soon) {
+  transform: translateY(-4px);
+  border-color: var(--tile-colour);
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.55),
+    0 0 0 1px var(--tile-colour),
+    0 0 36px -4px var(--tile-glow),
+    0 0 80px -10px var(--tile-glow);
+}
+
+.tile:hover:not(.tile--coming-soon)::before {
+  opacity: 0.55;
+}
+
+.tile--coming-soon {
+  cursor: default;
+  opacity: 0.65;
+}
+
+/* ── CTA arrows animate on tile hover ── */
+.cta-arrow {
+  display: inline-block;
+  transition: transform 0.18s;
+}
+.tile:hover:not(.tile--coming-soon) .cta-arrow-right { transform: translateX(4px); }
+.tile:hover:not(.tile--coming-soon) .cta-arrow-diag  { transform: translate(3px, -3px); }
+
+/* ── Live CTA pill (gradient) lifts intensity on hover ── */
+.cta-live {
+  background: linear-gradient(135deg, #7c5cfc, #4f8ef7);
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(124, 92, 252, 0.45);
+  transition: box-shadow 0.18s;
+}
+.tile:hover .cta-live {
+  box-shadow: 0 5px 22px rgba(124, 92, 252, 0.65);
+}
+
+/* ── External CTA pill (outlined blue) brightens on hover ── */
+.cta-external {
+  background: rgba(79, 142, 247, 0.14);
+  color: #93b8fa;
+  border: 1px solid rgba(79, 142, 247, 0.45);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.tile:hover .cta-external {
+  background: rgba(79, 142, 247, 0.25);
+  color: #cfdcff;
+  border-color: rgba(79, 142, 247, 0.7);
+}
+
+/* ── Status pills ── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.status-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-pill--live {
+  background: rgba(16, 217, 138, 0.08);
+  color: var(--color-green);
+  border: 1px solid rgba(16, 217, 138, 0.30);
+}
+.status-pill--live::before {
+  background: var(--color-green);
+  box-shadow: 0 0 8px var(--color-green);
+}
+.status-pill--external {
+  background: rgba(79, 142, 247, 0.10);
+  color: var(--color-accent-2);
+  border: 1px solid rgba(79, 142, 247, 0.30);
+}
+.status-pill--external::before {
+  background: var(--color-accent-2);
+}
+.status-pill--soon {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-bright);
+}
+.status-pill--soon::before {
+  background: var(--color-text-dim);
+}
+
+/* ── Hide scrollbar but allow horizontal scroll on the tab nav ── */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

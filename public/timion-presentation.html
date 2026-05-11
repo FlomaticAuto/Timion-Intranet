@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timion — Annual Report 2025 / 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --orange:  #D86830;
+  --orange2: #F09448;
+  --dark:    #111111;
+  --dark2:   #1E1E1E;
+  --mid:     #555555;
+  --stone:   #F2EDE7;
+  --stone2:  #E4DDD5;
+  --white:   #FFFFFF;
+  --teal:    #2B6B68;
+  --font:    'Inter', system-ui, sans-serif;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #0a0a0a;
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────────────────────
+   DECK & SLIDE ENGINE
+───────────────────────────────────────────────────────── */
+#deck { position: relative; width: 100vw; height: 100vh; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+  overflow: hidden;
+  display: flex;
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+/* ─────────────────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────────────────── */
+#nav {
+  position: fixed; bottom: 22px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px;
+  z-index: 9999;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(14px);
+  padding: 7px 16px;
+  border-radius: 40px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.nbtn {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.25);
+  background: none; color: #fff;
+  cursor: pointer; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.nbtn:hover { background: rgba(255,255,255,.18); }
+#ctr { font-size: .72rem; font-weight: 600; color: rgba(255,255,255,.65); min-width: 44px; text-align: center; }
+#dots { display: flex; gap: 5px; }
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,.25); cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.dot.on { background: var(--orange); transform: scale(1.6); }
+
+#pbar {
+  position: fixed; bottom: 0; left: 0; height: 3px;
+  background: var(--orange); transition: width .4s; z-index: 9999;
+}
+
+/* ─────────────────────────────────────────────────────────
+   LAYOUT PRIMITIVES
+───────────────────────────────────────────────────────── */
+.split { display: grid; width: 100%; height: 100%; }
+.split-40-60 { grid-template-columns: 40% 60%; }
+.split-50-50 { grid-template-columns: 1fr 1fr; }
+.split-55-45 { grid-template-columns: 55% 45%; }
+.split-60-40 { grid-template-columns: 60% 40%; }
+.split-65-35 { grid-template-columns: 65% 35%; }
+
+.img-panel { overflow: hidden; position: relative; }
+.img-panel img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.img-tint::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,.22) 0%, transparent 100%);
+}
+.img-tint-strong::after {
+  background: linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(0,0,0,.55) 100%);
+}
+
+.pad { padding: clamp(32px,5vw,64px); }
+.pad-sm { padding: clamp(24px,3.5vw,44px); }
+
+.vcenter { display: flex; flex-direction: column; justify-content: center; }
+.vbottom { display: flex; flex-direction: column; justify-content: flex-end; }
+
+/* ─────────────────────────────────────────────────────────
+   TYPOGRAPHY TOKENS
+───────────────────────────────────────────────────────── */
+.eyebrow {
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 10px; display: block;
+}
+.eyebrow-white { color: rgba(255,255,255,.55); }
+
+.h1 {
+  font-size: clamp(2.6rem, 5.5vw, 5.5rem);
+  font-weight: 900; letter-spacing: -.04em; line-height: 1;
+  color: var(--white);
+}
+.h2 {
+  font-size: clamp(1.9rem, 3.5vw, 3.2rem);
+  font-weight: 900; letter-spacing: -.03em; line-height: 1.05;
+  color: var(--dark);
+}
+.h2-white { color: var(--white); }
+.h3 {
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-weight: 800; letter-spacing: -.02em;
+  color: var(--dark);
+}
+.h3-white { color: var(--white); }
+.h3-orange { color: var(--orange); }
+
+.body {
+  font-size: clamp(.8rem, 1.15vw, .92rem);
+  line-height: 1.8; color: var(--mid);
+}
+.body-white { color: rgba(255,255,255,.78); }
+.body-dark  { color: rgba(0,0,0,.7); }
+
+.underscore::after { content: '_'; color: var(--orange); }
+
+.rule { width: 40px; height: 3px; background: var(--orange); margin: 12px 0 20px; }
+.rule-sm { width: 28px; height: 2px; }
+.rule-white { background: rgba(255,255,255,.4); }
+
+/* ─────────────────────────────────────────────────────────
+   BACKGROUNDS
+───────────────────────────────────────────────────────── */
+.bg-dark   { background: var(--dark2); }
+.bg-white  { background: var(--white); }
+.bg-stone  { background: var(--stone); }
+.bg-orange { background: var(--orange); }
+.bg-teal   { background: var(--teal); }
+
+/* ─────────────────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────────────────── */
+
+/* Stat block */
+.stat { margin-bottom: 18px; }
+.stat-n {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 900; color: var(--orange);
+  letter-spacing: -.04em; line-height: 1;
+}
+.stat-n-white { color: var(--orange2); }
+.stat-l { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--mid); margin-top: 2px; }
+.stat-l-white { color: rgba(255,255,255,.55); }
+
+/* Bullet list */
+.blist { list-style: none; }
+.blist li {
+  padding: 7px 0 7px 16px; position: relative;
+  font-size: clamp(.78rem,1.1vw,.88rem); line-height: 1.55; color: var(--mid);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.blist li:last-child { border-bottom: none; }
+.blist li::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 5px; height: 5px; border-radius: 50%; background: var(--orange);
+}
+.blist-white li { color: rgba(255,255,255,.78); border-bottom-color: rgba(255,255,255,.08); }
+
+/* Pull quote */
+.pquote {
+  border-left: 3px solid var(--orange);
+  padding: 14px 18px;
+  background: rgba(0,0,0,.04);
+  margin: 16px 0;
+  font-size: clamp(.85rem,1.2vw,.96rem);
+  font-style: italic; line-height: 1.7; color: var(--dark);
+}
+.pquote-dark { background: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
+.pquote cite { display: block; margin-top: 10px; font-size: .72rem; font-style: normal; font-weight: 700; color: var(--orange); letter-spacing: .08em; text-transform: uppercase; }
+
+/* Info pill */
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--orange); color: #fff;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 2px; margin-top: 20px;
+}
+
+/* Tag label */
+.tag {
+  display: inline-block;
+  font-size: .65rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 2px;
+  background: var(--stone2); color: var(--mid);
+  margin-bottom: 8px;
+}
+.tag-orange { background: var(--orange); color: #fff; }
+
+/* Numbered row */
+.num-row { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,.07); }
+.num-row:last-child { border-bottom: none; }
+.num-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--orange); color: #fff;
+  font-size: .75rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.num-title { font-size: .88rem; font-weight: 700; color: var(--dark); margin-bottom: 2px; }
+.num-body  { font-size: .78rem; color: var(--mid); line-height: 1.5; }
+
+/* Finance bar */
+.fbar-row { margin-bottom: 14px; }
+.fbar-labels { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.fbar-labels span { font-size: .78rem; font-weight: 600; color: var(--mid); }
+.fbar-labels strong { font-size: .78rem; font-weight: 800; color: var(--orange); }
+.fbar-track { background: rgba(0,0,0,.08); border-radius: 2px; height: 8px; overflow: hidden; }
+.fbar-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width 1.2s ease; }
+.fbar-fill-t { background: var(--teal); }
+
+/* Three-col grid */
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* Info card */
+.icard {
+  background: var(--stone); border-radius: 4px; padding: 18px 16px;
+}
+.icard-dark { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); }
+.icard-orange { background: var(--orange); }
+.icard-label { font-size: .62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+.icard-label-white { color: rgba(255,255,255,.55); }
+.icard-value { font-size: 1.7rem; font-weight: 900; color: var(--dark); line-height: 1; }
+.icard-value-white { color: #fff; }
+.icard-value-orange { color: var(--orange2); }
+.icard-body { font-size: .78rem; line-height: 1.55; color: var(--mid); margin-top: 4px; }
+.icard-body-white { color: rgba(255,255,255,.7); }
+
+/* Team card */
+.tcard { background: var(--stone); border-radius: 4px; overflow: hidden; }
+.tcard img { width: 100%; height: 80px; object-fit: cover; }
+.tcard-info { padding: 10px 10px 12px; }
+.tcard-name { font-size: .72rem; font-weight: 800; color: var(--dark); margin-bottom: 1px; }
+.tcard-role { font-size: .63rem; color: var(--mid); line-height: 1.3; }
+
+/* ─────────────────────────────────────────────────────────
+   SLIDE 1 — COVER
+───────────────────────────────────────────────────────── */
+#s1 { background: #000; }
+.s1-img { position: absolute; inset: 0; }
+.s1-img img { width: 100%; height: 100%; object-fit: cover; opacity: .6; }
+.s1-content {
+  position: relative; z-index: 2;
+  display: flex; align-items: center;
+  width: 100%; height: 100%;
+  padding: clamp(40px,6vw,90px);
+}
+.s1-inner { max-width: 640px; }
+.s1-year {
+  font-size: .7rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: rgba(255,255,255,.5);
+  margin-bottom: 20px; display: block;
+}
+.s1-logo {
+  font-size: clamp(3.5rem,8vw,7.5rem);
+  font-weight: 900; letter-spacing: -.05em; line-height: 1;
+  color: #fff; margin-bottom: 6px;
+}
+.s1-logo em { color: var(--orange); font-style: normal; }
+.s1-sub {
+  font-size: clamp(.9rem,1.8vw,1.25rem); font-weight: 300;
+  color: rgba(255,255,255,.7); letter-spacing: .04em;
+  margin-bottom: 28px;
+}
+.s1-tagline {
+  font-size: clamp(.82rem,1.3vw,.98rem); line-height: 1.75;
+  color: rgba(255,255,255,.75);
+  border-left: 3px solid var(--orange);
+  padding-left: 16px; max-width: 480px; margin-bottom: 32px;
+}
+.s1-pill {
+  display: inline-block;
+  border: 1.5px solid rgba(255,255,255,.35);
+  padding: 9px 20px; border-radius: 2px;
+  color: rgba(255,255,255,.8);
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+}
+/* bottom-right url */
+.s1-url {
+  position: absolute; bottom: 28px; right: 32px;
+  font-size: .68rem; font-weight: 600; color: rgba(255,255,255,.35);
+  letter-spacing: .1em; text-transform: uppercase;
+  z-index: 3;
+}
+
+/* ─────────────────────────────────────────────────────────
+   PAGE HEADER (shared header bar for content slides)
+───────────────────────────────────────────────────────── */
+.page-hdr {
+  height: 5px; background: var(--orange); width: 100%;
+  position: absolute; top: 0; left: 0; z-index: 10;
+}
+
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- ══════════════════════════════════════════════════════
+  S1 · COVER
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s1">
+  <div class="s1-img">
+    <img src="https://picsum.photos/seed/101/1600/900" alt="Cover">
+  </div>
+  <div class="s1-content">
+    <div class="s1-inner">
+      <span class="s1-year">Annual Report &nbsp;·&nbsp; March 2025 – February 2026</span>
+      <div class="s1-logo">Tim<em>ion</em></div>
+      <div class="s1-sub">Jahresbericht 2025 / 2026</div>
+      <p class="s1-tagline">
+        We support children with disabilities in the South African townships
+        by providing them with functional assistive devices and by strengthening
+        and empowering their families and communities.
+      </p>
+      <span class="s1-pill">www.timion.org</span>
+    </div>
+  </div>
+  <div class="s1-url">www.timion.org</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S2 · MISSION
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="split split-40-60" style="width:100%;height:100%;">
+    <div class="img-panel">
+      <img src="https://picsum.photos/seed/204/700/900" alt="Mission">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.4),transparent);"></div>
+    </div>
+    <div class="bg-dark vcenter pad">
+      <div class="page-hdr"></div>
+      <span class="eyebrow" style="margin-top:8px;">Our Mission</span>
+      <h2 class="h2 h2-white underscore" style="margin-bottom:18px;">What We<br>Stand For</h2>
+      <div class="rule rule-white rule-sm"></div>
+      <p class="body body-white" style="margin-bottom:24px;">
+        The name <strong style="color:var(--orange2);">Timion</strong> comes from the Greek — meaning
+        <em>"valuable, held in honour."</em> It reflects everything we do:
+        seeing the worth in every child, regardless of disability.
+      </p>
+      <p class="body body-white" style="margin-bottom:32px;">
+        Founded 19 years ago in South Africa by Daniel and Anika Meyer, Timion NPC
+        supports children with cerebral palsy and other disabilities in the townships
+        of the Eastern Cape — through assistive devices, family empowerment,
+        therapist training, and a growing network of care.
+      </p>
+      <div class="g3" style="gap:10px;">
+        <div class="icard icard-dark" style="text-align:center;padding:14px 10px;">
+          <div class="icard-value icard-value-orange" style="font-size:1.3rem;">19</div>
+          <div class="icard-label icard-label-white" style="margin-top:4px;">Years in South Africa</div>
+        </div>
+        <div class="icard icard-dark" style="text-align:center;padding:14px 10px;">
+          <div class="icard-value icard-value-orange" style="font-size:1.3rem;">864</div>
+          <div class="icard-label icard-label-white" style="margin-top:4px;">Devices this year</div>
+        </div>
+        <div class="icard icard-dark" style="text-align:center;padding:14px 10px;">
+          <div class="icard-value icard-value-orange" style="font-size:1.3rem;">90</div>
+          <div class="icard-label icard-label-white" style="margin-top:4px;">Therapists trained</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S3 · FOUNDER'S LETTER
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="split split-60-40" style="width:100%;height:100%;">
+    <div class="bg-stone vcenter pad">
+      <div class="page-hdr"></div>
+      <span class="eyebrow" style="margin-top:8px;">From the Founder</span>
+      <h2 class="h2 underscore" style="margin-bottom:18px;">A Word<br>from Daniel</h2>
+      <div class="rule rule-sm"></div>
+      <div class="pquote" style="margin-bottom:16px;">
+        "Celebrating my 50th birthday led me to reflect on 28 years in development
+        work and mission — 19 of those years in South Africa. This anniversary made
+        me acutely aware of how important it is to secure the future of Timion
+        sustainably, distributing responsibility across more shoulders."
+        <cite>— Daniel Meyer, Founder &amp; Executive Director</cite>
+      </div>
+      <p class="body" style="margin-bottom:14px;">
+        Our mandate remains the same: to accompany children with cerebral palsy and
+        other disabilities, and their families, with dedication and the best
+        possible support. With growing experience, we continuously refine our
+        devices — while never forgetting our humble beginnings, where we worked
+        simply and functionally with limited means.
+      </p>
+      <p class="body">
+        Together with <strong>Hannah</strong> and <strong>Nolu</strong>,
+        I now lead a strong management team. Our different gifts complement each other well.
+        In gratitude, I continue to trust in the guidance that has carried us through
+        both difficult and good times.
+      </p>
+    </div>
+    <div class="img-panel">
+      <img src="https://picsum.photos/seed/312/600/900" alt="Founder">
+      <div style="position:absolute;bottom:0;left:0;right:0;
+        background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
+        padding:24px 22px;">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px;">Jeffreys Bay, South Africa</div>
+        <div style="font-size:1rem;font-weight:800;color:#fff;">Timion Village</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S4 · CONTENTS
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-white" id="s4">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:38% 62%;width:100%;height:100%;">
+    <!-- left: big heading -->
+    <div class="bg-dark vcenter pad">
+      <span class="eyebrow">2025 / 2026</span>
+      <h2 class="h2 h2-white" style="font-size:clamp(2.2rem,4.5vw,4rem);margin-bottom:20px;">Annual<br>Report<br><em style="color:var(--orange);font-style:normal;">Contents</em></h2>
+      <div class="rule"></div>
+      <p class="body body-white" style="margin-top:8px;">
+        A comprehensive look at Timion's work, impact, team,
+        and finances across the 2025/2026 reporting period.
+      </p>
+    </div>
+    <!-- right: list -->
+    <div class="vcenter pad" style="background:var(--stone);">
+      <div style="max-width:520px;">
+        <div class="num-row">
+          <div class="num-circle">01</div>
+          <div><div class="num-title">Timion as an Organisation</div><div class="num-body">ISO certification, HR development, digital systems</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">02</div>
+          <div><div class="num-title">The Workshop &amp; Production</div><div class="num-body">Carpentry training, new machinery, quality improvements</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">03</div>
+          <div><div class="num-title">Assistive Device Innovation</div><div class="num-body">Walking trainer prototype, Nest sleep system</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">04</div>
+          <div><div class="num-title">Building Projects at Timion Village</div><div class="num-body">Camp kitchen, bungalow renovation, hall extension</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">05</div>
+          <div><div class="num-title">Family Support &amp; Therapy</div><div class="num-body">In-Reach programme, psychological debriefing, new hires</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">06</div>
+          <div><div class="num-title">Alena's Love Day Care</div><div class="num-body">Children's progress, new bus, staff development</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">07</div>
+          <div><div class="num-title">Camps &amp; Vegetable Garden</div><div class="num-body">5 camps held, community garden &amp; online sales platform</div></div>
+        </div>
+        <div class="num-row">
+          <div class="num-circle">08</div>
+          <div><div class="num-title">Therapist Training &amp; Finances</div><div class="num-body">90 trained, +21% annual result, CHF 115,805 device sales</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S5 · ORGANISATION
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-white" id="s5">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;">
+    <!-- col 1 -->
+    <div class="vcenter pad" style="border-right:1px solid var(--stone2);">
+      <span class="eyebrow" style="margin-top:8px;">Chapter 01</span>
+      <h2 class="h2 underscore" style="margin-bottom:16px;">Timion as an<br>Organisation</h2>
+      <div class="rule rule-sm"></div>
+      <p class="body" style="margin-bottom:16px;">
+        The 2025/26 reporting period saw Timion invest deliberately in stronger internal
+        structures — not to introduce new systems, but to simplify, stabilise and better
+        integrate existing processes into daily life.
+      </p>
+      <p class="body" style="margin-bottom:20px;">
+        A key milestone was the first <strong>Management Planning Retreat</strong> in January 2026.
+        Two days of honest reflection, realistic prioritisation, and a decisive shift from
+        annual to quarterly planning — a change that proved both relieving and clarifying.
+      </p>
+      <div class="icard" style="margin-bottom:10px;">
+        <div class="icard-label">ISO Recertification</div>
+        <div class="icard-value" style="font-size:1.1rem;">March 2026</div>
+        <div class="icard-body">Annual ISO recertification successfully maintained — a quality assurance milestone.</div>
+      </div>
+      <div class="icard">
+        <div class="icard-label">Zoho OS — Digital Transformation</div>
+        <div class="icard-value" style="font-size:1.1rem;">Live since 2026</div>
+        <div class="icard-body">Replaced legacy Access database. Covers accounting, inventory, production, outreach CRM &amp; planning.</div>
+      </div>
+    </div>
+    <!-- col 2 -->
+    <div class="vcenter pad">
+      <span class="eyebrow">Human Resources</span>
+      <h3 class="h3" style="margin-bottom:16px;">Strengthening People &amp; Processes</h3>
+      <ul class="blist" style="margin-bottom:22px;">
+        <li>Clear job descriptions and structured onboarding processes</li>
+        <li>Formalized performance conversations and staff development pathways</li>
+        <li>HR guidelines co-developed with external specialists</li>
+        <li>Team retreat as a first step toward shared values and vision</li>
+        <li>CRM for the outreach team live since March 2026</li>
+      </ul>
+      <div class="icard" style="background:var(--dark2);">
+        <div class="icard-label icard-label-white">Staff Wellbeing Focus</div>
+        <div class="icard-body icard-body-white" style="color:rgba(255,255,255,.78);margin-top:8px;">
+          Regular team reflections, external support for high-stress teams, and deliberate
+          sabbatical provisions helped build a culture of mutual care and sustainable work.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S6 · WORKSHOP
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="split split-50-50" style="width:100%;height:100%;">
+    <div class="img-panel img-tint">
+      <img src="https://picsum.photos/seed/521/700/900" alt="Carpentry workshop">
+    </div>
+    <div class="bg-dark vcenter pad">
+      <div class="page-hdr"></div>
+      <span class="eyebrow" style="margin-top:8px;">Chapter 02</span>
+      <h2 class="h2 h2-white underscore" style="margin-bottom:18px;">The Workshop &amp;<br>Production</h2>
+      <div class="rule rule-white rule-sm"></div>
+      <p class="body body-white" style="margin-bottom:22px;">
+        Timion's workshop produces functional assistive devices for children with cerebral
+        palsy. Craftsmanship, training, and precision are the foundation of everything made here.
+      </p>
+
+      <h3 class="h3 h3-orange" style="margin-bottom:10px;">New Machinery</h3>
+      <ul class="blist blist-white" style="margin-bottom:22px;">
+        <li><strong>Multi-Spindle Drill Press</strong> — reduces production time and improves precision</li>
+        <li><strong>Belt Sander</strong> — calibrated by a Swiss engineer; markedly better surface quality</li>
+        <li><strong>Industrial Compressor</strong> — supports new machines and improves spray-painting finish</li>
+      </ul>
+
+      <h3 class="h3 h3-orange" style="margin-bottom:10px;">Carpentry Training</h3>
+      <p class="body body-white">
+        Individual hands-on coaching during live production proved far more effective than group
+        lessons. At least two Swiss civilian volunteers with trade qualifications worked in the
+        workshop simultaneously — enabling training and productive output at the same time.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S7 · DEVICE INNOVATION
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-stone" id="s7">
+  <div class="page-hdr"></div>
+  <!-- top image strip -->
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <div style="flex:0 0 48%;overflow:hidden;position:relative;">
+      <img src="https://picsum.photos/seed/633/1400/600" alt="Assistive device development" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(242,237,231,1) 0%,transparent 50%);"></div>
+      <div style="position:absolute;top:24px;left:40px;">
+        <span class="eyebrow">Chapter 03</span>
+      </div>
+    </div>
+    <!-- bottom content: 3 columns -->
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--stone2);">
+      <!-- col 1 -->
+      <div class="pad-sm vcenter" style="border-right:1px solid var(--stone2);">
+        <h2 class="h2 underscore" style="font-size:clamp(1.5rem,2.8vw,2.2rem);margin-bottom:14px;">Assistive Device Innovation</h2>
+        <div class="rule rule-sm"></div>
+        <p class="body">
+          Between November 2025 and March 2026, Swiss volunteer
+          <strong>Simon Koller</strong> (orthopaedic technologist / Medical-IT Engineer)
+          developed a new walking trainer for children with cerebral palsy.
+          The prototype is functional and in a test phase with multiple children.
+        </p>
+      </div>
+      <!-- col 2 -->
+      <div class="pad-sm vcenter" style="border-right:1px solid var(--stone2);">
+        <div class="tag tag-orange" style="margin-bottom:12px;">Walking Trainer</div>
+        <h3 class="h3" style="margin-bottom:10px;">New Prototype</h3>
+        <p class="body" style="margin-bottom:14px;">
+          Developed to improve mobility for children with CP. Initial contacts with
+          technical universities including ETH Zürich suggest possible future
+          research collaborations.
+        </p>
+        <div class="stat">
+          <div class="stat-n">2026</div>
+          <div class="stat-l">Test phase begins</div>
+        </div>
+      </div>
+      <!-- col 3 -->
+      <div class="pad-sm vcenter">
+        <div class="tag tag-orange" style="margin-bottom:12px;">Nest Sleep System</div>
+        <h3 class="h3" style="margin-bottom:10px;">South Africa First</h3>
+        <p class="body" style="margin-bottom:14px;">
+          Timion distributes the Nest positioning system from Simple Stuff Works &amp; DDO.
+          South Africa is the first developing country selected as a partner.
+        </p>
+        <div class="stat" style="margin-bottom:10px;">
+          <div class="stat-n">~50</div>
+          <div class="stat-l">Systems delivered to date</div>
+        </div>
+        <p class="body" style="font-size:.75rem;">
+          Target: government tender inclusion 2027/28 to broaden access.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S8 · BUILDING PROJECTS
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="split split-55-45" style="width:100%;height:100%;">
+    <!-- left: image with caption overlay -->
+    <div class="img-panel img-tint-strong">
+      <img src="https://picsum.photos/seed/447/800/900" alt="Timion Village building projects">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 60%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:clamp(24px,4vw,48px);">
+        <span class="eyebrow eyebrow-white">Chapter 04</span>
+        <h2 class="h2 h2-white underscore" style="margin-bottom:10px;">Building at<br>Timion Village</h2>
+        <div class="rule rule-white rule-sm"></div>
+        <p class="body body-white" style="font-size:.82rem;">
+          Most construction work was completed through the team's own hands-on effort —
+          saving costs and deepening ownership of the site.
+        </p>
+      </div>
+    </div>
+    <!-- right: content -->
+    <div class="bg-white vcenter pad">
+      <div class="page-hdr"></div>
+      <div style="margin-bottom:18px;">
+        <div class="tag" style="margin-bottom:8px;">Completed</div>
+        <h3 class="h3" style="margin-bottom:8px;">New Camp Kitchen</h3>
+        <p class="body">
+          A brand-new kitchen significantly improves conditions for camps,
+          in-reach programmes, and daily operations. Built largely in-house.
+        </p>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div class="tag" style="margin-bottom:8px;">Completed</div>
+        <h3 class="h3" style="margin-bottom:8px;">Volunteer Bungalow Renovation</h3>
+        <p class="body">
+          The former caretaker's bungalow was converted for volunteers and
+          civilian service workers. An additional bedroom added between
+          two bungalows allows up to <strong>7 mothers and their children with CP</strong>
+          to be hosted simultaneously.
+        </p>
+      </div>
+      <div>
+        <div class="tag" style="margin-bottom:8px;">In Planning</div>
+        <h3 class="h3" style="margin-bottom:8px;">Hall Extension</h3>
+        <p class="body">
+          An engineering delay created a valuable opportunity to revisit and
+          improve the original plans. The extension was scaled back slightly
+          to preserve the outdoor area — a space the team cherishes.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S9 · FAMILY SUPPORT
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-stone" id="s9">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;">
+    <!-- col 1 -->
+    <div class="vcenter pad" style="border-right:1px solid var(--stone2);">
+      <span class="eyebrow" style="margin-top:8px;">Chapter 05</span>
+      <h2 class="h2 underscore" style="margin-bottom:18px;">Family Support<br>&amp; Therapy</h2>
+      <div class="rule rule-sm"></div>
+
+      <div style="background:var(--dark2);border-radius:4px;padding:22px 20px;margin-bottom:14px;">
+        <div class="icard-label icard-label-white" style="margin-bottom:8px;">New Programme · Launched 9 June 2025</div>
+        <h3 class="h3 h3-orange" style="margin-bottom:10px;">In-Reach at Timion Village</h3>
+        <p class="body body-white">
+          Families spend two days and one night at Timion Village.
+          All assistive devices are brought for checking and adjustment.
+          The calm environment creates space for meaningful conversation and support —
+          safely, without sending staff into high-risk areas.
+        </p>
+      </div>
+
+      <div style="background:#fff;border-radius:4px;padding:18px 20px;">
+        <div class="icard-label" style="margin-bottom:6px;">Schedule</div>
+        <div style="display:flex;gap:14px;">
+          <div style="flex:1;font-size:.78rem;color:var(--mid);line-height:1.5;">
+            <strong style="color:var(--dark);">Group A</strong><br>Arrives Monday lunch<br>Departs Tuesday afternoon
+          </div>
+          <div style="flex:1;font-size:.78rem;color:var(--mid);line-height:1.5;">
+            <strong style="color:var(--dark);">Group B</strong><br>Arrives Wednesday<br>Departs Thursday afternoon
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- col 2 -->
+    <div style="display:flex;flex-direction:column;">
+      <div class="img-panel" style="flex:1;overflow:hidden;">
+        <img src="https://picsum.photos/seed/788/700/500" alt="Family support">
+      </div>
+      <div class="pad-sm vcenter" style="background:#fff;">
+        <h3 class="h3" style="margin-bottom:12px;">Psychological Support &amp; New Hires</h3>
+        <ul class="blist">
+          <li>Psychologist <strong>Marie Oostheizen</strong> provides monthly professional debriefing for the full outreach team</li>
+          <li>New <strong>Therapist</strong> position being filled — interviews from May 2026</li>
+          <li>New <strong>Assistant Social Worker</strong> role — to strengthen ties with government and other NGOs</li>
+          <li>Target onboarding for both positions: August 2026</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S10 · ALENA'S LOVE
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="split split-40-60" style="width:100%;height:100%;">
+    <div class="img-panel img-tint-strong">
+      <img src="https://picsum.photos/seed/876/600/900" alt="Alena's Love Day Care children">
+      <div style="position:absolute;bottom:0;left:0;right:0;
+        background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+        padding:clamp(20px,3.5vw,44px);">
+        <span class="eyebrow eyebrow-white" style="margin-bottom:6px;">Chapter 06</span>
+        <h2 class="h2 h2-white" style="font-size:clamp(1.6rem,3vw,2.5rem);line-height:1.1;">Alena's Love<br>Day Care</h2>
+      </div>
+    </div>
+    <div class="bg-white vcenter pad">
+      <div class="page-hdr"></div>
+      <p class="body" style="margin-bottom:24px;">
+        The children at Alena's Love continue to develop and flourish.
+        Hlokoma is attempting to speak more — an exciting milestone.
+        Chulu and Manco both turned 18 this year; advocacy is underway with
+        the Department of Social Development to allow them to remain.
+      </p>
+
+      <div class="g3" style="gap:10px;margin-bottom:24px;">
+        <div class="icard">
+          <div class="icard-label">New</div>
+          <div class="icard-value" style="font-size:1.1rem;">Bus</div>
+          <div class="icard-body">Dedicated transport bus acquired after years of prayer and planning. No more reliance on unreliable private taxis.</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">New Staff</div>
+          <div class="icard-value" style="font-size:1.1rem;">Nomhle</div>
+          <div class="icard-body">Temporary class assistant, 52 years old — full of warmth and life. Trial contract planned from June 2026.</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Skills Focus</div>
+          <div class="icard-value" style="font-size:1.1rem;">Digital</div>
+          <div class="icard-body">Staff trained in laptop and software use — growing confidence in technology and independent lesson planning.</div>
+        </div>
+      </div>
+
+      <div style="background:var(--stone);border-radius:4px;padding:16px 20px;">
+        <div class="icard-label" style="margin-bottom:6px;">Our Focus for the Year Ahead</div>
+        <ul class="blist" style="font-size:.78rem;">
+          <li>Recruit additional staff to expand capacity</li>
+          <li>Continue staff development and digital literacy training</li>
+          <li>Ensure safe and reliable daily transport for all children</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S11 · CAMPS
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <!-- full bleed image with overlay content -->
+  <div style="position:relative;width:100%;height:100%;">
+    <img src="https://picsum.photos/seed/983/1600/900" alt="Camps at Timion Village" style="width:100%;height:100%;object-fit:cover;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,.68);"></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(32px,6vw,80px);">
+      <div class="page-hdr"></div>
+      <div style="max-width:800px;">
+        <span class="eyebrow" style="margin-top:8px;margin-bottom:14px;display:block;">Chapter 07</span>
+        <h2 class="h2 h2-white underscore" style="margin-bottom:18px;">Camps at<br>Timion Village</h2>
+        <div class="rule rule-white rule-sm" style="margin-bottom:22px;"></div>
+        <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+          <div class="icard icard-dark" style="flex:1;min-width:120px;text-align:center;padding:20px 14px;">
+            <div class="stat-n stat-n-white">5</div>
+            <div class="stat-l stat-l-white">Camps held this year</div>
+          </div>
+          <div class="icard icard-dark" style="flex:1;min-width:120px;text-align:center;padding:20px 14px;">
+            <div class="stat-n stat-n-white">4</div>
+            <div class="stat-l stat-l-white">Recovery camps for mothers</div>
+          </div>
+          <div class="icard icard-dark" style="flex:1;min-width:120px;text-align:center;padding:20px 14px;">
+            <div class="stat-n stat-n-white">1</div>
+            <div class="stat-l stat-l-white">Trauma debrief camp</div>
+          </div>
+          <div class="icard icard-dark" style="flex:1;min-width:120px;text-align:center;padding:20px 14px;">
+            <div class="stat-n stat-n-white">7</div>
+            <div class="stat-l stat-l-white">Mothers + children hosted at once</div>
+          </div>
+        </div>
+        <div class="pquote pquote-dark" style="max-width:680px;">
+          "The debrief camp was originally planned as a mothers' training camp — but the
+          emotional state of the mothers required us to change the programme in real time.
+          This is a typical example of why our team must always remain flexible and wise."
+          <cite>— From the Annual Report</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S12 · VEGETABLE GARDEN
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-white" id="s12">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;">
+    <!-- left: image -->
+    <div class="img-panel">
+      <img src="https://picsum.photos/seed/355/700/900" alt="Vegetable garden at Timion Village">
+    </div>
+    <!-- right: content -->
+    <div class="vcenter pad">
+      <span class="eyebrow" style="margin-top:8px;">Timion Village</span>
+      <h2 class="h2 underscore" style="margin-bottom:18px;">The Vegetable<br>Garden</h2>
+      <div class="rule rule-sm"></div>
+      <p class="body" style="margin-bottom:18px;">
+        Running since the COVID-19 lockdown, the garden has become a permanent fixture
+        of Timion Village life — providing fresh produce for staff, camps, Alena's Love,
+        and the wider community.
+      </p>
+      <ul class="blist" style="margin-bottom:20px;">
+        <li>Fresh vegetables sold weekly to staff at fair prices</li>
+        <li>Regular sales to neighbours and friends</li>
+        <li>Supplies to soup kitchens and children's homes</li>
+        <li>New online platform: <strong>veggies.timion.org</strong></li>
+        <li>Mothers in a local township supported in starting their own gardens</li>
+      </ul>
+      <div class="icard">
+        <div class="icard-label">Next Step</div>
+        <div class="icard-body">
+          The garden is not yet self-sustaining. The vision is a more independent project
+          that operates with less direct leadership input — freeing Daniel for broader
+          organisational responsibilities while growing the garden's social impact.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S13 · THERAPIST TRAINING
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-dark" id="s13">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;">
+    <!-- left -->
+    <div class="vcenter pad">
+      <span class="eyebrow" style="margin-top:8px;">Chapter 08</span>
+      <h2 class="h2 h2-white underscore" style="margin-bottom:18px;">Training External<br>Therapists</h2>
+      <div class="rule rule-white rule-sm"></div>
+      <p class="body body-white" style="margin-bottom:20px;">
+        Awareness of assistive devices for children with cerebral palsy remains low
+        across South Africa. By training therapists in hospitals and medical centres,
+        Timion extends its reach far beyond what direct service alone could achieve.
+      </p>
+      <p class="body body-white" style="margin-bottom:24px;">
+        Government-funded device prescriptions create real revenue — making therapist
+        training a direct driver of Timion's financial sustainability. Families who
+        cannot access public funding receive devices as donations.
+      </p>
+      <div class="icard icard-dark" style="border:1px solid rgba(255,255,255,.15);">
+        <div class="icard-label icard-label-white">Special Highlight</div>
+        <div class="icard-body icard-body-white" style="margin-top:6px;">
+          A multi-week intensive training was delivered with staff and parents of
+          <strong style="color:#fff;">Rainbow Angels Kita in Humansdorp</strong> —
+          combining device knowledge with hands-on family empowerment.
+        </div>
+      </div>
+    </div>
+    <!-- right: image + big number -->
+    <div style="display:flex;flex-direction:column;">
+      <div class="img-panel" style="flex:1;overflow:hidden;">
+        <img src="https://picsum.photos/seed/617/700/500" alt="Therapist training session">
+      </div>
+      <div style="padding:clamp(20px,3.5vw,44px);border-top:1px solid rgba(255,255,255,.1);">
+        <div style="font-size:clamp(3.5rem,7vw,7rem);font-weight:900;color:var(--orange);letter-spacing:-.05em;line-height:1;">90</div>
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px;">
+          Therapists trained in 2025/26
+        </div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.55);margin-top:8px;line-height:1.6;">
+          Across hospitals and medical centres throughout South Africa.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S14 · TEAM
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-stone" id="s14">
+  <div class="page-hdr"></div>
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <!-- header row -->
+    <div style="display:grid;grid-template-columns:1fr 2fr;border-bottom:1px solid var(--stone2);">
+      <div class="pad-sm bg-dark vcenter" style="border-right:1px solid rgba(255,255,255,.08);">
+        <span class="eyebrow" style="margin-bottom:6px;">Chapter 09</span>
+        <h2 class="h2 h2-white" style="font-size:clamp(1.6rem,3vw,2.6rem);">Our<br>Team<em style="color:var(--orange);font-style:normal;">_</em></h2>
+        <div class="rule rule-white rule-sm" style="margin-top:14px;"></div>
+        <p class="body body-white" style="font-size:.75rem;margin-top:8px;">
+          A heartfelt thank you to every team member who rose to the many challenges
+          of this year with motivation and cohesion.
+        </p>
+      </div>
+      <div class="pad-sm vcenter">
+        <p class="body">
+          The advancing professionalisation of Timion brought significant changes requiring
+          flexibility and openness. Despite occasional uncertainty or initial resistance,
+          the team has carried this change forward — their different gifts and team spirit
+          are what make progress possible.
+        </p>
+      </div>
+    </div>
+    <!-- team grid -->
+    <div style="flex:1;overflow:hidden;padding:clamp(16px,2.5vw,28px);">
+      <div class="g4" style="grid-template-columns:repeat(5,1fr);gap:10px;height:100%;">
+
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/201/200/120" alt="Hannah Wood">
+          <div class="tcard-info">
+            <div class="tcard-name">Hannah Wood</div>
+            <div class="tcard-role">Manager &amp; Physiotherapist</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/202/200/120" alt="Nolubabalo Nofemele">
+          <div class="tcard-info">
+            <div class="tcard-name">Nolubabalo Nofemele</div>
+            <div class="tcard-role">Manager, Day Care &amp; HR</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/203/200/120" alt="Hannelie Botes">
+          <div class="tcard-info">
+            <div class="tcard-name">Hannelie Botes</div>
+            <div class="tcard-role">Administration</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/205/200/120" alt="Daniel Meyer">
+          <div class="tcard-info">
+            <div class="tcard-name">Daniel Meyer</div>
+            <div class="tcard-role">Founder &amp; Director</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/206/200/120" alt="Carl van der Merwe">
+          <div class="tcard-info">
+            <div class="tcard-name">Carl van der Merwe</div>
+            <div class="tcard-role">Production Manager</div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/207/200/120" alt="Kayla Randall">
+          <div class="tcard-info">
+            <div class="tcard-name">Kayla Randall</div>
+            <div class="tcard-role">Occupational Therapist</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/208/200/120" alt="Zita Jacobs">
+          <div class="tcard-info">
+            <div class="tcard-name">Zita Jacobs</div>
+            <div class="tcard-role">Occupational Therapist</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/209/200/120" alt="Lusanda Qika">
+          <div class="tcard-info">
+            <div class="tcard-name">Lusanda Qika</div>
+            <div class="tcard-role">Pastoral Counsellor</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/210/200/120" alt="Wian Thesnar">
+          <div class="tcard-info">
+            <div class="tcard-name">Wian Thesnar</div>
+            <div class="tcard-role">CNC Technician &amp; Designer</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/211/200/120" alt="Qhamani Welkom">
+          <div class="tcard-info">
+            <div class="tcard-name">Qhamani Welkom</div>
+            <div class="tcard-role">Logistician &amp; Gardener</div>
+          </div>
+        </div>
+
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/212/200/120" alt="Oswald Dzinamarira">
+          <div class="tcard-info">
+            <div class="tcard-name">Oswald Dzinamarira</div>
+            <div class="tcard-role">Carpenter</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/213/200/120" alt="Mabuthi Masoka">
+          <div class="tcard-info">
+            <div class="tcard-name">Mabuthi Masoka</div>
+            <div class="tcard-role">Carpenter</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/214/200/120" alt="Lucas Siziba">
+          <div class="tcard-info">
+            <div class="tcard-name">Lucas Siziba</div>
+            <div class="tcard-role">Carpenter</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/215/200/120" alt="Amanda Mtila">
+          <div class="tcard-info">
+            <div class="tcard-name">Amanda Mtila</div>
+            <div class="tcard-role">Day Care Caregiver</div>
+          </div>
+        </div>
+        <div class="tcard">
+          <img src="https://picsum.photos/seed/216/200/120" alt="Phumla Maxalani">
+          <div class="tcard-info">
+            <div class="tcard-name">Phumla Maxalani</div>
+            <div class="tcard-role">Day Care Cook</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S15 · FINANCES
+══════════════════════════════════════════════════════ -->
+<div class="slide bg-white" id="s15">
+  <div class="page-hdr"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;height:100%;">
+    <!-- left -->
+    <div class="vcenter pad" style="border-right:1px solid var(--stone2);">
+      <span class="eyebrow" style="margin-top:8px;">Chapter 10</span>
+      <h2 class="h2 underscore" style="margin-bottom:18px;">Financial<br>Highlights</h2>
+      <div class="rule rule-sm"></div>
+      <p class="body" style="margin-bottom:24px;">
+        In the past year we increased our overall result by 21% — a meaningful step for the
+        development of our projects and the extension of local impact. A sign of the trust
+        placed in us by donors, partners and funding institutions.
+      </p>
+
+      <div class="g3" style="gap:10px;margin-bottom:22px;">
+        <div class="icard" style="text-align:center;">
+          <div class="icard-label">Result</div>
+          <div class="icard-value" style="color:var(--orange);">+21%</div>
+          <div class="icard-body">Year-on-year improvement</div>
+        </div>
+        <div class="icard" style="text-align:center;">
+          <div class="icard-label">Admin Cost</div>
+          <div class="icard-value" style="color:var(--orange);">1.4%</div>
+          <div class="icard-body">Of total expenditure</div>
+        </div>
+        <div class="icard" style="text-align:center;">
+          <div class="icard-label">Device Sales</div>
+          <div class="icard-value" style="color:var(--orange);">25%</div>
+          <div class="icard-body">Of total SA budget</div>
+        </div>
+      </div>
+
+      <div style="background:var(--dark2);border-radius:4px;padding:20px 22px;">
+        <div class="icard-label icard-label-white">Device Sales Revenue</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--orange);letter-spacing:-.04em;margin:6px 0 2px;">CHF 115,805</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:14px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;">Total assistive device sales 2025/26</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;">
+          Accounts reviewed by auditors and approved by the Timion Association General Assembly.<br>
+          — Gerhard Zaugg, President
+        </div>
+      </div>
+    </div>
+    <!-- right: device breakdown bars -->
+    <div class="vcenter pad">
+      <h3 class="h3" style="margin-bottom:20px;">Devices Delivered by Type</h3>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Therapy Benches</span><strong>204 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill" style="width:70%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Side-Lying Aids</span><strong>229 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill" style="width:79%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Arm Splints</span><strong>211 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill fbar-fill-t" style="width:73%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Sensory Stimulation</span><strong>99 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill fbar-fill-t" style="width:34%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Standing Frames</span><strong>45 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill" style="width:16%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Wheelchair Tables</span><strong>20 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill" style="width:7%;"></div></div>
+      </div>
+      <div class="fbar-row">
+        <div class="fbar-labels"><span>Other Devices</span><strong>56 units</strong></div>
+        <div class="fbar-track"><div class="fbar-fill fbar-fill-t" style="width:20%;"></div></div>
+      </div>
+
+      <div style="margin-top:22px;background:var(--stone);border-radius:4px;padding:16px 18px;">
+        <div class="icard-label">Total Devices Delivered</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-top:4px;">
+          <div style="font-size:2.4rem;font-weight:900;color:var(--orange);letter-spacing:-.04em;line-height:1;">864</div>
+          <div style="font-size:.72rem;color:var(--mid);">total units &nbsp;|&nbsp; <strong style="color:var(--dark);">314</strong> donated to families unable to self-fund</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S16 · KEY HIGHLIGHTS
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s16">
+  <div style="display:grid;grid-template-columns:36% 64%;width:100%;height:100%;">
+    <!-- left: image panel -->
+    <div class="img-panel img-tint-strong">
+      <img src="https://picsum.photos/seed/1099/600/900" alt="Timion highlights">
+      <div style="position:absolute;bottom:0;left:0;right:0;
+        background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+        padding:clamp(20px,3.5vw,44px);">
+        <div class="page-hdr"></div>
+        <span class="eyebrow eyebrow-white" style="margin-bottom:8px;display:block;">2025 / 26 at a Glance</span>
+        <h2 class="h2 h2-white" style="font-size:clamp(1.5rem,3vw,2.4rem);">Key<br>Highlights</h2>
+      </div>
+    </div>
+    <!-- right: stats grid -->
+    <div class="bg-stone vcenter pad">
+      <div class="g3" style="gap:12px;">
+        <div class="icard">
+          <div class="icard-label">Devices Delivered</div>
+          <div class="icard-value" style="color:var(--orange);">864</div>
+          <div class="icard-body">Total this year, 314 donated to families unable to afford them</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Therapists Trained</div>
+          <div class="icard-value" style="color:var(--orange);">90</div>
+          <div class="icard-body">Across hospitals and medical centres throughout South Africa</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Annual Result</div>
+          <div class="icard-value" style="color:var(--orange);">+21%</div>
+          <div class="icard-body">Year-on-year improvement — a sign of growing donor confidence</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">In-Reach Launched</div>
+          <div class="icard-value" style="color:var(--orange);font-size:1.1rem;">Jun 2025</div>
+          <div class="icard-body">Families hosted safely at Timion Village — 2 groups per week</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Nest Systems</div>
+          <div class="icard-value" style="color:var(--orange);">~50</div>
+          <div class="icard-body">Sleep positioning systems delivered. SA is the first developing-country partner</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Admin Cost</div>
+          <div class="icard-value" style="color:var(--orange);">1.4%</div>
+          <div class="icard-body">Of total expenditure — exceptionally lean for an organisation of this scope</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">New Prototype</div>
+          <div class="icard-value" style="color:var(--orange);font-size:1.1rem;">Walking Trainer</div>
+          <div class="icard-body">Developed by Swiss volunteer — now in test phase with multiple children</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Camps Held</div>
+          <div class="icard-value" style="color:var(--orange);">5</div>
+          <div class="icard-body">4 recovery camps + 1 trauma debrief camp adapted in real time</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Zoho OS Live</div>
+          <div class="icard-value" style="color:var(--orange);font-size:1.1rem;">2026</div>
+          <div class="icard-body">Full digital transformation across accounting, inventory, CRM &amp; outreach</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S17 · OUTLOOK 2026/27
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s17">
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <!-- top image strip -->
+    <div style="flex:0 0 40%;overflow:hidden;position:relative;">
+      <img src="https://picsum.photos/seed/764/1600/700" alt="Looking ahead" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;padding:clamp(24px,5vw,64px);">
+        <div class="page-hdr"></div>
+        <div>
+          <span class="eyebrow" style="margin-bottom:10px;display:block;">Chapter 11</span>
+          <h2 class="h2 h2-white underscore" style="font-size:clamp(1.8rem,4vw,3.5rem);">Outlook 2026 / 27</h2>
+          <p style="font-size:clamp(.82rem,1.3vw,1rem);color:rgba(255,255,255,.75);margin-top:10px;font-style:italic;">
+            A year in the sign of training, sustainability, and shared knowledge.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- bottom: 4 columns -->
+    <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);background:var(--white);">
+      <div class="pad-sm vcenter" style="border-right:1px solid var(--stone2);">
+        <div class="tag tag-orange" style="margin-bottom:10px;">Staff</div>
+        <h3 class="h3" style="margin-bottom:10px;">Staff Development</h3>
+        <p class="body">
+          Continuing carpentry education — furniture &amp; kitchen building, planning,
+          construction and cost calculation. Plus digital literacy for all.
+        </p>
+      </div>
+      <div class="pad-sm vcenter" style="border-right:1px solid var(--stone2);">
+        <div class="tag tag-orange" style="margin-bottom:10px;">Carers</div>
+        <h3 class="h3" style="margin-bottom:10px;">Carer Training</h3>
+        <p class="body">
+          Regular follow-up sessions after training camps to consolidate skills
+          and ensure that new knowledge translates into sustained daily practice at home.
+        </p>
+      </div>
+      <div class="pad-sm vcenter" style="border-right:1px solid var(--stone2);">
+        <div class="tag tag-orange" style="margin-bottom:10px;">Global</div>
+        <h3 class="h3" style="margin-bottom:10px;">Sharing Knowledge</h3>
+        <p class="body">
+          Hospital training trips across South Africa. Planned visits to partner
+          organisations in <strong>India</strong> and <strong>Tanzania</strong> —
+          expertise shared across borders.
+        </p>
+      </div>
+      <div class="pad-sm vcenter">
+        <div class="tag tag-orange" style="margin-bottom:10px;">Organisation</div>
+        <h3 class="h3" style="margin-bottom:10px;">Sustainability</h3>
+        <p class="body">
+          New hires in administration, mother-support, and management.
+          Increased local fundraising to build financial independence
+          and strengthen structures for the long term.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+  S18 · CLOSING / DONATE
+══════════════════════════════════════════════════════ -->
+<div class="slide" id="s18">
+  <div style="position:relative;width:100%;height:100%;">
+    <img src="https://picsum.photos/seed/1231/1600/900" alt="Timion closing" style="width:100%;height:100%;object-fit:cover;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.6) 50%,rgba(0,0,0,.3) 100%);"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;padding:clamp(40px,7vw,100px);">
+      <div class="page-hdr"></div>
+      <div style="max-width:720px;">
+        <span class="eyebrow" style="margin-bottom:14px;display:block;">Together, Shaping the Future</span>
+        <h2 class="h2 h2-white" style="font-size:clamp(2rem,5vw,4.5rem);letter-spacing:-.04em;margin-bottom:10px;">
+          Every Child is<br><em style="color:var(--orange);font-style:normal;">Valuable.</em>
+        </h2>
+        <div class="rule" style="margin:18px 0;"></div>
+        <p class="body body-white" style="max-width:540px;margin-bottom:32px;">
+          Our work is only possible because of the generosity of many supporters.
+          Every donation — however large or small — brings more quality of life to
+          children with disabilities, relieves their families, and strengthens
+          local structures for the long term.
+        </p>
+        <!-- contact columns -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:580px;">
+          <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:20px 18px;backdrop-filter:blur(8px);">
+            <div style="font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">South Africa</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.8);line-height:1.8;">
+              Timion NPC<br>
+              Erf 1656, Dolphin Drive<br>
+              Aston Bay 6332<br><br>
+              +27 42 293 4296<br>
+              info@timion.org<br>
+              www.timion.org
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:20px 18px;backdrop-filter:blur(8px);">
+            <div style="font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Switzerland</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.8);line-height:1.8;">
+              Verein Timion<br>
+              Hardstrasse 28<br>
+              4142 Münchenstein<br><br>
+              +41 79 711 84 79<br>
+              schweiz@timion.org<br>
+              IBAN: CH40 0076 9438 5659 1200 1
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div id="pbar"></div>
+<div id="nav">
+  <button class="nbtn" id="btnP">&#8592;</button>
+  <div id="dots"></div>
+  <span id="ctr">1 / 18</span>
+  <button class="nbtn" id="btnN">&#8594;</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsEl = document.getElementById('dots');
+const ctrEl  = document.getElementById('ctr');
+const pbarEl = document.getElementById('pbar');
+const total  = slides.length;
+let cur = 0;
+
+// build dots
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' on':'');
+  d.onclick = () => go(i);
+  dotsEl.appendChild(d);
+});
+slides[0].classList.add('active');
+
+function go(n){
+  if(n<0||n>=total) return;
+  slides[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  ctrEl.textContent = (cur+1)+' / '+total;
+  pbarEl.style.width = ((cur+1)/total*100)+'%';
+}
+
+document.getElementById('btnN').onclick = () => go(cur+1);
+document.getElementById('btnP').onclick = () => go(cur-1);
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); go(cur+1); }
+  if(e.key==='ArrowLeft')              { e.preventDefault(); go(cur-1); }
+  if(e.key==='Home') go(0);
+  if(e.key==='End')  go(total-1);
+});
+
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=tx-e.changedTouches[0].clientX;
+  if(Math.abs(dx)>50) dx>0?go(cur+1):go(cur-1);
+});
+
+pbarEl.style.width = (1/total*100)+'%';
+</script>
+</body>
+</html>
