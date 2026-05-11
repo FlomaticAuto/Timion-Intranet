@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex-1 flex items-center justify-center px-6 py-20">
-      <div className="w-full max-w-xl text-center space-y-8">
+    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-20">
+      <div className="max-w-xl text-center space-y-8">
         <div className="flex justify-center">
           <Image
             src="/timion-logo.png"
