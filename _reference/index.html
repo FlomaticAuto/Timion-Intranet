@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timion HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --ff-head: 'Sora', 'Inter', sans-serif;
+
+      --bg:       #080810;
+      --surface:  #12121e;
+      --surface2: #1a1a2e;
+      --border:        rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.15);
+
+      --text:       #f0f0f8;
+      --text-soft:  #c8c8d8;     /* brighter than muted, for descriptions */
+      --text-muted: #8888aa;
+      --text-dim:   #5e5e7a;
+
+      --accent:  #7c5cfc;
+      --accent2: #4f8ef7;
+      --gradient:      linear-gradient(135deg, #7c5cfc, #4f8ef7);
+      --gradient-text: linear-gradient(135deg, #a78bfa, #60a5fa);
+
+      --brand:        #7c5cfc;
+      --brand-bg:     rgba(124,92,252,0.1);
+      --brand-border: rgba(124,92,252,0.3);
+
+      --amber:        #ff8c42;
+      --amber-bg:     rgba(255,140,66,0.1);
+      --amber-border: rgba(255,140,66,0.3);
+
+      --green:        #10d98a;
+      --green-bg:     rgba(16,217,138,0.08);
+      --green-border: rgba(16,217,138,0.3);
+
+      --blue:         #4f8ef7;
+      --blue-bg:      rgba(79,142,247,0.1);
+      --blue-border:  rgba(79,142,247,0.3);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow:    0 2px 8px rgba(0,0,0,0.5);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.6);
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .site-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gradient);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .site-logo {
+      height: 46px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border-bright);
+      flex-shrink: 0;
+    }
+
+    .header-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .site-header h1 {
+      font-family: var(--ff-head);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .header-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-right .pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Tab navigation ── */
+    .tab-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      position: sticky;
+      top: 68px;
+      z-index: 9;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-nav::-webkit-scrollbar { display: none; }
+
+    .nav-tab {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-tab .nav-icon { font-size: 14px; line-height: 1; }
+
+    .nav-tab:hover:not(.active) {
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .nav-tab.active {
+      color: #fff;
+      background: var(--brand-bg);
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 12px;
+      right: 12px;
+      height: 2px;
+      background: var(--gradient);
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* ── Layout ── */
+    .main {
+      padding: 32px 28px 64px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    @media (max-width: 760px) {
+      .main { padding: 20px 16px 48px; }
+      .site-header { padding: 0 16px; }
+      .tab-nav { padding: 0 16px; }
+    }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; animation: fade-in 0.3s ease both; }
+    .tab-panel.visible { display: block; }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Section heading ── */
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: var(--ff-head);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--text-soft);
+      max-width: 720px;
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+
+    .section-divider {
+      width: 36px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--gradient);
+      margin-bottom: 24px;
+    }
+
+    /* ── Welcome strip (Home only) ── */
+    .welcome-strip {
+      background: linear-gradient(135deg, rgba(124,92,252,0.12), rgba(79,142,247,0.08));
+      border: 1px solid var(--brand-border);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+
+    .welcome-emoji { font-size: 32px; line-height: 1; flex-shrink: 0; }
+    .welcome-text { flex: 1; min-width: 240px; }
+
+    .welcome-text h2 {
+      font-family: var(--ff-head);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .welcome-text p {
+      font-size: 13px;
+      color: var(--text-soft);
+      font-weight: 500;
+      line-height: 1.55;
+    }
+
+    /* ── Tile grid ── */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    .tile-grid.hero {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* Per-tile colour token, rotating by grid position */
+    .tile-grid > .tile:nth-child(4n+1) {
+      --tile-colour: var(--accent);
+      --tile-glow:   rgba(124,92,252,0.45);
+    }
+    .tile-grid > .tile:nth-child(4n+2) {
+      --tile-colour: var(--green);
+      --tile-glow:   rgba(16,217,138,0.40);
+    }
+    .tile-grid > .tile:nth-child(4n+3) {
+      --tile-colour: var(--amber);
+      --tile-glow:   rgba(255,140,66,0.40);
+    }
+    .tile-grid > .tile:nth-child(4n+4) {
+      --tile-colour: var(--accent2);
+      --tile-glow:   rgba(79,142,247,0.45);
+    }
+
+    .tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--tile-colour, var(--accent));
+      border-radius: 14px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.22s, border-color 0.22s, transform 0.18s;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 170px;
+      text-decoration: none;
+      color: inherit;
+      background-image: none;
+      overflow: hidden;
+    }
+
+    /* Soft tile-colour wash in the top-left for richness */
+    .tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0% 0%, var(--tile-glow, transparent) 0%, transparent 55%);
+      opacity: 0.18;
+      pointer-events: none;
+      transition: opacity 0.22s;
+    }
+
+    .tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--tile-colour);
+      box-shadow:
+        0 14px 38px rgba(0,0,0,0.55),
+        0 0 0 1px var(--tile-colour),
+        0 0 36px -4px var(--tile-glow),
+        0 0 80px -10px var(--tile-glow);
+    }
+
+    .tile:hover::before { opacity: 0.55; }
+
+    .tile.coming-soon {
+      cursor: default;
+      opacity: 0.65;
+    }
+
+    .tile.coming-soon:hover {
+      transform: none;
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .tile.coming-soon:hover::before { opacity: 0.18; }
+
+    .tile-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tile-icon {
+      font-size: 26px;
+      line-height: 1;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .status-pill::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-pill.live {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+    .status-pill.live::before { background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+    .status-pill.external {
+      background: var(--blue-bg);
+      color: var(--accent2);
+      border: 1px solid var(--blue-border);
+    }
+    .status-pill.external::before { background: var(--accent2); }
+
+    .status-pill.soon {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--border-bright);
+    }
+    .status-pill.soon::before { background: var(--text-dim); }
+
+    .tile-title {
+      font-family: var(--ff-head);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      line-height: 1.25;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tile-desc {
+      font-size: 13.5px;
+      color: var(--text-soft);
+      font-weight: 500;
+      line-height: 1.5;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── CTA pill at bottom of each tile ── */
+    .tile-cta {
+      align-self: flex-start;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font);
+      letter-spacing: 0.02em;
+      padding: 8px 14px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tile-cta .arrow { display: inline-block; transition: transform 0.18s; }
+
+    /* Live = embedded inside the intranet — primary gradient button */
+    .tile-cta.cta-live {
+      background: var(--gradient);
+      color: #fff;
+      box-shadow: 0 3px 14px rgba(124,92,252,0.45);
+    }
+
+    .tile:hover .tile-cta.cta-live {
+      box-shadow: 0 5px 22px rgba(124,92,252,0.65);
+    }
+    .tile:hover .tile-cta.cta-live .arrow { transform: translateX(4px); }
+
+    /* External = opens new tab — outlined blue */
+    .tile-cta.cta-external {
+      background: rgba(79,142,247,0.14);
+      color: #93b8fa;
+      border: 1px solid rgba(79,142,247,0.45);
+    }
+
+    .tile:hover .tile-cta.cta-external {
+      background: rgba(79,142,247,0.25);
+      color: #cfdcff;
+      border-color: rgba(79,142,247,0.7);
+    }
+    .tile:hover .tile-cta.cta-external .arrow { transform: translate(3px, -3px); }
+
+    /* Coming soon — quiet text only */
+    .tile-cta.cta-soon {
+      padding: 0;
+      background: transparent;
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: none;
+    }
+
+    /* ── Embed viewer ── */
+    .embed-view {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px 28px 48px;
+    }
+
+    .embed-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .embed-back {
+      background: var(--surface2);
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .embed-back:hover {
+      background: var(--brand-bg);
+      border-color: var(--brand-border);
+      color: var(--accent);
+    }
+
+    .embed-title {
+      font-family: var(--ff-head);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .embed-newtab {
+      font-size: 12px;
+      font-weight: 600;
+      color: #93b8fa;
+      text-decoration: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(79,142,247,0.4);
+      background: rgba(79,142,247,0.1);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .embed-newtab:hover {
+      background: rgba(79,142,247,0.22);
+      color: #fff;
+    }
+
+    .embed-frame {
+      width: 100%;
+      height: calc(100vh - 220px);
+      min-height: 540px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 760px) {
+      .embed-view { padding: 14px 16px 32px; }
+      .embed-frame { height: calc(100vh - 240px); min-height: 480px; }
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 18px 28px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-left">
+      <img src="Timion%20logo%20official.png" alt="Timion" class="site-logo">
+      <div class="header-divider"></div>
+      <div class="header-title-group">
+        <h1>Timion HQ</h1>
+        <span class="header-tagline">Internal hub for staff, management &amp; operations</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="pill">v0.2 · Phase 1</span>
+    </div>
+  </header>
+
+  <nav class="tab-nav" id="tab-nav">
+    <button class="nav-tab active" data-tab="home"><span class="nav-icon">🏠</span> Home</button>
+    <button class="nav-tab" data-tab="crm"><span class="nav-icon">👥</span> CRM</button>
+    <button class="nav-tab" data-tab="inventory"><span class="nav-icon">📦</span> Inventory</button>
+    <button class="nav-tab" data-tab="books"><span class="nav-icon">💰</span> Books</button>
+    <button class="nav-tab" data-tab="workshop"><span class="nav-icon">🛠️</span> Workshop</button>
+    <button class="nav-tab" data-tab="iso"><span class="nav-icon">✅</span> ISO / Compliance</button>
+    <button class="nav-tab" data-tab="documents"><span class="nav-icon">📁</span> Documents</button>
+    <button class="nav-tab" data-tab="board"><span class="nav-icon">📈</span> Board &amp; Reporting</button>
+  </nav>
+
+  <main class="main" id="main-content">
+
+    <!-- ── HOME ── -->
+    <section class="tab-panel visible" id="panel-home">
+      <div class="welcome-strip">
+        <div class="welcome-emoji">👋</div>
+        <div class="welcome-text">
+          <h2>Welcome to Timion HQ</h2>
+          <p>One front door for everything Timion uses — dashboards, documents, compliance, reporting. Pick a tab above, or jump straight into a section below.</p>
+        </div>
+      </div>
+
+      <div class="section-eyebrow">Sections</div>
+      <div class="section-title">Where would you like to go?</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid hero">
+        <div class="tile" data-go="crm">
+          <div class="tile-head">
+            <div class="tile-icon">👥</div>
+            <span class="status-pill soon">Building</span>
+          </div>
+          <div class="tile-title">CRM</div>
+          <div class="tile-desc">Patient records, visit &amp; equipment reports, therapist KPIs and Zoho CRM access.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="inventory">
+          <div class="tile-head">
+            <div class="tile-icon">📦</div>
+            <span class="status-pill live">Live</span>
+          </div>
+          <div class="tile-title">Inventory</div>
+          <div class="tile-desc">Production dashboard, reorder levels, production schedule and Zoho Inventory.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="books">
+          <div class="tile-head">
+            <div class="tile-icon">💰</div>
+            <span class="status-pill soon">Building</span>
+          </div>
+          <div class="tile-title">Books</div>
+          <div class="tile-desc">Sales orders, purchase orders, inventory valuation and Zoho Books.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="workshop">
+          <div class="tile-head">
+            <div class="tile-icon">🛠️</div>
+            <span class="status-pill soon">Building</span>
+          </div>
+          <div class="tile-title">Workshop</div>
+          <div class="tile-desc">Production management, job cards, carpenter view and quality control.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="iso">
+          <div class="tile-head">
+            <div class="tile-icon">✅</div>
+            <span class="status-pill soon">Building</span>
+          </div>
+          <div class="tile-title">ISO / Compliance</div>
+          <div class="tile-desc">SOP library, auditor portal, compliance documentation and audit calendar.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="documents">
+          <div class="tile-head">
+            <div class="tile-icon">📁</div>
+            <span class="status-pill soon">Building</span>
+          </div>
+          <div class="tile-title">Documents</div>
+          <div class="tile-desc">SOPs, BM onboarding pack, policies and organisational templates.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile" data-go="board">
+          <div class="tile-head">
+            <div class="tile-icon">📈</div>
+            <span class="status-pill live">Live</span>
+          </div>
+          <div class="tile-title">Board &amp; Reporting</div>
+          <div class="tile-desc">Annual report, board pack, presentation deck and high-level KPI summaries.</div>
+          <div class="tile-cta cta-live">Open section <span class="arrow">→</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CRM ── -->
+    <section class="tab-panel" id="panel-crm">
+      <div class="section-eyebrow">CRM</div>
+      <div class="section-title">Customer &amp; patient relations</div>
+      <div class="section-subtitle">Patient records, visit logging, equipment history, therapist KPIs and Zoho CRM.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile"
+             data-external="https://one.zoho.com/zohoone/timionnpc/home/cxapp/crm/org878871386/tab/Home/begin"
+             data-title="Zoho CRM">
+          <div class="tile-head">
+            <div class="tile-icon">🔗</div>
+            <span class="status-pill external">External</span>
+          </div>
+          <div class="tile-title">Zoho CRM</div>
+          <div class="tile-desc">Open the live Zoho CRM workspace — patients, contacts, deals, communications.</div>
+          <div class="tile-cta cta-external">Open in new tab <span class="arrow">↗</span></div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🚐</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Visit Report</div>
+          <div class="tile-desc">Dashboard for visits — volumes, types, locations, staff workload and trends.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🦽</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Equipment Report</div>
+          <div class="tile-desc">Dashboard for equipment history — issuances, pipeline, demand by device type.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📅</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Upcoming Tasks</div>
+          <div class="tile-desc">View of upcoming tasks per therapist — what's due, when, and for which patient.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📈</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Therapist KPI Dashboard</div>
+          <div class="tile-desc">Live KPIs across visits, equipment issued, tasks completed — per therapist and team-wide.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🔄</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Cross Analysis</div>
+          <div class="tile-desc">Patient-level analysis linking visits to equipment outcomes — journey insights.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INVENTORY ── -->
+    <section class="tab-panel" id="panel-inventory">
+      <div class="section-eyebrow">Inventory</div>
+      <div class="section-title">Stock &amp; production tracking</div>
+      <div class="section-subtitle">Live production dashboard from Zoho Inventory, plus reorder levels and the production schedule.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile"
+             data-external="https://one.zoho.com/zohoone/timionnpc/home/cxapp/inventory/app/878382704#/home/inventory-dashboard"
+             data-title="Zoho Inventory">
+          <div class="tile-head">
+            <div class="tile-icon">🔗</div>
+            <span class="status-pill external">External</span>
+          </div>
+          <div class="tile-title">Zoho Inventory</div>
+          <div class="tile-desc">Open the live Zoho Inventory workspace — items, stock movements and adjustments.</div>
+          <div class="tile-cta cta-external">Open in new tab <span class="arrow">↗</span></div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">⚠️</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Reorder Level Report</div>
+          <div class="tile-desc">Stock tracker: all items close to their reorder level, plus out-of-stock alerts.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile"
+             data-embed="../Timion_Inventory/index.html"
+             data-title="Production Dashboard">
+          <div class="tile-head">
+            <div class="tile-icon">📊</div>
+            <span class="status-pill live">Live</span>
+          </div>
+          <div class="tile-title">Production Dashboard</div>
+          <div class="tile-desc">Monthly assemblies dashboard — Finished Products vs Subassemblies, in production and completed.</div>
+          <div class="tile-cta cta-live">Open here <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🗓️</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Production Schedule</div>
+          <div class="tile-desc">Monthly production schedule connected to the Production Dashboard — mark progress as it happens.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BOOKS ── -->
+    <section class="tab-panel" id="panel-books">
+      <div class="section-eyebrow">Books</div>
+      <div class="section-title">Accounting &amp; finance</div>
+      <div class="section-subtitle">Sales, purchases, valuation and the live Zoho Books workspace.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile"
+             data-external="https://one.zoho.com/zohoone/timionnpc/home/cxapp/books/app/878382704#/home/dashboard"
+             data-title="Zoho Books">
+          <div class="tile-head">
+            <div class="tile-icon">🔗</div>
+            <span class="status-pill external">External</span>
+          </div>
+          <div class="tile-title">Zoho Books</div>
+          <div class="tile-desc">Open the live Zoho Books workspace — invoices, bills, banking and accounting.</div>
+          <div class="tile-cta cta-external">Open in new tab <span class="arrow">↗</span></div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🧾</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Sales Order Report</div>
+          <div class="tile-desc">Dashboard of sales orders — current state, approvals needed, outstanding and order type.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🛒</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Purchase Order Report</div>
+          <div class="tile-desc">Dashboard of purchase orders — current state, approvals needed, outstanding, top items.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">💎</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Inventory Valuation Report</div>
+          <div class="tile-desc">Current inventory valuation — per item, per category, and total stock value over time.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WORKSHOP ── -->
+    <section class="tab-panel" id="panel-workshop">
+      <div class="section-eyebrow">Workshop</div>
+      <div class="section-title">Production floor &amp; carpenters</div>
+      <div class="section-subtitle">Tools for production management and workshop staff — daily work, job cards, quality.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🧰</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Production Management Report</div>
+          <div class="tile-desc">Full production view — carpenters' current jobs, production times, insights and quality control.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">⚙️</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Production Manager Tools</div>
+          <div class="tile-desc">Schedule planning, staff assignment, completion tracking and workshop oversight.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📋</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Today's Production List</div>
+          <div class="tile-desc">Job cards for today — what each carpenter is building, ready to be picked up on the floor.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">👷</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Carpenter View</div>
+          <div class="tile-desc">Phone-friendly view — start a job, mark complete, log issues. Big buttons, one task at a time.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🔬</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Quality Control</div>
+          <div class="tile-desc">Form-based QC checks — record inspection results, flag defects, sign-off completed items.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ISO / COMPLIANCE ── -->
+    <section class="tab-panel" id="panel-iso">
+      <div class="section-eyebrow">ISO / Compliance</div>
+      <div class="section-title">Standards &amp; audit readiness</div>
+      <div class="section-subtitle">SOP library, compliance documentation, and the auditor-facing portal.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📚</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">SOP Library</div>
+          <div class="tile-desc">Standard operating procedures organised by department and topic.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🔍</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Auditor Portal</div>
+          <div class="tile-desc">Scoped read-only view for external auditors — only relevant documents, clean navigation.</div>
+          <div class="tile-cta cta-soon">Phase 2</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📜</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Compliance Documents</div>
+          <div class="tile-desc">Certifications, registrations, policies and statutory documents.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🗓️</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Audit Calendar</div>
+          <div class="tile-desc">Upcoming audits, renewal dates, compliance deadlines.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DOCUMENTS ── -->
+    <section class="tab-panel" id="panel-documents">
+      <div class="section-eyebrow">Documents</div>
+      <div class="section-title">Knowledge &amp; resources</div>
+      <div class="section-subtitle">A central library for SOPs, onboarding material, policies and templates.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📚</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">SOP Library</div>
+          <div class="tile-desc">Standard operating procedures, searchable by department or topic.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">🎓</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">BM Onboarding Pack</div>
+          <div class="tile-desc">Everything a new Branch Manager needs in their first 30 days.</div>
+          <div class="tile-cta cta-soon">Phase 3</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">⚖️</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Policies</div>
+          <div class="tile-desc">HR, finance, child protection and other organisational policies.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📄</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Templates</div>
+          <div class="tile-desc">Letterheads, report templates, donor communication templates.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BOARD & REPORTING ── -->
+    <section class="tab-panel" id="panel-board">
+      <div class="section-eyebrow">Board &amp; Reporting</div>
+      <div class="section-title">Strategic &amp; external reporting</div>
+      <div class="section-subtitle">Annual report, board pack, presentation deck and high-level KPI summaries.</div>
+      <div class="section-divider"></div>
+
+      <div class="tile-grid">
+        <div class="tile"
+             data-embed="../Timion_Presentation/Final%20Version/timion_presentation.html"
+             data-title="Timion Presentation">
+          <div class="tile-head">
+            <div class="tile-icon">🎤</div>
+            <span class="status-pill live">Live</span>
+          </div>
+          <div class="tile-title">Timion Presentation</div>
+          <div class="tile-desc">The current Timion organisational presentation deck.</div>
+          <div class="tile-cta cta-live">Open here <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile"
+             data-embed="../Timion_Presentation/PDF%20Example/Annual%20Report%20Timion%202026.pdf%20(Druckverstion).pdf"
+             data-title="Annual Report 2026 (PDF)">
+          <div class="tile-head">
+            <div class="tile-icon">📕</div>
+            <span class="status-pill live">Live</span>
+          </div>
+          <div class="tile-title">Annual Report 2026 (PDF)</div>
+          <div class="tile-desc">Reference annual report — print version.</div>
+          <div class="tile-cta cta-live">Open here <span class="arrow">→</span></div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📊</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">Board Pack</div>
+          <div class="tile-desc">Quarterly board pack with KPIs, financials and strategic updates.</div>
+          <div class="tile-cta cta-soon">Phase 2</div>
+        </div>
+
+        <div class="tile coming-soon">
+          <div class="tile-head">
+            <div class="tile-icon">📑</div>
+            <span class="status-pill soon">Coming Soon</span>
+          </div>
+          <div class="tile-title">KPI Summary</div>
+          <div class="tile-desc">High-level KPI summary tailored for board members and donors.</div>
+          <div class="tile-cta cta-soon">In planning</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Embed viewer (overlay) ── -->
+  <section class="embed-view" id="embed-view" hidden>
+    <div class="embed-bar">
+      <button class="embed-back" id="embed-back" title="Return to section">← Back</button>
+      <div class="embed-title" id="embed-title">—</div>
+      <a class="embed-newtab" id="embed-newtab" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+    </div>
+    <iframe class="embed-frame" id="embed-frame" src="about:blank" title="Embedded content"></iframe>
+  </section>
+
+  <footer class="site-footer">
+    Timion HQ · Built by Flomatic for the Flomatic × Timion 2026 engagement
+  </footer>
+
+  <script>
+    // ── Elements ──
+    const tabs       = document.querySelectorAll('.nav-tab');
+    const panels     = document.querySelectorAll('.tab-panel');
+    const mainEl     = document.getElementById('main-content');
+    const embedView  = document.getElementById('embed-view');
+    const embedFrame = document.getElementById('embed-frame');
+    const embedTitle = document.getElementById('embed-title');
+    const embedNew   = document.getElementById('embed-newtab');
+    const embedBack  = document.getElementById('embed-back');
+
+    let lastTab = 'home';
+
+    // ── Tab switching ──
+    function showTab(name) {
+      closeEmbed(false); // any embed shuts when switching tabs
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+      panels.forEach(p => p.classList.toggle('visible', p.id === `panel-${name}`));
+      lastTab = name;
+      if (history.replaceState) history.replaceState(null, '', `#${name}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+    // ── Hero tile → jump to that tab ──
+    document.querySelectorAll('[data-go]').forEach(el => {
+      el.addEventListener('click', () => showTab(el.dataset.go));
+    });
+
+    // ── External tile → open new tab ──
+    document.querySelectorAll('[data-external]').forEach(el => {
+      el.addEventListener('click', () => {
+        window.open(el.dataset.external, '_blank', 'noopener');
+      });
+    });
+
+    // ── Embedded tile → open in iframe overlay ──
+    document.querySelectorAll('[data-embed]').forEach(el => {
+      el.addEventListener('click', () => {
+        openEmbed(el.dataset.embed, el.dataset.title || '');
+      });
+    });
+
+    function openEmbed(url, title) {
+      embedFrame.src   = url;
+      embedTitle.textContent = title;
+      embedNew.href    = url;
+      mainEl.hidden    = true;
+      embedView.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeEmbed(scroll = true) {
+      if (embedView.hidden) return;
+      embedFrame.src   = 'about:blank';
+      embedView.hidden = true;
+      mainEl.hidden    = false;
+      if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    embedBack.addEventListener('click', () => closeEmbed());
+
+    // ── Initial tab from URL hash, fallback to home ──
+    const initial = (location.hash || '#home').replace('#', '');
+    if (document.querySelector(`.nav-tab[data-tab="${initial}"]`)) {
+      showTab(initial);
+    }
+  </script>
+
+</body>
+</html>

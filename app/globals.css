@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────
+   Timion design tokens
+   Mirror of the Production Dashboard palette so the intranet
+   and dashboard feel like the same product.
+   ────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces */
+  --color-bg:        #080810;
+  --color-surface:   #12121e;
+  --color-surface-2: #1a1a2e;
+
+  /* Text */
+  --color-text:       #f0f0f8;
+  --color-text-soft:  #c8c8d8;
+  --color-text-muted: #8888aa;
+  --color-text-dim:   #5e5e7a;
+
+  /* Accents */
+  --color-accent:  #7c5cfc;
+  --color-accent-2:#4f8ef7;
+  --color-amber:   #ff8c42;
+  --color-green:   #10d98a;
+
+  /* Borders */
+  --color-border:        rgba(255, 255, 255, 0.08);
+  --color-border-bright: rgba(255, 255, 255, 0.15);
+
+  /* Fonts */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-head: var(--font-sora), var(--font-inter), sans-serif;
+}
+
+/* Base body styling — always dark, this is an internal product. */
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Brand gradient — used for accents, badges, dividers. */
+.timion-gradient {
+  background: linear-gradient(135deg, #7c5cfc, #4f8ef7);
+}
