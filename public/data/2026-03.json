@@ -1,0 +1,559 @@
+{
+  "generated_at": "2026-04-30T14:01:53Z",
+  "month": "2026-03",
+  "finished_products": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "281-4-PCM-100326",
+        "item_name": "Positioning Chair Medium",
+        "quantity": 4.0,
+        "date": "2026-03-10",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": [
+          "PC368",
+          "PC371",
+          "PC372",
+          "PC373"
+        ]
+      },
+      {
+        "assembly_number": "ASSY-00115",
+        "item_name": "Sidelyer 160",
+        "quantity": 1.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "L007"
+        ]
+      },
+      {
+        "assembly_number": "ASSY-00097",
+        "item_name": "Soft splint L",
+        "quantity": 2.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Volunteer"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "284-1-SF-XS-050126",
+        "item_name": "Standing frame x-small",
+        "quantity": 1.0,
+        "date": "2026-03-10",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "SF366"
+        ]
+      },
+      {
+        "assembly_number": "ASSY-00124",
+        "item_name": "Wheelchair Tray 30cm(40) Wood",
+        "quantity": 1.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00121",
+        "item_name": "Wheelchair Tray 30cm(40) Wood",
+        "quantity": 8.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00118",
+        "item_name": "Wheelchair Tray 36cm Wood",
+        "quantity": 3.0,
+        "date": "2026-03-26",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00103",
+        "item_name": "Wheelchair Tray 36cm Wood",
+        "quantity": 8.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00122",
+        "item_name": "Wheelchair Tray 41cm Wood",
+        "quantity": 1.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00119",
+        "item_name": "Wheelchair Tray 41cm Wood",
+        "quantity": 5.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00123",
+        "item_name": "Wheelchair Tray 46cm Wood",
+        "quantity": 1.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00120",
+        "item_name": "Wheelchair Tray 46cm Wood",
+        "quantity": 18.0,
+        "date": "2026-03-25",
+        "production_staff": [
+          "Qhamani"
+        ],
+        "serial_numbers": []
+      }
+    ]
+  },
+  "subassemblies": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "ASSY-00114",
+        "item_name": "Extension Board Standing Frame Large (CNC cut only)",
+        "quantity": 4.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00113",
+        "item_name": "Extension Board Standing Frame Medium (CNC cut only)",
+        "quantity": 4.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00112",
+        "item_name": "Extension Board Standing Frame Small (CNC cut only)",
+        "quantity": 33.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00111",
+        "item_name": "Footplate Standing Frame Large (CNC cut only)",
+        "quantity": 7.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00110",
+        "item_name": "Footplate Standing Frame Small (CNC cut only)",
+        "quantity": 22.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "280-4-PCCCM-100326",
+        "item_name": "Positioning chair cushion cover set medium",
+        "quantity": 4.0,
+        "date": "2026-03-10",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "276-3-PCCCS-020326",
+        "item_name": "Positioning chair cushion cover set small",
+        "quantity": 3.0,
+        "date": "2026-03-02",
+        "production_staff": [
+          "Volunteer"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "282-4-PCFM-100326",
+        "item_name": "Positioning chair cushion foam set medium",
+        "quantity": 4.0,
+        "date": "2026-03-10",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "233-5-PCS-270226",
+        "item_name": "Positioning Chair Small (Without Cushions)",
+        "quantity": 5.0,
+        "date": "2026-03-02",
+        "production_staff": [
+          "Mabuthi"
+        ],
+        "serial_numbers": [
+          "PC454",
+          "PC455",
+          "PC456",
+          "PC457",
+          "PC458"
+        ]
+      },
+      {
+        "assembly_number": "275-3-SLC-140-020326",
+        "item_name": "Sidelyer 140cm Cushion Covers",
+        "quantity": 3.0,
+        "date": "2026-03-03",
+        "production_staff": [
+          "Volunteer"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00106",
+        "item_name": "Slider Back Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00094",
+        "item_name": "Slider Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00092",
+        "item_name": "Slider Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00078",
+        "item_name": "Slider Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-17",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00107",
+        "item_name": "Slider Front Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-03-24",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00095",
+        "item_name": "Slider Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00093",
+        "item_name": "Slider Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00079",
+        "item_name": "Slider Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-17",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00096",
+        "item_name": "Soft splint L Cover",
+        "quantity": 2.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Volunteer"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "252-16-SP-S-030326",
+        "item_name": "Soft splint S Cover",
+        "quantity": 16.0,
+        "date": "2026-03-03",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "242-6-SP-XXXL-020326",
+        "item_name": "Soft Splint XXXL Cover",
+        "quantity": 6.0,
+        "date": "2026-03-02",
+        "production_staff": [
+          "Naomi"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "279-10-SFS-100326",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-03-10",
+        "production_staff": [
+          "Naomi"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "258-10-SFS-060326",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-03-06",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "241-12-TTS-020326",
+        "item_name": "Tilt Table strap",
+        "quantity": 12.0,
+        "date": "2026-03-02",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00104",
+        "item_name": "Upright Back Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-03-23",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00101",
+        "item_name": "Upright Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00098",
+        "item_name": "Upright Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00090",
+        "item_name": "Upright Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00105",
+        "item_name": "Upright Front Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-03-23",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00102",
+        "item_name": "Upright Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00099",
+        "item_name": "Upright Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00091",
+        "item_name": "Upright Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "14-WTW-30-CNC-050326-030",
+        "item_name": "Wheelchair Tray 30cm(30) Wood (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-03-05",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "30-WTW-3040-CNC-050326-031",
+        "item_name": "Wheelchair Tray 30cm(40) Wood (CNC cut only)",
+        "quantity": 30.0,
+        "date": "2026-03-05",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "16-WTW-36-CNC-050326-032",
+        "item_name": "Wheelchair Tray 36cm Wood (CNC cut only)",
+        "quantity": 16.0,
+        "date": "2026-03-05",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "16-WTW-41-CNC-050326-033",
+        "item_name": "Wheelchair Tray 41cm Wood (CNC cut only)",
+        "quantity": 16.0,
+        "date": "2026-03-05",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00071",
+        "item_name": "Wheelchair Tray 46cm Wood (CNC cut only)",
+        "quantity": 8.0,
+        "date": "2026-03-17",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "16-WTW-46-CNC-050326-034",
+        "item_name": "Wheelchair Tray 46cm Wood (CNC cut only)",
+        "quantity": 16.0,
+        "date": "2026-03-05",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00061",
+        "item_name": "Wheelchair Tray 51cm Wood (CNC cut only)",
+        "quantity": 12.0,
+        "date": "2026-03-16",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00117",
+        "item_name": "Wheelchair Tray Table Strap",
+        "quantity": 200.0,
+        "date": "2026-03-27",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "ASSY-00088",
+        "item_name": "Wheelchair Tray Table Strap",
+        "quantity": 200.0,
+        "date": "2026-03-18",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      }
+    ]
+  }
+}

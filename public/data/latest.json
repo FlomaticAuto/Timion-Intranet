@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-05-08T16:16:34Z",
+  "month": "2026-05",
+  "finished_products": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "ASSY-00141",
+        "item_name": "Standing frame medium",
+        "quantity": 20.0,
+        "date": "2026-05-05",
+        "status": "bundled",
+        "production_staff": [
+          "Oswald"
+        ],
+        "serial_numbers": [
+          "SF422",
+          "SF423",
+          "SF424",
+          "SF425",
+          "SF426",
+          "SF427",
+          "SF428",
+          "SF429",
+          "SF430",
+          "SF431",
+          "SF432",
+          "SF433",
+          "SF434",
+          "SF435",
+          "SF436",
+          "SF437",
+          "SF438",
+          "SF439",
+          "SF440",
+          "SF441"
+        ],
+        "completed_date": "2026-05-06T09:54:05+0200"
+      }
+    ]
+  },
+  "subassemblies": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "ASSY-00137",
+        "item_name": "Height Adjustment Footplate (Med/Large)",
+        "quantity": 5.0,
+        "date": "2026-05-04",
+        "status": "bundled",
+        "production_staff": [
+          "Oswald"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-06T14:32:44+0200"
+      },
+      {
+        "assembly_number": "ASSY-00136",
+        "item_name": "Height Adjustment Footplate (Med/Large) (CNC cut only)",
+        "quantity": 15.0,
+        "date": "2026-05-04",
+        "status": "bundled",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-06T10:37:26+0200"
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+name: Sync Zoho data
+
+# Pulls fresh Production Dashboard data from Zoho Inventory.
+# Writes JSON to public/data/ which is served by Next.js as static files
+# at /data/* — see app/(intranet)/inventory/production-dashboard.
+#
+# A commit from this workflow triggers a Vercel redeploy automatically.
+
+on:
+  schedule:
+    # 09:00 and 15:00 UTC = 11:00 and 17:00 SAST, Mon–Fri
+    - cron: '0 9,15 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'Backfill month (YYYY-MM). Leave empty for current month.'
+        required: false
+        default: ''
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch Zoho data
+        env:
+          ZOHO_CLIENT_ID:     ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ORG_ID:        ${{ secrets.ZOHO_ORG_ID }}
+        run: |
+          if [ -n "${{ github.event.inputs.month }}" ]; then
+            python scripts/fetch_zoho.py --month "${{ github.event.inputs.month }}"
+          else
+            python scripts/fetch_zoho.py
+          fi
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: sync Zoho data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi

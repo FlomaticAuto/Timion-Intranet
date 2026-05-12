@@ -1,0 +1,479 @@
+{
+  "generated_at": "2026-04-30T14:09:18Z",
+  "month": "2026-02",
+  "finished_products": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "240-2-PCM-280226",
+        "item_name": "Positioning Chair Medium",
+        "quantity": 2.0,
+        "date": "2026-02-27",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": [
+          "PC370",
+          "PC369"
+        ]
+      },
+      {
+        "assembly_number": "264-1-SLC-120-020526",
+        "item_name": "Sidelyer 120",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "Sl61"
+        ]
+      },
+      {
+        "assembly_number": "261-1-SLC-140-020526",
+        "item_name": "Sidelyer 140",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "SL066"
+        ]
+      },
+      {
+        "assembly_number": "246-1-SL-180-151225",
+        "item_name": "Sidelyer 180",
+        "quantity": 1.0,
+        "date": "2026-02-13",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "l024"
+        ]
+      },
+      {
+        "assembly_number": "235-1-SFA-170226",
+        "item_name": "Standing frame - Adult CNC",
+        "quantity": 1.0,
+        "date": "2026-02-17",
+        "production_staff": [
+          "Oswald"
+        ],
+        "serial_numbers": [
+          "AS411"
+        ]
+      },
+      {
+        "assembly_number": "190-1-SF-M-040226",
+        "item_name": "Standing frame medium",
+        "quantity": 1.0,
+        "date": "2026-02-02",
+        "production_staff": [],
+        "serial_numbers": [
+          "SF232"
+        ]
+      },
+      {
+        "assembly_number": "191-1-SFMXFP-030226",
+        "item_name": "Standing frame medium w/ extra footplate",
+        "quantity": 1.0,
+        "date": "2026-02-04",
+        "production_staff": [],
+        "serial_numbers": [
+          "SF232"
+        ]
+      },
+      {
+        "assembly_number": "256-1-SF-XS-090326",
+        "item_name": "Standing frame x-small",
+        "quantity": 1.0,
+        "date": "2026-02-04",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "SF333"
+        ]
+      },
+      {
+        "assembly_number": "262-1-TT-020526",
+        "item_name": "Tactile toys",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "259-1-TT-020526",
+        "item_name": "Tactile toys",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "257-1-TT-020526",
+        "item_name": "Tactile toys",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "255-2-VTVB-160225",
+        "item_name": "Visual toys (Vision Box)",
+        "quantity": 2.0,
+        "date": "2026-02-16",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "15-WTWVF-25-200226-028",
+        "item_name": "Wheelchair Tray 25cm Wood + Vinyl + Foam",
+        "quantity": 15.0,
+        "date": "2026-02-23",
+        "production_staff": [
+          "Mabuthi"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "15-WTWVF-30-200226-029",
+        "item_name": "Wheelchair Tray 30cm(30) Wood+Vinyl+Foam",
+        "quantity": 15.0,
+        "date": "2026-02-27",
+        "production_staff": [
+          "Mabuthi"
+        ],
+        "serial_numbers": []
+      }
+    ]
+  },
+  "subassemblies": {
+    "in_production": [],
+    "completed": [
+      {
+        "assembly_number": "221-6-CCB-180226",
+        "item_name": "Corner Chair Lapstrap",
+        "quantity": 6.0,
+        "date": "2026-02-19",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "220-10-CCB-180226",
+        "item_name": "Corner Chair Lapstrap",
+        "quantity": 10.0,
+        "date": "2026-02-18",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "200-12-CCB-170226",
+        "item_name": "Corner Chair Lapstrap",
+        "quantity": 12.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "238-5-SF-XSF-260226",
+        "item_name": "Height Adjustment Footplate (Extra Small)",
+        "quantity": 5.0,
+        "date": "2026-02-25",
+        "production_staff": [
+          "Mabuthi"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "239-2-PCFM-270226",
+        "item_name": "Positioning chair cushion foam set medium",
+        "quantity": 2.0,
+        "date": "2026-02-27",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "226-58-PCFB-200825",
+        "item_name": "Positioning chair footstrap",
+        "quantity": 72.0,
+        "date": "2026-02-16",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "202-6-PC-M-230226",
+        "item_name": "Positioning Chair Medium (without cushions)",
+        "quantity": 6.0,
+        "date": "2026-02-23",
+        "production_staff": [
+          "Lucas"
+        ],
+        "serial_numbers": [
+          "PC368",
+          "PC369",
+          "PC370",
+          "PC371",
+          "PC372",
+          "PC373"
+        ]
+      },
+      {
+        "assembly_number": "216-4-SLCF-100-180226",
+        "item_name": "Sidelyer 100cm complete cushions (Covers & Foam)",
+        "quantity": 4.0,
+        "date": "2026-02-18",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "214-4-SLC-100-180226",
+        "item_name": "Sidelyer 100cm Cushion Covers",
+        "quantity": 4.0,
+        "date": "2026-02-18",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "263-1-SLCF-120-020526",
+        "item_name": "Sidelyer 120cm complete cushions (Covers & Foam)",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "260-1-SLCF-140-020526",
+        "item_name": "Sidelyer 140cm complete cushions (Covers & Foam)",
+        "quantity": 1.0,
+        "date": "2026-02-05",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "277-3-SLC-150-230226",
+        "item_name": "Sidelyer 150cm Cushion Covers",
+        "quantity": 3.0,
+        "date": "2026-02-23",
+        "production_staff": [
+          "Volunteer"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "217-4-SLCF-160-180226",
+        "item_name": "Sidelyer 160cm complete cushions (Covers & Foam)",
+        "quantity": 4.0,
+        "date": "2026-02-18",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "215-4-SLC-160-180226",
+        "item_name": "Sidelyer 160cm Cushion Covers",
+        "quantity": 4.0,
+        "date": "2026-02-18",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "205-10-SFMSBB-170226",
+        "item_name": "Slider Back Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "197-14-SFSSBB-170226",
+        "item_name": "Slider Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "206-10-SFMSFB-170226",
+        "item_name": "Slider Front Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "198-14-SFSSFB-170226",
+        "item_name": "Slider Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "225-6-SF-C-190825",
+        "item_name": "Standing Frame Cushions",
+        "quantity": 6.0,
+        "date": "2026-02-19",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "231-10-SFS-230226",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-02-24",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "227-10-SFS-210825",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-02-23",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "199-10-SFS-180226",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "194-10-SFS-090226",
+        "item_name": "Standing Frame Cushions Cover Set",
+        "quantity": 10.0,
+        "date": "2026-02-09",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "201-20-SF-M-180226",
+        "item_name": "Standing frame medium (without cushions)",
+        "quantity": 20.0,
+        "date": "2026-02-17",
+        "production_staff": [
+          "Oswald"
+        ],
+        "serial_numbers": [
+          "SF422",
+          "SF423",
+          "SF424",
+          "SF425",
+          "SF426",
+          "SF427",
+          "SF428",
+          "SF429",
+          "SF430",
+          "SF431",
+          "SF432",
+          "SF433",
+          "SF434",
+          "SF435",
+          "SF436",
+          "SF437",
+          "SF438",
+          "SF439",
+          "SF440",
+          "SF441"
+        ]
+      },
+      {
+        "assembly_number": "203-10-SFMUBB-170226",
+        "item_name": "Upright Back Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "195-14-SFSUBB-170226",
+        "item_name": "Upright Back Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "204-10-SFMUFB-170226",
+        "item_name": "Upright Front Board Standing Frame Medium (CNC cut only)",
+        "quantity": 10.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "196-14-SFSUFB-170226",
+        "item_name": "Upright Front Board Standing Frame Small (CNC cut only)",
+        "quantity": 14.0,
+        "date": "2026-02-17",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "15-WTV-25-CNC-190226-026",
+        "item_name": "Wheelchair Tray 25cm Vinyl (CNC cut only)",
+        "quantity": 15.0,
+        "date": "2026-02-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "15-WTV-30-CNC-190226-027",
+        "item_name": "Wheelchair Tray 30cm(30) Vinyl (CNC cut only)",
+        "quantity": 15.0,
+        "date": "2026-02-19",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "Test12345",
+        "item_name": "Wheelchair Tray Table Strap",
+        "quantity": 1.0,
+        "date": "2026-02-24",
+        "production_staff": [
+          "Dorcas"
+        ],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "222-500-WTS-180226",
+        "item_name": "Wheelchair Tray Table Strap",
+        "quantity": 500.0,
+        "date": "2026-02-02",
+        "production_staff": [],
+        "serial_numbers": []
+      },
+      {
+        "assembly_number": "218-377-WTS-180226",
+        "item_name": "Wheelchair Tray Table Strap",
+        "quantity": 377.0,
+        "date": "2026-02-02",
+        "production_staff": [],
+        "serial_numbers": []
+      }
+    ]
+  }
+}

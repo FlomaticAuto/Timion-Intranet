@@ -26,11 +26,12 @@ export default function InventoryPage() {
           description="Stock tracker: all items close to their reorder level, plus out-of-stock alerts."
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/inventory/production-dashboard"
           icon="📊"
           title="Production Dashboard"
           description="Monthly assemblies dashboard — Finished Products vs Subassemblies, in production and completed."
-          badge="Porting"
+          ctaLabel="Open dashboard"
         />
         <Tile
           variant="comingSoon"
