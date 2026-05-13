@@ -8,7 +8,7 @@ until they sign in.
 
 1. Sign in to <https://supabase.com> under the **Flomatic** account
 2. **New project**
-   - Name: `Timion Intranet`
+   - Name: `Timion_Intranet`
    - Database password: generate a strong one and save it in your password manager (the intranet won't need it directly, but you'll want it if you ever connect via psql or the table editor with a privileged role)
    - Region: pick the closest to Eastern Cape (likely `eu-west-2` London or `eu-central-1` Frankfurt for ZA users)
 3. Wait ~1 minute for provisioning

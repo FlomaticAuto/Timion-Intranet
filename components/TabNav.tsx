@@ -2,32 +2,48 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Role } from "@/lib/permissions";
 
-const TABS = [
-  { href: "/",            icon: "🏠", label: "Home" },
-  { href: "/crm",         icon: "👥", label: "CRM" },
-  { href: "/inventory",   icon: "📦", label: "Inventory" },
-  { href: "/books",       icon: "💰", label: "Books" },
-  { href: "/workshop",    icon: "🛠️", label: "Workshop" },
-  { href: "/iso",         icon: "✅", label: "ISO / Compliance" },
-  { href: "/documents",   icon: "📁", label: "Documents" },
-  { href: "/board",       icon: "📈", label: "Board & Reporting" },
-] as const;
+interface Tab {
+  href:  string;
+  icon:  string;
+  label: string;
+  /** When true, only `admin` users see this tab. */
+  adminOnly?: boolean;
+}
+
+const TABS: Tab[] = [
+  { href: "/",          icon: "🏠",  label: "Home" },
+  { href: "/crm",       icon: "👥",  label: "CRM" },
+  { href: "/inventory", icon: "📦",  label: "Inventory" },
+  { href: "/books",     icon: "💰",  label: "Books" },
+  { href: "/workshop",  icon: "🛠️", label: "Workshop" },
+  { href: "/iso",       icon: "✅",  label: "ISO / Compliance" },
+  { href: "/documents", icon: "📁",  label: "Documents" },
+  { href: "/board",     icon: "📈",  label: "Board & Reporting" },
+  { href: "/admin",     icon: "⚙️", label: "Admin", adminOnly: true },
+];
+
+interface TabNavProps {
+  role: Role | null;
+}
 
 /**
  * Sticky horizontal tab bar.
- * Active tab determined by `usePathname()` — exact match for "/",
- * prefix match for everything else (so /inventory/foo still highlights Inventory).
+ * The Admin tab only renders for admins.
+ * Active tab determined by `usePathname()`.
  */
-export function TabNav() {
+export function TabNav({ role }: TabNavProps) {
   const pathname = usePathname();
+  const isAdmin = role === "admin";
+  const visibleTabs = TABS.filter((t) => !t.adminOnly || isAdmin);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
   return (
     <nav className="sticky top-[68px] z-10 h-[52px] bg-surface border-b border-border px-7 flex items-center gap-1 overflow-x-auto no-scrollbar">
-      {TABS.map((tab) => {
+      {visibleTabs.map((tab) => {
         const active = isActive(tab.href);
         return (
           <Link
