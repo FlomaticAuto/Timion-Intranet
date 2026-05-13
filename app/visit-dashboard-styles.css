@@ -459,7 +459,7 @@
 
 .visit-dashboard-root .bar-col:hover .bar-stack { filter: brightness(1.2); }
 
-.visit-dashboard-root .bar-visit-seg { background: var(--gradient); }
+.visit-dashboard-root .bar-visit-seg { background: var(--gradient); flex: 1; }
 
 .visit-dashboard-root .chart-x-row {
   display: flex;
