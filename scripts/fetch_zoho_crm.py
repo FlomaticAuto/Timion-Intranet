@@ -129,11 +129,34 @@ def update_index(index_file, month_str):
     return months
 
 
+def write_month(now_str, now_month, month_str, visits):
+    """Write a single month's JSON file and return the output dict."""
+    output = {
+        "generated_at": now_str,
+        "month":        month_str,
+        "total":        len(visits),
+        "visits":       sorted(visits, key=lambda v: v["date"]),
+    }
+    month_file = f"public/data/crm/{month_str}.json"
+    with open(month_file, "w") as f:
+        json.dump(output, f, indent=2)
+    print(f"  Wrote {month_file} ({len(visits)} visits)")
+    if month_str == now_month:
+        with open("public/data/crm/latest.json", "w") as f:
+            json.dump(output, f, indent=2)
+        print("  Wrote public/data/crm/latest.json")
+    return output
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--month", metavar="YYYY-MM",
-        help="Month to fetch (default: current month)",
+        help="Single month to fetch (default: current month)",
+    )
+    parser.add_argument(
+        "--all-months", action="store_true",
+        help="Fetch all records once and write a file for every month found",
     )
     parser.add_argument(
         "--list-fields", action="store_true",
@@ -154,31 +177,56 @@ def main():
         return
 
     now       = datetime.now(timezone.utc)
-    month_str = args.month or now.strftime("%Y-%m")
-    print(f"Target month: {month_str}")
-
-    print(f"Fetching visits from {MODULE}...")
-    visits = fetch_month(headers, month_str)
-    print(f"  {len(visits)} visits found")
-
-    output = {
-        "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "month":        month_str,
-        "total":        len(visits),
-        "visits":       visits,
-    }
+    now_str   = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_month = now.strftime("%Y-%m")
 
     os.makedirs("public/data/crm", exist_ok=True)
 
-    month_file = f"public/data/crm/{month_str}.json"
-    with open(month_file, "w") as f:
-        json.dump(output, f, indent=2)
-    print(f"Wrote {month_file}")
+    if args.all_months:
+        print(f"Fetching ALL records from {MODULE}...")
+        all_records = fetch_all_records(headers)
+        print(f"  {len(all_records)} total records")
 
-    if month_str == now.strftime("%Y-%m"):
-        with open("public/data/crm/latest.json", "w") as f:
-            json.dump(output, f, indent=2)
-        print("Wrote public/data/crm/latest.json")
+        # Group by month
+        by_month: dict[str, list] = {}
+        for r in all_records:
+            date_val = str_value(r.get(FIELD_DATE, ""))
+            if not date_val or len(date_val) < 7:
+                continue
+            month_key = date_val[:7]  # YYYY-MM
+            by_month.setdefault(month_key, []).append({
+                "id":         r.get("id", ""),
+                "date":       date_val,
+                "therapist":  str_value(r.get(FIELD_THERAPIST, "")),
+                "visit_type": str_value(r.get(FIELD_TYPE, "")),
+                "location":   str_value(r.get(FIELD_LOCATION, "")),
+            })
+
+        print(f"\nWriting {len(by_month)} month file(s):")
+        all_months = []
+        for month_str in sorted(by_month):
+            write_month(now_str, now_month, month_str, by_month[month_str])
+            all_months.append(month_str)
+
+        # Ensure latest.json exists even if current month has no records
+        if now_month not in by_month:
+            write_month(now_str, now_month, now_month, [])
+            all_months.append(now_month)
+
+        all_months = sorted(set(all_months), reverse=True)
+        with open("public/data/crm/index.json", "w") as f:
+            json.dump(all_months, f, indent=2)
+        print(f"\nWrote public/data/crm/index.json — {len(all_months)} months: {all_months}")
+        return
+
+    # Single-month mode
+    month_str = args.month or now_month
+    print(f"Target month: {month_str}")
+    print(f"Fetching visits from {MODULE}...")
+    visits = fetch_month(headers, month_str)
+    print(f"  {len(visits)} visits in {month_str}")
+
+    write_month(now_str, now_month, month_str, visits)
 
     months = update_index("public/data/crm/index.json", month_str)
     print(f"Wrote public/data/crm/index.json — available months: {months}")

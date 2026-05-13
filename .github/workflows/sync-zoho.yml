@@ -20,6 +20,10 @@ on:
         description: 'CRM backfill month (YYYY-MM). Leave empty for current month.'
         required: false
         default: ''
+      crm_all_months:
+        description: 'Set to "true" to fetch all CRM records and write every month at once.'
+        required: false
+        default: 'false'
 
 jobs:
   sync:
@@ -62,7 +66,9 @@ jobs:
             echo "ZOHO_CRM_CLIENT_ID secret not set — skipping CRM sync (add secrets to enable)"
             exit 0
           fi
-          if [ -n "${{ github.event.inputs.crm_month }}" ]; then
+          if [ "${{ github.event.inputs.crm_all_months }}" = "true" ]; then
+            python scripts/fetch_zoho_crm.py --all-months
+          elif [ -n "${{ github.event.inputs.crm_month }}" ]; then
             python scripts/fetch_zoho_crm.py --month "${{ github.event.inputs.crm_month }}"
           else
             python scripts/fetch_zoho_crm.py
