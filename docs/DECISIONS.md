@@ -1,0 +1,67 @@
+# Decisions
+
+Architectural choices and their reasoning, in chronological order. Each entry is dated. Don't relitigate — if a decision needs to change, add a new entry with `Supersedes:` and strike through the old one. Both stay visible so history is preserved.
+
+---
+
+## 2026-05-13 · Single monorepo, not multi-repo with iframes
+
+The intranet, the Production Dashboard, and every future tool live in one Next.js repo. Not separate sites glued together with iframes.
+
+**Why:** Auth is the deciding factor. With Supabase, login sets a cookie at one origin. Cross-origin iframe auth is a real engineering tax — third-party cookies, SameSite restrictions, refresh-token handling. One domain = one auth session = trivial role checks. Bonus: shared design system, no iframe UX papercuts, one CI pipeline.
+
+---
+
+## 2026-05-13 · Stack lock: Next.js 16 / React 19.2 / Tailwind v4 / TypeScript
+
+App Router, Turbopack default. CSS variables via `@theme` in `globals.css`. Supabase + `@supabase/ssr` for auth. Deployed on Vercel.
+
+**Why:** Vercel-native (Next.js is by Vercel), Supabase-compatible, all modern. Next.js 16 has breaking changes from earlier versions — async `cookies()` / `headers()` / `params`, `proxy.ts` instead of `middleware.ts`, lint removed from `next build`. AGENTS.md documents the gotchas.
+
+---
+
+## 2026-05-13 · Production Dashboard absorbed, not iframed
+
+The standalone dashboard repo (HTML/JS/Python/GitHub Action) was moved into this repo at `/inventory/production-dashboard` and `scripts/fetch_zoho.py` + `.github/workflows/sync-zoho.yml`. The old repo is archived.
+
+**Why:** Same reasoning as monorepo. Shared shell, shared auth, no cross-origin friction. The 1280-line vanilla JS ported as-is into a Client Component's `useEffect`; CSS scoped under `.production-dashboard-root` to prevent leakage.
+
+---
+
+## 2026-05-13 · Auth: email + password, no public sign-up
+
+`/login` is email + password. New users are added via the Supabase Auth panel (until invite-from-UI ships — see BACKLOG.md). Public sign-up disabled in Supabase settings.
+
+**Why:** Intranet of <50 staff. Email + password is universal and resilient. Public sign-up is a vulnerability for an internal tool. Magic link / OAuth are easy to add later when there's a reason.
+
+---
+
+## 2026-05-13 · Access policy in DB, default in code
+
+The role × section access matrix lives in `public.app_settings` (one JSONB row, admin-only write via RLS). `DEFAULT_SECTION_ACCESS` in `lib/permissions.ts` is the seed and the "Reset to defaults" target.
+
+**Why:** Admins need to adjust who sees what without waiting for a deploy. DB storage makes it a 1-click operation. Keeping the default in code gives a reproducible seed and a known-good fallback.
+
+---
+
+## 2026-05-13 · RLS admin checks via SECURITY DEFINER helper
+
+`public.is_admin()` is a `SECURITY DEFINER`, `STABLE`, `search_path = public` SQL function. RLS policies that need to check admin status call this function instead of doing inline subqueries on `public.profiles`.
+
+**Why:** Initial RLS policies (migration 0001) queried profiles from inside policies on profiles → Postgres detected recursive RLS evaluation and aborted the query, even when sibling policies would have allowed access. Effect: the admin themselves couldn't read their own profile. SECURITY DEFINER + revoked anon EXECUTE solves it cleanly. See migrations 0002 and 0004.
+
+---
+
+## 2026-05-13 · Enforcement deliberately off
+
+`TabNav` and `proxy.ts` don't yet read the live access policy. Every signed-in user sees every tab today (except Admin, which is admin-only via direct check).
+
+**Why:** Flomatic needs to assign roles to real staff and review the matrix at `/admin/access` before turning gates on. Premature enforcement risks locking people out and turning the rollout into a support load.
+
+---
+
+## 2026-05-13 · Memory file system
+
+`docs/STATUS.md`, `docs/BACKLOG.md`, `docs/DECISIONS.md` are the canonical session-handoff context. `AGENTS.md` points at them and documents workflows. Triggered by the user saying "save to memory" (or variants); agent uses Edit (not Write), supersedes rather than accumulates, moves shipped items from BACKLOG → STATUS, dates DECISIONS entries, never auto-modifies without explicit user request.
+
+**Why:** Conversations get long and expensive. Fresh VS Code sessions need a tight context doc to pick up without re-explaining workflows. The three-doc split keeps each file purpose-clear.
