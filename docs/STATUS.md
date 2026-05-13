@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-13
+**Last updated:** 2026-05-13 (session 2)
 
 ## Deployment
 
@@ -20,16 +20,27 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 - Site footer
 
 ### Sections — landing pages with tile grids
-All exist with appropriate tiles. The few **Live** tiles inside them:
-- **CRM** — Zoho CRM link
+All exist with appropriate tiles. Live tiles:
+- **CRM** — Zoho CRM link, **Visit Dashboard** (live internal route)
 - **Inventory** — Zoho Inventory link, **Production Dashboard** (live internal route)
 - **Books** — Zoho Books link
 - **Board & Reporting** — Timion Presentation, Annual Report 2026 PDF (both static files in `/public/`)
+
+Tile naming convention: live internal dashboards use "Dashboard" suffix; future report/history views will use "Report". Equipment Dashboard tile exists on the CRM page but routes to comingSoon.
 
 Everything else is `Coming Soon` placeholders for future work.
 
 ### Production Dashboard (`/inventory/production-dashboard`)
 Native Next.js route inside the intranet shell. Pulls JSON from `public/data/*.json`. Scheduled GitHub Action (`.github/workflows/sync-zoho.yml`) fetches from Zoho Inventory at **09:00 + 15:00 UTC, Mon–Fri**, commits new JSON, which triggers a Vercel redeploy.
+
+### Visit Dashboard (`/crm/visit-report`)
+Native Next.js route. Pulls JSON from `public/data/crm/*.json`. Same GitHub Action schedule now also runs `scripts/fetch_zoho_crm.py` for Zoho CRM data. Monthly view (4 summary chips + card grid) and Analytics view (KPIs, trend charts, rankings by therapist / visit type / location). Data populated from **December 2025** onwards (cap set in `FROM_MONTH` constant in `fetch_zoho_crm.py`). Currently has Dec 2025 – May 2026 populated.
+
+**CRM data pipeline notes:**
+- Uses a separate Zoho Self Client OAuth app with CRM scope (`ZohoCRM.modules.ALL.READ`). GitHub secrets: `ZOHO_CRM_CLIENT_ID`, `ZOHO_CRM_CLIENT_SECRET`, `ZOHO_CRM_REFRESH_TOKEN`.
+- Zoho CRM `Date` field type does **not** support comparison operators (`between`, `greater_equal`, etc.) in the `/search` criteria endpoint. Workaround: `fetch_zoho_crm.py` fetches all records and filters by month in Python.
+- `--all-months` flag fetches everything once and writes one JSON per month. Triggered via GitHub Actions workflow_dispatch (`crm_all_months: true`). Use this for backfill.
+- Field API names in use: `Date`, `Staff_2`, `Type`, `Location`.
 
 ### Auth
 - Email + password sign-in at `/login`

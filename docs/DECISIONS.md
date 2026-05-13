@@ -60,6 +60,20 @@ The role × section access matrix lives in `public.app_settings` (one JSONB row,
 
 ---
 
+## 2026-05-13 · CRM fetch-all pattern instead of server-side date filtering
+
+`fetch_zoho_crm.py` fetches all records from the `Visits_History` module and filters by month in Python, rather than using Zoho's `/search` criteria endpoint.
+
+**Why:** Zoho CRM `Date` fields do not accept any comparison operators (`between`, `greater_equal`, `less_equal`) in the `/search` criteria endpoint — all return `INVALID_QUERY`. Fetch-all is reliable, simple, and fast enough for a visits module (hundreds to low thousands of records).
+
+---
+
+## 2026-05-13 · Dashboard naming convention
+
+Live internal dashboards use the suffix **"Dashboard"** (e.g. Visit Dashboard, Production Dashboard, Equipment Dashboard). Future history/insight views (full record sets for KPI analysis) will use **"Report"**. This distinction matters for UX — dashboards show current/recent operational data; reports are deeper analytical views.
+
+---
+
 ## 2026-05-13 · Memory file system
 
 `docs/STATUS.md`, `docs/BACKLOG.md`, `docs/DECISIONS.md` are the canonical session-handoff context. `AGENTS.md` points at them and documents workflows. Triggered by the user saying "save to memory" (or variants); agent uses Edit (not Write), supersedes rather than accumulates, moves shipped items from BACKLOG → STATUS, dates DECISIONS entries, never auto-modifies without explicit user request.
