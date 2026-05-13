@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-05-13T15:46:03Z",
+  "month": "2025-12",
+  "total": 14,
+  "visits": [
+    {
+      "id": "6673955000006711313",
+      "date": "2025-12-01",
+      "therapist": "['Zita Jacobs', 'Nolubabalo Nofemele']",
+      "visit_type": "Prayer & Therapy Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706924",
+      "date": "2025-12-01",
+      "therapist": "['Lusanda Qika']",
+      "visit_type": "Phone Call",
+      "location": "Office"
+    },
+    {
+      "id": "6673955000006711316",
+      "date": "2025-12-02",
+      "therapist": "['Zita Jacobs', 'Lusanda Qika']",
+      "visit_type": "Therapy Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006711315",
+      "date": "2025-12-02",
+      "therapist": "['Zita Jacobs', 'Lusanda Qika']",
+      "visit_type": "Prayer & Therapy Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006711314",
+      "date": "2025-12-02",
+      "therapist": "['Zita Jacobs', 'Lusanda Qika']",
+      "visit_type": "Short Visit",
+      "location": ""
+    },
+    {
+      "id": "6673955000006711319",
+      "date": "2025-12-03",
+      "therapist": "['Zita Jacobs', 'Lusanda Qika']",
+      "visit_type": "Therapy Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006711318",
+      "date": "2025-12-03",
+      "therapist": "['Zita Jacobs', 'Lusanda Qika']",
+      "visit_type": "Therapy Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006711317",
+      "date": "2025-12-03",
+      "therapist": "['ita', 'Lusanda Qika']",
+      "visit_type": "Prayer Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706930",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Short Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706929",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Short Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706928",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Short Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706927",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Short Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706926",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Short Visit",
+      "location": "Home"
+    },
+    {
+      "id": "6673955000006706925",
+      "date": "2025-12-10",
+      "therapist": "['Lucas']",
+      "visit_type": "Phone Call",
+      "location": "Home"
+    }
+  ]
+}
