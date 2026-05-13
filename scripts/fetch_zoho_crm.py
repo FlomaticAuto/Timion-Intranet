@@ -61,43 +61,53 @@ def str_value(raw):
     return str(raw)
 
 
-def fetch_month(headers, month_str):
-    """Fetch all visit records whose FIELD_DATE falls within the given month."""
-    year, mon = map(int, month_str.split("-"))
-    last_day  = calendar.monthrange(year, mon)[1]
-    start = f"{month_str}-01"
-    end   = f"{month_str}-{last_day:02d}"
-
-    criteria = f"(({FIELD_DATE}:greater_equal:{start})and({FIELD_DATE}:less_equal:{end}))"
-    records  = []
-    page     = 1
-
+def fetch_all_records(headers):
+    """Page through the full module and return every record."""
+    records = []
+    page    = 1
     while True:
         resp = requests.get(
-            f"{ZOHO_CRM_BASE}/{MODULE}/search",
+            f"{ZOHO_CRM_BASE}/{MODULE}",
             headers=headers,
-            params={"criteria": criteria, "page": page, "per_page": 200},
+            params={"page": page, "per_page": 200},
         )
         if resp.status_code == 204:
-            break  # no (more) records
+            break  # no more records
         if not resp.ok:
             print(f"  HTTP {resp.status_code} — {resp.text[:300]}")
             resp.raise_for_status()
         body = resp.json()
         records.extend(body.get("data", []))
+        print(f"  Page {page}: {len(body.get('data', []))} records")
         if not body.get("info", {}).get("more_records", False):
             break
         page += 1
+    return records
+
+
+def fetch_month(headers, month_str):
+    """Fetch visits for the given month. Zoho CRM Date fields don't support
+    comparison operators in /search criteria, so we fetch all records and
+    filter by month in Python."""
+    year, mon = map(int, month_str.split("-"))
+    last_day  = calendar.monthrange(year, mon)[1]
+    start = f"{month_str}-01"
+    end   = f"{month_str}-{last_day:02d}"
+
+    all_records = fetch_all_records(headers)
+    print(f"  {len(all_records)} total records fetched — filtering for {month_str}")
 
     visits = []
-    for r in records:
-        visits.append({
-            "id":         r.get("id", ""),
-            "date":       str_value(r.get(FIELD_DATE, "")),
-            "therapist":  str_value(r.get(FIELD_THERAPIST, "")),
-            "visit_type": str_value(r.get(FIELD_TYPE, "")),
-            "location":   str_value(r.get(FIELD_LOCATION, "")),
-        })
+    for r in all_records:
+        date_val = str_value(r.get(FIELD_DATE, ""))
+        if start <= date_val <= end:
+            visits.append({
+                "id":         r.get("id", ""),
+                "date":       date_val,
+                "therapist":  str_value(r.get(FIELD_THERAPIST, "")),
+                "visit_type": str_value(r.get(FIELD_TYPE, "")),
+                "location":   str_value(r.get(FIELD_LOCATION, "")),
+            })
 
     visits.sort(key=lambda v: v["date"])
     return visits
