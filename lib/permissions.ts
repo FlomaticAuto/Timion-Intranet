@@ -71,11 +71,15 @@ export type AccessLevel =
   | "scoped"    // partial / row-scoped access (e.g., therapist sees their patients only)
   | "none";     // hidden
 
+/** Full role → section → access map. Stored in Supabase, editable from /admin/access. */
+export type AccessPolicy = Record<Role, Partial<Record<SectionPath, AccessLevel>>>;
+
 /**
- * Starting access policy. Adjust here, redeploy, done.
- * `none` (default) hides the tab; `full` / `read` / `scoped` reveal it.
+ * Default access policy. Used to seed the app_settings row on first
+ * setup and as the target of the "Reset to defaults" button. The
+ * live policy is in Supabase — see `lib/access.ts`.
  */
-export const SECTION_ACCESS: Record<Role, Partial<Record<SectionPath, AccessLevel>>> = {
+export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
   admin: {
     "/":          "full",
     "/crm":       "full",
@@ -132,13 +136,25 @@ export const SECTION_ACCESS: Record<Role, Partial<Record<SectionPath, AccessLeve
   },
 };
 
-/** Get the access level a role has on a section, defaulting to "none". */
-export function accessFor(role: Role | null, path: SectionPath): AccessLevel {
+/**
+ * Get the access level a role has on a section, defaulting to "none".
+ * Pass the live policy from `getAccessPolicy()` to honour admin edits;
+ * omit to use the static default (useful for tests or fallback paths).
+ */
+export function accessFor(
+  role: Role | null,
+  path: SectionPath,
+  policy: AccessPolicy = DEFAULT_SECTION_ACCESS,
+): AccessLevel {
   if (!role) return "none";
-  return SECTION_ACCESS[role]?.[path] ?? "none";
+  return policy[role]?.[path] ?? "none";
 }
 
 /** Does this role have any access (read or better) to the section? */
-export function canAccess(role: Role | null, path: SectionPath): boolean {
-  return accessFor(role, path) !== "none";
+export function canAccess(
+  role: Role | null,
+  path: SectionPath,
+  policy: AccessPolicy = DEFAULT_SECTION_ACCESS,
+): boolean {
+  return accessFor(role, path, policy) !== "none";
 }
