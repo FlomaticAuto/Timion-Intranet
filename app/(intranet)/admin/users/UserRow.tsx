@@ -94,7 +94,7 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
           ))}
         </select>
         {isSelf && (
-          <div className="text-[10px] text-text-dim mt-1">Can't change your own role here.</div>
+          <div className="text-[10px] text-text-dim mt-1">Can&apos;t change your own role here.</div>
         )}
       </td>
 
