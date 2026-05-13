@@ -6,15 +6,36 @@ Work deliberately deferred. Each entry has enough context to pick it up cold. Wh
 
 ## Turn on role enforcement
 
-**What:** Make `TabNav` and `proxy.ts` actually read from the live access policy so role restrictions take effect. Today the policy at `/admin/access` is editable but doesn't drive visibility.
+**What:** Make the live access policy actually drive visibility and access. Today the policy at `/admin/access` is editable but no code reads it.
 
-**Why deferred:** Wanted Flomatic to assign roles to real staff and review the matrix before flipping any switches.
+**Why deferred:** Wanted Flomatic to assign roles to real staff and review the matrix before flipping any switches. Also a non-admin test user is needed to verify behaviour before real users are invited — without one, we can only test as admin (who sees everything regardless) and can't catch lockout bugs.
 
-**What it takes:**
-- `TabNav` receives either the live policy or the user's allowed sections as a prop from the intranet layout; filters tabs by `canAccess(role, path, policy)` from `lib/permissions.ts`
-- `proxy.ts` after auth check looks up the user's profile, calls `canAccess` against the live policy, redirects to `/` (or a "no access" page) if not allowed
-- New `/forbidden` page (or reuse `/` with a friendly banner)
-- The `accessFor`/`canAccess` helpers in `lib/permissions.ts` already accept a policy argument — wiring is mostly mechanical
+**Scope — all four surfaces filter from the same source:**
+- **`proxy.ts`** — after auth check, fetch user role + live policy, redirect to `/forbidden` if `canAccess(role, section, policy) === false`. Always allow `/` for any signed-in user so Home is a safe fallback.
+- **`TabNav`** — filter the tab list by `canAccess`. The Admin tab stays admin-only via the hardcoded check (defense in depth — never accidentally configurable away).
+- **Home hero grid** (`app/(intranet)/page.tsx`) — same filter. If a user can't access CRM, the CRM hero tile is gone. Otherwise we promise "click here for CRM" then redirect them away → looks broken.
+- **`/forbidden`** — new tiny page shown when a redirect happens. Friendly "You don't have access to this section — ask an admin if you need it" + back-to-home button.
+
+**Refactor — single source of truth for sections:**
+Section metadata (path, icon, label, description) currently lives in three places: `lib/permissions.ts` (path / icon / label), `TabNav.tsx` (icon + label hardcoded again), and `app/(intranet)/page.tsx` (description + icon hardcoded in JSX). They've started drifting. As part of this work, extend the `SECTIONS` array in `lib/permissions.ts` to include `description`, then render both the tab nav AND the hero grid from it.
+
+**UX polish to include:**
+- **"Nothing assigned yet" state** on Home — if a signed-in user has no role (or a role with no sections beyond `/`), show a friendly "Welcome. An admin will assign you access to specific sections shortly" message instead of a near-empty hero grid.
+- **Read-only badge on hero tiles** when access is `read` — small "Read-only" pill so users know what to expect before clicking.
+
+**Out of scope for this round (note for later):**
+- **Inside-section partial access.** A user with `read` on Documents should see the tab + hero tile, but the "Upload SOP" button inside should be hidden/disabled. That's per-tool/per-action granularity, deeper than this layer. Can be added incrementally per-section as tools are built.
+
+**Testing checklist before rollout:**
+- Admin sees no behaviour change (still sees everything)
+- A test user with role `carpenter` sees only Home, Workshop, Inventory, Documents (per the default matrix)
+- Same test user typing `/board` in the URL bar lands on `/forbidden`
+- Same test user has only the matching subset of hero tiles on Home (consistent with their tab nav)
+- A user with `role = null` sees only Home with the "Welcome, an admin will assign…" message
+
+**Rollback path:** Either `git revert` the enforcement commit, or set every cell in `/admin/access` to `Full` (no deploy needed — ~30 seconds).
+
+**Helpers already in place:** `canAccess(role, path, policy)` and `getAccessPolicy()` exist. The work is wiring, not new logic.
 
 ---
 
