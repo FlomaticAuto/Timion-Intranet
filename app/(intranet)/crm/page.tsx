@@ -23,13 +23,13 @@ export default function CrmPage() {
           variant="live"
           href="/crm/visit-report"
           icon="🚐"
-          title="Visit Report"
+          title="Visit Dashboard"
           description="Dashboard for visits — volumes, types, locations, staff workload and trends."
         />
         <Tile
           variant="comingSoon"
           icon="🦽"
-          title="Equipment Report"
+          title="Equipment Dashboard"
           description="Dashboard for equipment history — issuances, pipeline, demand by device type."
         />
         <Tile

@@ -18,6 +18,9 @@ MODULE         = "Visits_History"
 # reuse the same values for ZOHO_CRM_CLIENT_ID / ZOHO_CRM_CLIENT_SECRET /
 # ZOHO_CRM_REFRESH_TOKEN in your GitHub Secrets.  If CRM uses a separate
 # OAuth client, add three new secrets with those values instead.
+# Oldest month to include when running --all-months (YYYY-MM, inclusive).
+FROM_MONTH = "2025-12"
+
 FIELD_DATE      = "Date"   # date field for the visit
 FIELD_THERAPIST = "Staff_2"       # lookup or text — therapist who conducted the visit
 FIELD_TYPE      = "Type"      # picklist — type of visit
@@ -187,13 +190,15 @@ def main():
         all_records = fetch_all_records(headers)
         print(f"  {len(all_records)} total records")
 
-        # Group by month
+        # Group by month — only include months within the FROM_MONTH cap
         by_month: dict[str, list] = {}
         for r in all_records:
             date_val = str_value(r.get(FIELD_DATE, ""))
             if not date_val or len(date_val) < 7:
                 continue
             month_key = date_val[:7]  # YYYY-MM
+            if month_key < FROM_MONTH:
+                continue
             by_month.setdefault(month_key, []).append({
                 "id":         r.get("id", ""),
                 "date":       date_val,

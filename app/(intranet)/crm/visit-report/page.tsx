@@ -4,7 +4,7 @@ import VisitDashboardClient from "./VisitDashboardClient";
 import "@/app/visit-dashboard-styles.css";
 
 export const metadata = {
-  title: "Visit Report — Timion HQ",
+  title: "Visit Dashboard — Timion HQ",
   description: "Monthly visit data from Zoho CRM — volumes, types, locations, therapist workload and trends.",
 };
 
@@ -13,7 +13,7 @@ export default function VisitReportPage() {
     <>
       <SectionHeader
         eyebrow="CRM"
-        title="Visit Report"
+        title="Visit Dashboard"
         subtitle="Monthly visit data from Zoho CRM — volumes, types, locations, therapist workload and trends."
       />
 
