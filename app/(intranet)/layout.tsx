@@ -4,6 +4,15 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { getCurrentProfile } from "@/lib/supabase/profile";
 
 /**
+ * The intranet shell reads the user's profile from cookies, so every
+ * page inside it must render at request time — not at build time.
+ * Without this, Next.js would prerender pages with profile=null and
+ * cache the result, so the Admin tab (and any user-specific UI)
+ * would never appear for any visitor.
+ */
+export const dynamic = "force-dynamic";
+
+/**
  * Intranet shell — wraps every tab page with the persistent
  * header, tab navigation, and footer. Fetches the current user's
  * profile once and passes it to both the header and the tab nav,
