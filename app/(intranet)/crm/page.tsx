@@ -20,7 +20,8 @@ export default function CrmPage() {
           description="Open the live Zoho CRM workspace — patients, contacts, deals, communications."
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/crm/visit-report"
           icon="🚐"
           title="Visit Report"
           description="Dashboard for visits — volumes, types, locations, staff workload and trends."
