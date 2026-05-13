@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T17:06:08Z",
+  "generated_at": "2026-05-13T11:28:19Z",
   "month": "2026-05",
   "finished_products": {
     "in_production": [
@@ -50,6 +50,30 @@
           "SF441"
         ],
         "completed_date": "2026-05-06T09:54:05+0200"
+      },
+      {
+        "assembly_number": "ASSY-00173",
+        "item_name": "Wheelchair Tray 46cm Wood",
+        "quantity": 1.0,
+        "date": "2026-05-13",
+        "status": "bundled",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-13T08:01:26+0200"
+      },
+      {
+        "assembly_number": "ASSY-00174",
+        "item_name": "Wheelchair Tray 51cm Wood",
+        "quantity": 1.0,
+        "date": "2026-05-13",
+        "status": "bundled",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-13T08:01:26+0200"
       }
     ]
   },
@@ -83,7 +107,7 @@
           "Oswald"
         ],
         "serial_numbers": [],
-        "completed_date": "2026-05-06T14:32:44+0200"
+        "completed_date": "2026-05-13T08:00:39+0200"
       },
       {
         "assembly_number": "ASSY-00136",
