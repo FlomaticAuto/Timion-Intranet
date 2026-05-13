@@ -68,7 +68,7 @@ def fetch_month(headers, month_str):
     start = f"{month_str}-01"
     end   = f"{month_str}-{last_day:02d}"
 
-    criteria = f"({FIELD_DATE}:between:{start},{end})"
+    criteria = f"(({FIELD_DATE}:greater_equal:{start})and({FIELD_DATE}:less_equal:{end}))"
     records  = []
     page     = 1
 
