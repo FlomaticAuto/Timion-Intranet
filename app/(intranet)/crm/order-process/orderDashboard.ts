@@ -447,13 +447,14 @@ function renderTrends(orders: Order[]): string {
 
 // ── Bootstrap ──────────────────────────────────────────────────────────────────
 export function initOrderDashboard() {
+  const now = new Date();
   let allOrders: Order[] = [];
   let currentView: "pipeline" | "orders" | "trends" = "pipeline";
   let filterType     = "";
   let filterStage    = "";
   let filterReferral = "";
-  let filterYear     = "";
-  let filterMonth    = "";
+  let filterYear     = String(now.getFullYear());
+  let filterMonth    = String(now.getMonth() + 1).padStart(2, "0");
   let searchTerm     = "";
 
   const content = () => document.getElementById("op-content")!;
