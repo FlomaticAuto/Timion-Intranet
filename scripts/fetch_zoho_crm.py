@@ -21,10 +21,12 @@ MODULE         = "Visits_History"
 # Oldest month to include when running --all-months (YYYY-MM, inclusive).
 FROM_MONTH = "2025-12"
 
-FIELD_DATE      = "Date"   # date field for the visit
-FIELD_THERAPIST = "Staff_2"       # lookup or text — therapist who conducted the visit
-FIELD_TYPE      = "Type"      # picklist — type of visit
-FIELD_LOCATION  = "Location"        # text or picklist — where the visit took place
+FIELD_VISIT_NUMBER = "Name"         # auto-generated visit number (e.g. VH-001)
+FIELD_PATIENT      = "Patient_Name" # lookup → Accounts (Patients/Customers) module
+FIELD_DATE         = "Date"         # date field for the visit
+FIELD_THERAPIST    = "Staff_2"      # lookup or text — therapist who conducted the visit
+FIELD_TYPE         = "Type"         # picklist — type of visit
+FIELD_LOCATION     = "Location"     # text or picklist — where the visit took place
 
 
 def get_access_token(client_id, client_secret, refresh_token):
@@ -105,11 +107,13 @@ def fetch_month(headers, month_str):
         date_val = str_value(r.get(FIELD_DATE, ""))
         if start <= date_val <= end:
             visits.append({
-                "id":         r.get("id", ""),
-                "date":       date_val,
-                "therapist":  str_value(r.get(FIELD_THERAPIST, "")),
-                "visit_type": str_value(r.get(FIELD_TYPE, "")),
-                "location":   str_value(r.get(FIELD_LOCATION, "")),
+                "id":           r.get("id", ""),
+                "visit_number": str_value(r.get(FIELD_VISIT_NUMBER, "")),
+                "patient":      str_value(r.get(FIELD_PATIENT, "")),
+                "date":         date_val,
+                "therapist":    str_value(r.get(FIELD_THERAPIST, "")),
+                "visit_type":   str_value(r.get(FIELD_TYPE, "")),
+                "location":     str_value(r.get(FIELD_LOCATION, "")),
             })
 
     visits.sort(key=lambda v: v["date"])
@@ -200,11 +204,13 @@ def main():
             if month_key < FROM_MONTH:
                 continue
             by_month.setdefault(month_key, []).append({
-                "id":         r.get("id", ""),
-                "date":       date_val,
-                "therapist":  str_value(r.get(FIELD_THERAPIST, "")),
-                "visit_type": str_value(r.get(FIELD_TYPE, "")),
-                "location":   str_value(r.get(FIELD_LOCATION, "")),
+                "id":           r.get("id", ""),
+                "visit_number": str_value(r.get(FIELD_VISIT_NUMBER, "")),
+                "patient":      str_value(r.get(FIELD_PATIENT, "")),
+                "date":         date_val,
+                "therapist":    str_value(r.get(FIELD_THERAPIST, "")),
+                "visit_type":   str_value(r.get(FIELD_TYPE, "")),
+                "location":     str_value(r.get(FIELD_LOCATION, "")),
             })
 
         print(f"\nWriting {len(by_month)} month file(s):")

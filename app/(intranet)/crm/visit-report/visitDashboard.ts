@@ -15,11 +15,13 @@ const MONTH_NAMES = [
 ];
 
 interface VisitRecord {
-  id:         string;
-  date:       string;
-  therapist:  string;
-  visit_type: string;
-  location:   string;
+  id:           string;
+  visit_number: string;
+  patient:      string;
+  date:         string;
+  therapist:    string;
+  visit_type:   string;
+  location:     string;
 }
 
 interface MonthlyData {
@@ -75,11 +77,13 @@ export function initVisitDashboard() {
     }
     return visits.map((v, idx) => `
       <div class="card" style="animation-delay:${(idx * 0.03).toFixed(2)}s">
-        <div class="card-title">${esc(v.visit_type || "Visit")}</div>
+        <div class="card-title">${esc(v.visit_number || v.visit_type || "Visit")}</div>
         <div class="card-meta">
+          <span data-label="Patient">${esc(v.patient || "—")}</span>
           <span data-label="Date">${esc(formatDate(v.date))}</span>
           <span data-label="Therapist">${esc(v.therapist || "—")}</span>
           <span data-label="Location">${esc(v.location || "—")}</span>
+          <span data-label="Type">${esc(v.visit_type || "—")}</span>
         </div>
         ${v.id ? `<div class="card-footer"><a class="zoho-link" href="${VISIT_BASE}/${esc(v.id)}" target="_blank" rel="noopener noreferrer" title="Open in Zoho CRM">↗</a></div>` : ""}
       </div>
