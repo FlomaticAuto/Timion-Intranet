@@ -1,22 +1,16 @@
 """
-Fetch Zoho CRM Deals (Orders Process module) and their linked
-Equipment History records to obtain the Order_Date for each deal.
+Fetch Zoho CRM Deals (Orders Process module).
 
 Writes: public/data/crm/orders.json
 
-Three dates per order:
-  order_date   — from Issued_Equipment.Order_Date (when originally placed, can be years old)
+Two dates per order:
   created_date — from Deal.Created_Time (when the Order Process entry was made in CRM)
   closing_date — from Deal.Closing_Date (when the order was completed)
 
 Strategy:
   1. Fetch all Deals (Orders Process).
   2. Filter to deals where Created_Time >= FROM_DATE.
-  3. For each qualifying deal, call the related records endpoint:
-       GET /Deals/{id}/Equipment_History_Entries
-     to get linked Equipment History records and their Order_Date.
-  4. Use the earliest Order_Date across all linked records.
-  5. Skip deals with no linked Equipment History records.
+  3. Write all qualifying deals.
 
 Run directly: python scripts/fetch_zoho_crm_orders.py
 """
@@ -29,8 +23,6 @@ from datetime import datetime, timezone
 ZOHO_TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token"
 ZOHO_CRM_BASE  = "https://www.zohoapis.com/crm/v2"
 DEALS_MODULE   = "Deals"
-EQ_MODULE      = "Issued_Equipment"            # Equipment History module API name
-EQ_RELATION    = "Equipment_History_Entries"   # kept for reference
 
 FROM_DATE = "2026-03-01"
 
@@ -81,30 +73,6 @@ def fetch_all_deals(headers):
     return records
 
 
-def fetch_deal_equipment(deal_id, headers):
-    """Search Issued_Equipment records where Order_Process_Entry equals the deal ID.
-    Returns list of Order_Date strings."""
-    resp = requests.get(
-        f"{ZOHO_CRM_BASE}/{EQ_MODULE}/search",
-        headers=headers,
-        params={
-            "criteria": f"(Order_Process_Entry:equals:{deal_id})",
-            "fields":   "Order_Date",
-            "per_page": 20,
-        },
-    )
-    if resp.status_code == 204:
-        return []
-    if not resp.ok:
-        print(f"  HTTP {resp.status_code} for deal {deal_id} — {resp.text[:200]}")
-        return []
-    return [
-        str(rec["Order_Date"])
-        for rec in resp.json().get("data", [])
-        if rec.get("Order_Date")
-    ]
-
-
 def main():
     client_id     = os.environ["ZOHO_CRM_CLIENT_ID"]
     client_secret = os.environ["ZOHO_CRM_CLIENT_SECRET"]
@@ -120,9 +88,8 @@ def main():
 
     orders = []
     skipped_before_cutoff = 0
-    skipped_no_eq         = 0
 
-    for i, deal in enumerate(all_deals):
+    for deal in all_deals:
         created_time_raw = deal.get("Created_Time", "") or ""
         created_date = str(created_time_raw)[:10] if created_time_raw else ""
 
@@ -130,30 +97,17 @@ def main():
             skipped_before_cutoff += 1
             continue
 
-        deal_id = deal["id"]
-        print(f"  [{i+1}/{len(all_deals)}] {deal.get('Deal_Name','?')} — fetching equipment...")
-        eq_dates = fetch_deal_equipment(deal_id, headers)
-
-        if not eq_dates:
-            skipped_no_eq += 1
-            print(f"    No linked equipment — skipping")
-            continue
-
-        order_date = min(eq_dates)
-        print(f"    Order_Date: {order_date} ({len(eq_dates)} equipment record(s))")
-
         customer = deal.get("Account_Name")
         if isinstance(customer, dict):
             customer = customer.get("name", "") or ""
 
         orders.append({
-            "id":              deal_id,
+            "id":              deal["id"],
             "name":            str_value(deal.get("Deal_Name", "")),
             "customer":        str(customer or ""),
             "order_type":      str_value(deal.get("Order_Type", "")),
             "stage":           str_value(deal.get("Stage", "")),
             "referral_source": str_value(deal.get("Lead_Source", "")),
-            "order_date":      order_date,
             "created_date":    created_date,
             "closing_date":    deal.get("Closing_Date") or None,
         })
@@ -163,7 +117,6 @@ def main():
     print(f"\nResults:")
     print(f"  {len(orders)} orders included")
     print(f"  {skipped_before_cutoff} skipped — Created_Time before {FROM_DATE} or missing")
-    print(f"  {skipped_no_eq} skipped — no linked Equipment History records")
 
     os.makedirs("public/data/crm", exist_ok=True)
     out = {

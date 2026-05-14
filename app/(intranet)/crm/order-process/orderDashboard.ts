@@ -61,8 +61,7 @@ interface Order {
   order_type:      string;
   stage:           string;
   referral_source: string;
-  order_date:      string;   // when originally placed — from Equipment History
-  created_date:    string;   // when Order Process entry was made in CRM
+  created_date:    string;
   closing_date:    string | null;
 }
 
@@ -302,16 +301,11 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
   ).join("");
 
   const rows = filtered.length === 0
-    ? `<tr><td colspan="7" style="text-align:center;padding:32px;color:#8888aa">No orders match the current filters</td></tr>`
+    ? `<tr><td colspan="6" style="text-align:center;padding:32px;color:#8888aa">No orders match the current filters</td></tr>`
     : filtered.map((o) => `
         <tr>
           <td class="td-name" title="${esc(o.name)}">${esc(o.name || "—")}</td>
-          <td class="td-customer">
-            <div title="${esc(o.customer)}">${esc(o.customer || "—")}</div>
-            <div style="font-size:10px;color:#5e5e7a;margin-top:2px">
-              Ordered: ${esc(fmtDate(o.order_date))}
-            </div>
-          </td>
+          <td class="td-customer" title="${esc(o.customer)}">${esc(o.customer || "—")}</td>
           <td>${typeBadge(o.order_type)}</td>
           <td>${stagePill(o.stage)}</td>
           <td style="white-space:nowrap">${esc(fmtDate(o.created_date))}</td>
@@ -337,7 +331,7 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
         <thead>
           <tr>
             <th>Order Name</th>
-            <th>Customer / Order Date</th>
+            <th>Customer</th>
             <th>Type</th>
             <th>Stage</th>
             <th>Created Date</th>
