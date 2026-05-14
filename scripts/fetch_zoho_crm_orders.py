@@ -127,20 +127,21 @@ def main():
 
     print(f"  {len(eq_by_deal)} deals have at least one Equipment History record with Order_Date")
 
-    # ── Debug: fetch 1 record with NO field filter to see every key Zoho returns ──
-    print("\nDEBUG — first Issued_Equipment record with ALL fields (no filter):")
-    resp_dbg = requests.get(
-        f"{ZOHO_CRM_BASE}/{EQ_MODULE}",
+    # ── Debug: list all field API names for Issued_Equipment from settings API ──
+    print("\nDEBUG — all field API names in Issued_Equipment module:")
+    resp_fields = requests.get(
+        f"{ZOHO_CRM_BASE}/settings/fields",
         headers=headers,
-        params={"per_page": 1},
+        params={"module": EQ_MODULE},
     )
-    if resp_dbg.ok:
-        dbg_records = resp_dbg.json().get("data", [])
-        if dbg_records:
-            for k, v in dbg_records[0].items():
-                print(f"  {k!r}: {v!r}")
+    if resp_fields.ok:
+        fields_data = resp_fields.json().get("fields", [])
+        print(f"  {'API Name':<50} {'Display Label':<40} {'Type'}")
+        print(f"  {'-'*50} {'-'*40} {'-'*20}")
+        for f in sorted(fields_data, key=lambda x: x.get("api_name", "")):
+            print(f"  {f.get('api_name',''):<50} {f.get('field_label',''):<40} {f.get('data_type','')}")
     else:
-        print(f"  HTTP {resp_dbg.status_code} — {resp_dbg.text[:200]}")
+        print(f"  HTTP {resp_fields.status_code} — {resp_fields.text[:200]}")
 
     # ── Step 4: build output orders list ──────────────────────────────
     orders = []
