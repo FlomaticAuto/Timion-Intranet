@@ -16,14 +16,17 @@ const MONTH_NAMES = [
   "July", "August", "September", "October", "November", "December",
 ];
 
+const ASSEMBLY_BASE = "https://one.zoho.com/zohoone/timionnpc/home/cxapp/inventory/app/878382704#/inventory/assembly";
+
 interface AssemblyRecord {
+  id?:             string;
   assembly_number: string;
-  item_name: string;
-  quantity: number;
-  date: string;
-  status: string;
+  item_name:       string;
+  quantity:        number;
+  date:            string;
+  status:          string;
   production_staff: string[];
-  serial_numbers: string[];
+  serial_numbers:  string[];
   completed_date?: string;
 }
 
@@ -100,6 +103,9 @@ export function initDashboard() {
       const completedSpan = r.completed_date
         ? `<span data-label="Completed">${esc(formatCompletedDate(r.completed_date))}</span>`
         : "";
+      const zohoLink = r.id
+        ? `<div class="card-footer"><a class="zoho-link" href="${ASSEMBLY_BASE}/${esc(r.id)}" target="_blank" rel="noopener noreferrer" title="Open in Zoho Inventory">↗</a></div>`
+        : "";
       return `
         <div class="card" style="animation-delay:${(idx * 0.04).toFixed(2)}s">
           <div class="card-title">${esc(r.item_name)}${badge}</div>
@@ -113,6 +119,7 @@ export function initDashboard() {
           <div class="card-meta" style="margin-top:6px;">
             <span data-label="Serials">${esc(serials)}</span>
           </div>
+          ${zohoLink}
         </div>
       `;
     }).join("");

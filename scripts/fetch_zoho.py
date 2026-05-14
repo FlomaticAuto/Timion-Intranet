@@ -194,6 +194,7 @@ def fetch_bundles_for_months(months, production_items, headers, org_id):
             completed_date = bundle_detail.get("last_modified_time", "")
 
             record = {
+                "id":              str(bundle.get("bundle_id", "")),
                 "assembly_number": bundle.get("reference_number", ""),
                 "item_name": item["name"],
                 "quantity": bundle.get("quantity_to_bundle", 0),

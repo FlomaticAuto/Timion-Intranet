@@ -66,6 +66,8 @@ export function initVisitDashboard() {
       .replace(/"/g, "&quot;");
   }
 
+  const VISIT_BASE = "https://one.zoho.com/zohoone/timionnpc/home/cxapp/crm/org878871386/tab/CustomModule4";
+
   // ── Monthly view ───────────────────────────────────────────────────
   function renderCards(visits: VisitRecord[]) {
     if (!visits || visits.length === 0) {
@@ -79,6 +81,7 @@ export function initVisitDashboard() {
           <span data-label="Therapist">${esc(v.therapist || "—")}</span>
           <span data-label="Location">${esc(v.location || "—")}</span>
         </div>
+        ${v.id ? `<div class="card-footer"><a class="zoho-link" href="${VISIT_BASE}/${esc(v.id)}" target="_blank" rel="noopener noreferrer" title="Open in Zoho CRM">↗</a></div>` : ""}
       </div>
     `).join("");
   }
