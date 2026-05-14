@@ -1,0 +1,550 @@
+/* ──────────────────────────────────────────────────────────────────────────────
+   Order Process Dashboard styles
+   Scoped under `.op-root` — cannot leak into any other page.
+   ────────────────────────────────────────────────────────────────────────────── */
+
+.op-root {
+  --font:    var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ff-head: var(--font-sora), var(--font-inter), sans-serif;
+
+  --bg:            #080810;
+  --surface:       #12121e;
+  --surface2:      #1a1a2e;
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.15);
+  --text:          #f0f0f8;
+  --text-soft:     #c8c8d8;
+  --text-muted:    #8888aa;
+  --text-dim:      #5e5e7a;
+
+  --accent:        #7c5cfc;
+  --accent2:       #4f8ef7;
+  --green:         #10d98a;
+  --amber:         #ff8c42;
+  --red:           #ff4b6e;
+  --gradient:      linear-gradient(135deg, #7c5cfc, #4f8ef7);
+
+  font-family: var(--font);
+  color: var(--text);
+}
+
+/* ── Sub-header ── */
+.op-root .op-subheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.op-root .op-synced {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.op-root .view-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.op-root .view-btn {
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.op-root .view-btn:hover:not(.active) {
+  color: var(--text);
+  background: rgba(255,255,255,0.07);
+}
+
+.op-root .view-btn.active {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(124,92,252,0.5);
+}
+
+/* ── States ── */
+.op-root .op-loading {
+  text-align: center;
+  padding: 72px 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.op-root .op-error {
+  background: rgba(255,75,110,0.1);
+  border: 1px solid rgba(255,75,110,0.3);
+  border-radius: 10px;
+  padding: 16px 18px;
+  color: var(--red);
+  font-size: 13px;
+  margin: 24px 0;
+}
+
+.op-root .op-empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* ── KPI chips (4-up) ── */
+.op-root .kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 900px) { .op-root .kpi-row { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 480px) { .op-root .kpi-row { grid-template-columns: 1fr 1fr; } }
+
+.op-root .kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.op-root .kpi-card.c-active  { border-top-color: var(--accent);  background: rgba(124,92,252,0.06); }
+.op-root .kpi-card.c-issued  { border-top-color: var(--green);   background: rgba(16,217,138,0.06); }
+.op-root .kpi-card.c-hold    { border-top-color: var(--amber);   background: rgba(255,140,66,0.06); }
+.op-root .kpi-card.c-cancel  { border-top-color: var(--red);     background: rgba(255,75,110,0.06); }
+
+.op-root .kpi-num {
+  font-family: var(--ff-head);
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.op-root .kpi-card.c-active .kpi-num  { color: var(--accent); }
+.op-root .kpi-card.c-issued .kpi-num  { color: var(--green); }
+.op-root .kpi-card.c-hold   .kpi-num  { color: var(--amber); }
+.op-root .kpi-card.c-cancel .kpi-num  { color: var(--red); }
+
+.op-root .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; }
+.op-root .kpi-sub   { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Two-column layout (pipeline view) ── */
+.op-root .pipeline-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 1100px) { .op-root .pipeline-layout { grid-template-columns: 1fr; } }
+
+/* ── Section heading ── */
+.op-root .section-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.op-root .section-title {
+  font-family: var(--ff-head);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.op-root .section-divider {
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient);
+  margin-bottom: 16px;
+}
+
+/* ── Stage grid ── */
+.op-root .stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.op-root .stage-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-bright);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.op-root .stage-card:hover { background: var(--surface2); }
+.op-root .stage-card.s-intake  { border-left-color: var(--accent); }
+.op-root .stage-card.s-active  { border-left-color: var(--accent2); }
+.op-root .stage-card.s-hold    { border-left-color: var(--amber); }
+.op-root .stage-card.s-done    { border-left-color: var(--green); }
+.op-root .stage-card.s-cancel  { border-left-color: var(--red); }
+.op-root .stage-card.s-empty   { opacity: 0.45; }
+
+.op-root .stage-count {
+  font-family: var(--ff-head);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.op-root .stage-card.s-intake  .stage-count { color: var(--accent); }
+.op-root .stage-card.s-active  .stage-count { color: var(--accent2); }
+.op-root .stage-card.s-hold    .stage-count { color: var(--amber); }
+.op-root .stage-card.s-done    .stage-count { color: var(--green); }
+.op-root .stage-card.s-cancel  .stage-count { color: var(--red); }
+.op-root .stage-card.s-empty   .stage-count { color: var(--text-dim); }
+
+.op-root .stage-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.op-root .stage-names-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.op-root .stage-names-list span {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.op-root .stage-names-list .more {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ── Order type breakdown (right panel) ── */
+.op-root .type-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.op-root .type-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.op-root .type-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.op-root .type-dot.t-private  { background: var(--accent); }
+.op-root .type-dot.t-internal { background: var(--green); }
+.op-root .type-dot.t-external { background: var(--accent2); }
+.op-root .type-dot.t-spontaneous { background: var(--amber); }
+.op-root .type-dot.t-other    { background: var(--text-dim); }
+
+.op-root .type-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--text-soft); line-height: 1.3; }
+
+.op-root .type-counts { text-align: right; }
+.op-root .type-counts .tc-total { font-size: 18px; font-weight: 700; font-family: var(--ff-head); color: var(--text); line-height: 1; }
+.op-root .type-counts .tc-sub   { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Orders table view ── */
+.op-root .table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.op-root .op-search {
+  flex: 1;
+  min-width: 200px;
+  height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font);
+  padding: 0 12px;
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.op-root .op-search::placeholder { color: var(--text-dim); }
+.op-root .op-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.2); }
+
+.op-root .op-select {
+  height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font);
+  padding: 0 10px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+
+.op-root .op-select:focus { border-color: var(--accent); }
+
+.op-root .table-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.op-root .op-table-wrap {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.op-root .op-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.op-root .op-table th {
+  background: var(--surface);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.op-root .op-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: var(--text-soft);
+}
+
+.op-root .op-table tr:last-child td { border-bottom: none; }
+.op-root .op-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.op-root .td-name   { font-weight: 600; color: var(--text); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.op-root .td-customer { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.op-root .stage-pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.op-root .sp-intake  { background: rgba(124,92,252,0.15); color: var(--accent); }
+.op-root .sp-active  { background: rgba(79,142,247,0.15);  color: var(--accent2); }
+.op-root .sp-hold    { background: rgba(255,140,66,0.15);  color: var(--amber); }
+.op-root .sp-done    { background: rgba(16,217,138,0.12);  color: var(--green); }
+.op-root .sp-cancel  { background: rgba(255,75,110,0.12);  color: var(--red); }
+
+.op-root .type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.op-root .tb-private     { background: rgba(124,92,252,0.1); color: var(--accent); }
+.op-root .tb-internal    { background: rgba(16,217,138,0.1); color: var(--green); }
+.op-root .tb-external    { background: rgba(79,142,247,0.1); color: var(--accent2); }
+.op-root .tb-spontaneous { background: rgba(255,140,66,0.1); color: var(--amber); }
+.op-root .tb-other       { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+
+.op-root .crm-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border-bright);
+  background: var(--surface2);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 12px;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.op-root .crm-link:hover {
+  color: var(--accent);
+  border-color: rgba(124,92,252,0.4);
+  background: rgba(124,92,252,0.1);
+}
+
+/* ── Trends view ── */
+.op-root .trends-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 900px) { .op-root .trends-layout { grid-template-columns: 1fr; } }
+
+.op-root .trend-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+
+/* ── Bar chart (reused across views) ── */
+.op-root .chart-wrap { display: flex; gap: 6px; align-items: flex-start; }
+
+.op-root .chart-y-axis { width: 28px; flex-shrink: 0; position: relative; height: 180px; }
+
+.op-root .y-label {
+  position: absolute;
+  right: 0;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1;
+  text-align: right;
+  transform: translateY(50%);
+}
+
+.op-root .chart-inner { flex: 1; display: flex; flex-direction: column; }
+
+.op-root .chart-bars-zone {
+  position: relative;
+  height: 180px;
+  border-left: 2px solid var(--border-bright);
+  border-bottom: 2px solid var(--border-bright);
+}
+
+.op-root .grid-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+.op-root .chart-bars-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 100%;
+  padding: 0 4px;
+}
+
+.op-root .bar-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.op-root .bar-block {
+  width: 100%;
+  max-width: 52px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  transition: filter 0.15s;
+  min-height: 2px;
+}
+
+.op-root .bar-col:hover .bar-block { filter: brightness(1.2); }
+.op-root .bar-fill-accent  { background: var(--gradient); width: 100%; height: 100%; }
+.op-root .bar-fill-green   { background: linear-gradient(180deg, var(--green), #059669); width: 100%; height: 100%; }
+
+.op-root .chart-x-row {
+  display: flex;
+  gap: 3px;
+  padding: 7px 4px 0;
+  border-left: 2px solid transparent;
+}
+
+.op-root .x-label {
+  flex: 1;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.op-root .bar-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface2);
+  border: 1px solid var(--border-bright);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  line-height: 1.8;
+}
+
+.op-root .bar-col:hover .bar-tooltip { opacity: 1; }
+
+/* ── Entry animation ── */
+@keyframes op-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.op-root .op-animate { animation: op-fade-up 0.35s ease both; }

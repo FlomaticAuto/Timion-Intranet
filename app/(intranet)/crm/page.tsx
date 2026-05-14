@@ -33,7 +33,8 @@ export default function CrmPage() {
           description="Dashboard for equipment issuances — pipeline, by device type and patient."
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/crm/order-process"
           icon="🛒"
           title="Order Process Dashboard"
           description="Live view of orders moving through the pipeline — status, stage, and bottlenecks."

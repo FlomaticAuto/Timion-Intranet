@@ -24,6 +24,10 @@ on:
         description: 'Set to "true" to fetch all CRM records and write every month at once.'
         required: false
         default: 'false'
+      skip_orders:
+        description: 'Set to "true" to skip the Orders Process fetch.'
+        required: false
+        default: 'false'
 
 jobs:
   sync:
@@ -73,6 +77,22 @@ jobs:
           else
             python scripts/fetch_zoho_crm.py
           fi
+
+      - name: Fetch Zoho CRM Orders data
+        env:
+          ZOHO_CRM_CLIENT_ID:     ${{ secrets.ZOHO_CRM_CLIENT_ID }}
+          ZOHO_CRM_CLIENT_SECRET: ${{ secrets.ZOHO_CRM_CLIENT_SECRET }}
+          ZOHO_CRM_REFRESH_TOKEN: ${{ secrets.ZOHO_CRM_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$ZOHO_CRM_CLIENT_ID" ]; then
+            echo "ZOHO_CRM_CLIENT_ID secret not set — skipping Orders sync"
+            exit 0
+          fi
+          if [ "${{ github.event.inputs.skip_orders }}" = "true" ]; then
+            echo "skip_orders=true — skipping Orders sync"
+            exit 0
+          fi
+          python scripts/fetch_zoho_crm_orders.py
 
       - name: Commit and push if data changed
         run: |
