@@ -1,21 +1,25 @@
 """
-Fetch Zoho CRM Deals (Orders Process module) and their linked
-Issued_Equipment records to obtain the Order_Date for each deal.
+Fetch Zoho CRM Deals (Orders Process module) and Equipment History
+(Issued_Equipment module) to produce a single orders.json file.
 
-Writes a single file: public/data/crm/orders.json
+Writes: public/data/crm/orders.json
 
 Three dates per order:
-  order_date   — from linked Issued_Equipment.Order_Date (when originally placed, can be years old)
+  order_date   — from Issued_Equipment.Order_Date (when originally placed, can be years old)
   created_date — from Deal.Created_Time (when the Order Process entry was made in CRM)
   closing_date — from Deal.Closing_Date (when the order was completed)
 
-Filter: only includes deals where Created_Time >= FROM_DATE. This captures the backlog
-correctly — old orders (order_date 2023+) that are only now being processed still appear
-because their Deal entry was created from March 2026 onwards.
+Strategy:
+  1. Fetch all Deals (Orders Process) — gives us stage, type, dates, etc.
+  2. Fetch all Issued_Equipment records with Order_Date + Order_Process_Entry.
+     Order_Process_Entry is a lookup field on Equipment History pointing back to
+     its parent Deal, so we can join them in Python without any per-deal API calls.
+  3. Build deal_id → [order_dates] map from the equipment records.
+  4. Filter: only include deals whose Created_Time >= FROM_DATE AND that have at
+     least one linked Equipment History record with an Order_Date.
 
-Note: Zoho CRM does not return multi-lookup field values (Equipment_History) in the
-standard GET /Deals response. We use the related-records endpoint per deal instead:
-  GET /crm/v2/Deals/{id}/Issued_Equipment
+Filter is applied to created_date (Deal.Created_Time) so that backlog orders with
+old order_dates are included as long as their Deal entry was created from March 2026.
 
 Run directly: python scripts/fetch_zoho_crm_orders.py
 """
@@ -27,12 +31,13 @@ from datetime import datetime, timezone
 
 ZOHO_TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token"
 ZOHO_CRM_BASE  = "https://www.zohoapis.com/crm/v2"
-MODULE         = "Deals"
+DEALS_MODULE   = "Deals"
 EQ_MODULE      = "Issued_Equipment"
 
 FROM_DATE = "2026-03-01"
 
 DEAL_FIELDS = "id,Deal_Name,Account_Name,Order_Type,Stage,Lead_Source,Closing_Date,Created_Time"
+EQ_FIELDS   = "id,Order_Date,Order_Process_Entry"
 
 
 def get_access_token(client_id, client_secret, refresh_token):
@@ -57,49 +62,28 @@ def str_value(raw):
     return str(raw)
 
 
-def fetch_all_deals(headers):
+def fetch_all_records(module, fields, headers):
+    """Page through an entire module and return every record."""
     records, page = [], 1
     while True:
         resp = requests.get(
-            f"{ZOHO_CRM_BASE}/{MODULE}",
+            f"{ZOHO_CRM_BASE}/{module}",
             headers=headers,
-            params={"fields": DEAL_FIELDS, "page": page, "per_page": 200},
+            params={"fields": fields, "page": page, "per_page": 200},
         )
         if resp.status_code == 204:
             break
         if not resp.ok:
-            print(f"  HTTP {resp.status_code} fetching deals — {resp.text[:300]}")
+            print(f"  HTTP {resp.status_code} fetching {module} — {resp.text[:300]}")
             resp.raise_for_status()
         body = resp.json()
-        records.extend(body.get("data", []))
-        print(f"  Page {page}: {len(body.get('data', []))} deals")
+        batch = body.get("data", [])
+        records.extend(batch)
+        print(f"  Page {page}: {len(batch)} records")
         if not body.get("info", {}).get("more_records", False):
             break
         page += 1
     return records
-
-
-def fetch_deal_equipment(deal_id, headers):
-    """Fetch Issued_Equipment records related to a single deal.
-    Uses the related-records endpoint — the only reliable way to get
-    multi-lookup related data from Zoho CRM v2.
-    Returns a list of Order_Date strings (non-empty only)."""
-    resp = requests.get(
-        f"{ZOHO_CRM_BASE}/{MODULE}/{deal_id}/{EQ_MODULE}",
-        headers=headers,
-        params={"fields": "Order_Date", "per_page": 10},
-    )
-    if resp.status_code == 204:
-        return []   # no linked records
-    if not resp.ok:
-        print(f"  HTTP {resp.status_code} fetching equipment for deal {deal_id} — {resp.text[:200]}")
-        return []
-    dates = []
-    for rec in resp.json().get("data", []):
-        d = rec.get("Order_Date")
-        if d:
-            dates.append(str(d))
-    return dates
 
 
 def main():
@@ -111,16 +95,44 @@ def main():
     token   = get_access_token(client_id, client_secret, refresh_token)
     headers = {"Authorization": f"Zoho-oauthtoken {token}"}
 
-    print(f"Fetching all deals from {MODULE}...")
-    all_deals = fetch_all_deals(headers)
+    # ── Step 1: fetch all Deals ────────────────────────────────────────
+    print(f"\nFetching all deals from {DEALS_MODULE}...")
+    all_deals = fetch_all_records(DEALS_MODULE, DEAL_FIELDS, headers)
     print(f"  {len(all_deals)} total deals fetched")
 
+    # ── Step 2: fetch all Equipment History records ────────────────────
+    print(f"\nFetching all equipment history from {EQ_MODULE}...")
+    all_eq = fetch_all_records(EQ_MODULE, EQ_FIELDS, headers)
+    print(f"  {len(all_eq)} total equipment history records fetched")
+
+    # ── Step 3: build deal_id → [order_dates] map ──────────────────────
+    # Order_Process_Entry is a lookup field on Equipment History pointing to a Deal.
+    # It is returned as {"id": "...", "name": "..."} or None.
+    eq_by_deal: dict[str, list[str]] = {}
+    for eq in all_eq:
+        order_date = eq.get("Order_Date")
+        if not order_date:
+            continue
+        entry_ref = eq.get("Order_Process_Entry")
+        if not entry_ref:
+            continue
+        # Lookup fields come back as a dict with "id"
+        if isinstance(entry_ref, dict):
+            deal_id = entry_ref.get("id", "")
+        else:
+            deal_id = str(entry_ref)
+        if not deal_id:
+            continue
+        eq_by_deal.setdefault(deal_id, []).append(str(order_date))
+
+    print(f"  {len(eq_by_deal)} deals have at least one Equipment History record with Order_Date")
+
+    # ── Step 4: build output orders list ──────────────────────────────
     orders = []
     skipped_before_cutoff = 0
     skipped_no_eq         = 0
 
-    for i, deal in enumerate(all_deals):
-        # Extract created_date first — filter early to avoid unnecessary API calls
+    for deal in all_deals:
         created_time_raw = deal.get("Created_Time", "") or ""
         created_date = str(created_time_raw)[:10] if created_time_raw else ""
 
@@ -128,17 +140,14 @@ def main():
             skipped_before_cutoff += 1
             continue
 
-        deal_id = deal["id"]
-        print(f"  [{i+1}/{len(all_deals)}] Deal {deal_id} — fetching linked equipment...")
-        eq_dates = fetch_deal_equipment(deal_id, headers)
+        deal_id   = deal["id"]
+        eq_dates  = eq_by_deal.get(deal_id, [])
 
         if not eq_dates:
             skipped_no_eq += 1
-            print(f"    No linked Issued_Equipment — skipping")
             continue
 
         order_date = min(eq_dates)
-        print(f"    Order_Date resolved: {order_date} (from {len(eq_dates)} equipment record(s))")
 
         customer = deal.get("Account_Name")
         if isinstance(customer, dict):
@@ -161,7 +170,7 @@ def main():
     print(f"\nResults:")
     print(f"  {len(orders)} orders included")
     print(f"  {skipped_before_cutoff} skipped — Deal Created_Time before {FROM_DATE} or missing")
-    print(f"  {skipped_no_eq} skipped — no linked Issued_Equipment records")
+    print(f"  {skipped_no_eq} skipped — no linked Equipment History with Order_Date")
 
     os.makedirs("public/data/crm", exist_ok=True)
     out = {
