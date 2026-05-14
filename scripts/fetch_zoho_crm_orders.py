@@ -13,12 +13,15 @@ Filter: only includes deals where Created_Time >= FROM_DATE. This captures the b
 correctly — old orders (order_date 2023+) that are only now being processed still appear
 because their Deal entry was created from March 2026 onwards.
 
+Note: Zoho CRM does not return multi-lookup field values (Equipment_History) in the
+standard GET /Deals response. We use the related-records endpoint per deal instead:
+  GET /crm/v2/Deals/{id}/Issued_Equipment
+
 Run directly: python scripts/fetch_zoho_crm_orders.py
 """
 
 import json
 import os
-import sys
 import requests
 from datetime import datetime, timezone
 
@@ -29,7 +32,7 @@ EQ_MODULE      = "Issued_Equipment"
 
 FROM_DATE = "2026-03-01"
 
-DEAL_FIELDS = "id,Deal_Name,Account_Name,Order_Type,Stage,Lead_Source,Closing_Date,Created_Time,Equipment_History"
+DEAL_FIELDS = "id,Deal_Name,Account_Name,Order_Type,Stage,Lead_Source,Closing_Date,Created_Time"
 
 
 def get_access_token(client_id, client_secret, refresh_token):
@@ -76,29 +79,27 @@ def fetch_all_deals(headers):
     return records
 
 
-def batch_fetch_equipment(eq_ids, headers):
-    """Fetch Issued_Equipment records by IDs in batches of 100.
-    Returns a dict mapping eq_id -> Order_Date string."""
-    id_map = {}
-    ids = list(eq_ids)
-    for i in range(0, len(ids), 100):
-        batch = ids[i:i + 100]
-        resp = requests.get(
-            f"{ZOHO_CRM_BASE}/{EQ_MODULE}",
-            headers=headers,
-            params={"ids": ",".join(batch), "fields": "id,Order_Date"},
-        )
-        if resp.status_code == 204:
-            continue
-        if not resp.ok:
-            print(f"  HTTP {resp.status_code} fetching equipment batch — {resp.text[:200]}")
-            continue
-        for rec in resp.json().get("data", []):
-            rec_id = rec.get("id", "")
-            order_date = rec.get("Order_Date", "")
-            if rec_id and order_date:
-                id_map[rec_id] = str(order_date)
-    return id_map
+def fetch_deal_equipment(deal_id, headers):
+    """Fetch Issued_Equipment records related to a single deal.
+    Uses the related-records endpoint — the only reliable way to get
+    multi-lookup related data from Zoho CRM v2.
+    Returns a list of Order_Date strings (non-empty only)."""
+    resp = requests.get(
+        f"{ZOHO_CRM_BASE}/{MODULE}/{deal_id}/{EQ_MODULE}",
+        headers=headers,
+        params={"fields": "Order_Date", "per_page": 10},
+    )
+    if resp.status_code == 204:
+        return []   # no linked records
+    if not resp.ok:
+        print(f"  HTTP {resp.status_code} fetching equipment for deal {deal_id} — {resp.text[:200]}")
+        return []
+    dates = []
+    for rec in resp.json().get("data", []):
+        d = rec.get("Order_Date")
+        if d:
+            dates.append(str(d))
+    return dates
 
 
 def main():
@@ -114,77 +115,37 @@ def main():
     all_deals = fetch_all_deals(headers)
     print(f"  {len(all_deals)} total deals fetched")
 
-    # Collect all Equipment_History IDs referenced by deals
-    eq_id_set = set()
-    for deal in all_deals:
-        eq_field = deal.get("Equipment_History")
-        if not eq_field:
-            continue
-        # Multi-lookup returns a list of {id, name} objects
-        if isinstance(eq_field, list):
-            for item in eq_field:
-                if isinstance(item, dict) and item.get("id"):
-                    eq_id_set.add(str(item["id"]))
-                elif isinstance(item, str) and item:
-                    eq_id_set.add(item)
-
-    print(f"  {len(eq_id_set)} unique Equipment History records to resolve")
-
-    # Batch-fetch Order_Date for all referenced equipment records
-    eq_date_map = {}
-    if eq_id_set:
-        eq_date_map = batch_fetch_equipment(eq_id_set, headers)
-    print(f"  {len(eq_date_map)} equipment records resolved with Order_Date")
-
-    # Build output orders list
     orders = []
-    skipped_no_eq = 0
-    skipped_no_date = 0
     skipped_before_cutoff = 0
+    skipped_no_eq         = 0
 
-    for deal in all_deals:
-        eq_field = deal.get("Equipment_History")
-        if not eq_field:
-            skipped_no_eq += 1
-            continue
-
-        # Collect the IDs from this deal's Equipment_History field
-        deal_eq_ids = []
-        if isinstance(eq_field, list):
-            for item in eq_field:
-                if isinstance(item, dict) and item.get("id"):
-                    deal_eq_ids.append(str(item["id"]))
-                elif isinstance(item, str) and item:
-                    deal_eq_ids.append(item)
-
-        if not deal_eq_ids:
-            skipped_no_eq += 1
-            continue
-
-        # Use the earliest Order_Date across all linked equipment records
-        dates = [eq_date_map[eid] for eid in deal_eq_ids if eid in eq_date_map and eq_date_map[eid]]
-        if not dates:
-            skipped_no_date += 1
-            continue
-
-        order_date = min(dates)
-
-        # created_date: extract date portion from Deal's Created_Time datetime
+    for i, deal in enumerate(all_deals):
+        # Extract created_date first — filter early to avoid unnecessary API calls
         created_time_raw = deal.get("Created_Time", "") or ""
         created_date = str(created_time_raw)[:10] if created_time_raw else ""
 
-        # Filter on created_date — captures backlog orders whose original order_date
-        # predates the cutoff but whose Order Process entry was made from March 2026 on.
         if not created_date or created_date < FROM_DATE:
             skipped_before_cutoff += 1
             continue
+
+        deal_id = deal["id"]
+        print(f"  [{i+1}/{len(all_deals)}] Deal {deal_id} — fetching linked equipment...")
+        eq_dates = fetch_deal_equipment(deal_id, headers)
+
+        if not eq_dates:
+            skipped_no_eq += 1
+            print(f"    No linked Issued_Equipment — skipping")
+            continue
+
+        order_date = min(eq_dates)
+        print(f"    Order_Date resolved: {order_date} (from {len(eq_dates)} equipment record(s))")
 
         customer = deal.get("Account_Name")
         if isinstance(customer, dict):
             customer = customer.get("name", "") or ""
 
         orders.append({
-            "id":              deal.get("id", ""),
+            "id":              deal_id,
             "name":            str_value(deal.get("Deal_Name", "")),
             "customer":        str(customer or ""),
             "order_type":      str_value(deal.get("Order_Type", "")),
@@ -199,9 +160,8 @@ def main():
 
     print(f"\nResults:")
     print(f"  {len(orders)} orders included")
-    print(f"  {skipped_no_eq} skipped — no linked Equipment History")
-    print(f"  {skipped_no_date} skipped — Equipment History linked but no Order_Date resolved")
     print(f"  {skipped_before_cutoff} skipped — Deal Created_Time before {FROM_DATE} or missing")
+    print(f"  {skipped_no_eq} skipped — no linked Issued_Equipment records")
 
     os.makedirs("public/data/crm", exist_ok=True)
     out = {
