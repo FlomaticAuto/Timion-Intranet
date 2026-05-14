@@ -74,6 +74,30 @@ Live internal dashboards use the suffix **"Dashboard"** (e.g. Visit Dashboard, P
 
 ---
 
+## 2026-05-15 · Zoho CRM multi-lookup fields: drop order_date, export Deals only
+
+`fetch_zoho_crm_orders.py` exports Deals from the Orders Process module without any Equipment History data. Three approaches to fetching the equipment-to-order link were attempted and all failed:
+
+1. **Related-records endpoint** (`/crm/v2/Potentials/{id}/Issued_Equipment`) — returned HTTP 400
+2. **Batch field lookup** — `Order_Process_Entry` field was absent from all Deal response bodies, regardless of `fields` param
+3. **Search criteria on Issued_Equipment** — Zoho returned `"the field is not available for search"` for `Order_Process_Entry` on all 30 deals
+
+**Root cause:** Zoho CRM v2 multi-lookup fields are invisible to all standard API endpoints. Access requires the `ZohoCRM.coql.READ` scope (COQL API), which is not currently provisioned on the OAuth client.
+
+**Decision:** Drop `order_date` entirely. The Order Process Dashboard works with `created_date` and `closing_date` as the available date columns. COQL scope can be added later if `order_date` becomes business-critical.
+
+---
+
+## 2026-05-15 · Manual sync via GitHub Actions workflow_dispatch
+
+All three dashboard sync scripts (Production, Visit, Order Process) run in a single GitHub Actions workflow (`sync-zoho.yml`). A `POST /api/sync` route dispatches this workflow via the GitHub Actions API, allowing any authenticated user to trigger a sync from within the intranet without needing GitHub access.
+
+**Why:** Users need fresh data on demand between scheduled syncs (11:00 + 17:00 SAST). The dispatch pattern keeps all sync logic in the existing workflow file rather than duplicating script invocations in a Vercel function. Auth check in the route prevents anonymous triggers.
+
+**Requirement:** `GITHUB_SYNC_TOKEN` Vercel env var — a fine-grained PAT with Actions read/write permission on this repo.
+
+---
+
 ## 2026-05-13 · Memory file system
 
 `docs/STATUS.md`, `docs/BACKLOG.md`, `docs/DECISIONS.md` are the canonical session-handoff context. `AGENTS.md` points at them and documents workflows. Triggered by the user saying "save to memory" (or variants); agent uses Edit (not Write), supersedes rather than accumulates, moves shipped items from BACKLOG → STATUS, dates DECISIONS entries, never auto-modifies without explicit user request.
