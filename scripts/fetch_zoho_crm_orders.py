@@ -127,6 +127,11 @@ def main():
 
     print(f"  {len(eq_by_deal)} deals have at least one Equipment History record with Order_Date")
 
+    # ── Debug: print first 5 raw equipment records so we can verify field names ──
+    print("\nDEBUG — first 5 raw Equipment History records:")
+    for rec in all_eq[:5]:
+        print(f"  {rec}")
+
     # ── Step 4: build output orders list ──────────────────────────────
     orders = []
     skipped_before_cutoff = 0
