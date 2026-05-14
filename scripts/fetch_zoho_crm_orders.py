@@ -29,7 +29,8 @@ from datetime import datetime, timezone
 ZOHO_TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token"
 ZOHO_CRM_BASE  = "https://www.zohoapis.com/crm/v2"
 DEALS_MODULE   = "Deals"
-EQ_RELATION    = "Equipment_History_Entries"   # multi-lookup relation name on the Deal
+EQ_MODULE      = "Issued_Equipment"            # Equipment History module API name
+EQ_RELATION    = "Equipment_History_Entries"   # kept for reference
 
 FROM_DATE = "2026-03-01"
 
@@ -81,12 +82,16 @@ def fetch_all_deals(headers):
 
 
 def fetch_deal_equipment(deal_id, headers):
-    """Fetch linked Equipment History records for a single deal via the
-    Equipment_History_Entries relation. Returns list of Order_Date strings."""
+    """Search Issued_Equipment records where Order_Process_Entry equals the deal ID.
+    Returns list of Order_Date strings."""
     resp = requests.get(
-        f"{ZOHO_CRM_BASE}/{DEALS_MODULE}/{deal_id}/{EQ_RELATION}",
+        f"{ZOHO_CRM_BASE}/{EQ_MODULE}/search",
         headers=headers,
-        params={"fields": "Order_Date", "per_page": 20},
+        params={
+            "criteria": f"(Order_Process_Entry:equals:{deal_id})",
+            "fields":   "Order_Date",
+            "per_page": 20,
+        },
     )
     if resp.status_code == 204:
         return []
