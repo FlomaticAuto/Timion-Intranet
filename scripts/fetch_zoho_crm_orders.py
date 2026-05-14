@@ -127,21 +127,22 @@ def main():
 
     print(f"  {len(eq_by_deal)} deals have at least one Equipment History record with Order_Date")
 
-    # ── Debug: list all field API names for Issued_Equipment from settings API ──
-    print("\nDEBUG — all field API names in Issued_Equipment module:")
-    resp_fields = requests.get(
-        f"{ZOHO_CRM_BASE}/settings/fields",
-        headers=headers,
-        params={"module": EQ_MODULE},
+    # ── Debug: COQL query to find the correct Order Process Entry field name ──
+    # If the field name is wrong COQL returns an explicit error, unlike GET which
+    # silently drops unknown fields.
+    print("\nDEBUG — COQL query with Order_Process_Entry field:")
+    coql_query = (
+        f"SELECT id, Order_Date, Order_Process_Entry "
+        f"FROM {EQ_MODULE} "
+        f"WHERE Order_Process_Entry IS NOT NULL LIMIT 3"
     )
-    if resp_fields.ok:
-        fields_data = resp_fields.json().get("fields", [])
-        print(f"  {'API Name':<50} {'Display Label':<40} {'Type'}")
-        print(f"  {'-'*50} {'-'*40} {'-'*20}")
-        for f in sorted(fields_data, key=lambda x: x.get("api_name", "")):
-            print(f"  {f.get('api_name',''):<50} {f.get('field_label',''):<40} {f.get('data_type','')}")
-    else:
-        print(f"  HTTP {resp_fields.status_code} — {resp_fields.text[:200]}")
+    resp_coql = requests.post(
+        f"{ZOHO_CRM_BASE}/coql",
+        headers={**headers, "Content-Type": "application/json"},
+        json={"select_query": coql_query},
+    )
+    print(f"  Status: {resp_coql.status_code}")
+    print(f"  Response: {resp_coql.text[:1000]}")
 
     # ── Step 4: build output orders list ──────────────────────────────
     orders = []
