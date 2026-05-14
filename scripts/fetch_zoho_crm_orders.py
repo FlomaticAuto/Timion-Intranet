@@ -127,10 +127,20 @@ def main():
 
     print(f"  {len(eq_by_deal)} deals have at least one Equipment History record with Order_Date")
 
-    # ── Debug: print first 5 raw equipment records so we can verify field names ──
-    print("\nDEBUG — first 5 raw Equipment History records:")
-    for rec in all_eq[:5]:
-        print(f"  {rec}")
+    # ── Debug: fetch 1 record with NO field filter to see every key Zoho returns ──
+    print("\nDEBUG — first Issued_Equipment record with ALL fields (no filter):")
+    resp_dbg = requests.get(
+        f"{ZOHO_CRM_BASE}/{EQ_MODULE}",
+        headers=headers,
+        params={"per_page": 1},
+    )
+    if resp_dbg.ok:
+        dbg_records = resp_dbg.json().get("data", [])
+        if dbg_records:
+            for k, v in dbg_records[0].items():
+                print(f"  {k!r}: {v!r}")
+    else:
+        print(f"  HTTP {resp_dbg.status_code} — {resp_dbg.text[:200]}")
 
     # ── Step 4: build output orders list ──────────────────────────────
     orders = []
