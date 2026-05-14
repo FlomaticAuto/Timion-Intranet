@@ -13,7 +13,6 @@ const MONTH_NAMES = [
 const CRM_BASE = "https://crm.zoho.com/crm/org878871386/tab/Potentials";
 
 // ── Stage metadata ─────────────────────────────────────────────────────────────
-// css class + display order for the pipeline grid
 const STAGE_META: Record<string, { cls: string; order: number }> = {
   "Therapist's request":                 { cls: "s-intake", order: 1 },
   "Private Sale / Government Tender":    { cls: "s-intake", order: 2 },
@@ -45,13 +44,6 @@ const TYPE_META: Record<string, { dot: string; badge: string }> = {
   "External Donation":                { dot: "t-external",    badge: "tb-external"    },
   "Spontaneous Issue":                { dot: "t-spontaneous", badge: "tb-spontaneous" },
 };
-
-const ORDER_TYPES = [
-  "Private Sale / Government Tender",
-  "Internal Donation",
-  "External Donation",
-  "Spontaneous Issue",
-];
 
 // ── Data types ─────────────────────────────────────────────────────────────────
 interface Order {
@@ -227,12 +219,16 @@ function renderPipeline(orders: Order[]): string {
       </div>`;
   }).join("");
 
-  // Order type breakdown
-  const typeCards = ORDER_TYPES.map((t) => {
-    const tOrders  = orders.filter((o) => o.order_type === t);
-    const tIssued  = tOrders.filter((o) => o.stage === "Issued").length;
-    const tActive  = tOrders.filter((o) => o.stage !== "Issued" && o.stage !== "Canceled").length;
-    const meta     = TYPE_META[t] ?? { dot: "t-other", badge: "tb-other" };
+  // Order type breakdown — derived from actual data
+  const typeCount: Record<string, number> = {};
+  orders.forEach((o) => { if (o.order_type) typeCount[o.order_type] = (typeCount[o.order_type] ?? 0) + 1; });
+  const uniqueTypes = Object.keys(typeCount).sort((a, b) => typeCount[b] - typeCount[a]);
+
+  const typeCards = uniqueTypes.map((t) => {
+    const tOrders = orders.filter((o) => o.order_type === t);
+    const tIssued = tOrders.filter((o) => o.stage === "Issued").length;
+    const tActive = tOrders.filter((o) => o.stage !== "Issued" && o.stage !== "Canceled").length;
+    const meta    = TYPE_META[t] ?? { dot: "t-other", badge: "tb-other" };
     return `
       <div class="type-card">
         <div class="type-dot ${meta.dot}"></div>
@@ -243,18 +239,6 @@ function renderPipeline(orders: Order[]): string {
         </div>
       </div>`;
   }).join("");
-
-  // Other types not in the main four
-  const otherOrders = orders.filter((o) => !ORDER_TYPES.includes(o.order_type) && o.order_type);
-  const otherCard = otherOrders.length > 0 ? `
-    <div class="type-card">
-      <div class="type-dot t-other"></div>
-      <div class="type-name">Other / Unknown</div>
-      <div class="type-counts">
-        <div class="tc-total">${otherOrders.length}</div>
-        <div class="tc-sub">&nbsp;</div>
-      </div>
-    </div>` : "";
 
   return `
     ${kpis}
@@ -269,16 +253,25 @@ function renderPipeline(orders: Order[]): string {
         <div class="section-eyebrow">Breakdown</div>
         <div class="section-title">By Order Type</div>
         <div class="section-divider"></div>
-        <div class="type-panel">${typeCards}${otherCard}</div>
+        <div class="type-panel">${typeCards || `<p class="op-empty">No data</p>`}</div>
       </div>
     </div>`;
 }
 
-function renderOrders(orders: Order[], filterType: string, filterStage: string, search: string): string {
+function renderOrders(
+  orders: Order[],
+  filterType: string,
+  filterStage: string,
+  filterReferral: string,
+  filterMonth: string,
+  search: string,
+): string {
   let filtered = orders;
 
-  if (filterType) filtered = filtered.filter((o) => o.order_type === filterType);
-  if (filterStage) filtered = filtered.filter((o) => o.stage === filterStage);
+  if (filterType)     filtered = filtered.filter((o) => o.order_type === filterType);
+  if (filterStage)    filtered = filtered.filter((o) => o.stage === filterStage);
+  if (filterReferral) filtered = filtered.filter((o) => o.referral_source === filterReferral);
+  if (filterMonth)    filtered = filtered.filter((o) => o.created_date?.slice(0, 7) === filterMonth);
   if (search) {
     const q = search.toLowerCase();
     filtered = filtered.filter((o) =>
@@ -289,7 +282,9 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
 
   filtered = [...filtered].sort((a, b) => (b.created_date ?? "").localeCompare(a.created_date ?? ""));
 
-  const typeOptions = ORDER_TYPES.map((t) =>
+  // Derive filter options from the full dataset
+  const uniqueTypes = [...new Set(orders.map((o) => o.order_type).filter(Boolean))].sort();
+  const typeOptions = uniqueTypes.map((t) =>
     `<option value="${esc(t)}"${filterType === t ? " selected" : ""}>${esc(t)}</option>`,
   ).join("");
 
@@ -300,14 +295,27 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
     `<option value="${esc(s)}"${filterStage === s ? " selected" : ""}>${esc(s)}</option>`,
   ).join("");
 
+  const uniqueReferrals = [...new Set(orders.map((o) => o.referral_source).filter(Boolean))].sort();
+  const referralOptions = uniqueReferrals.map((r) =>
+    `<option value="${esc(r)}"${filterReferral === r ? " selected" : ""}>${esc(r)}</option>`,
+  ).join("");
+
+  const uniqueMonths = [...new Set(
+    orders.map((o) => o.created_date?.slice(0, 7)).filter(Boolean) as string[],
+  )].sort().reverse();
+  const monthOptions = uniqueMonths.map((ym) =>
+    `<option value="${esc(ym)}"${filterMonth === ym ? " selected" : ""}>${esc(fmtMonth(ym))}</option>`,
+  ).join("");
+
   const rows = filtered.length === 0
-    ? `<tr><td colspan="6" style="text-align:center;padding:32px;color:#8888aa">No orders match the current filters</td></tr>`
+    ? `<tr><td colspan="8" style="text-align:center;padding:32px;color:#8888aa">No orders match the current filters</td></tr>`
     : filtered.map((o) => `
         <tr>
           <td class="td-name" title="${esc(o.name)}">${esc(o.name || "—")}</td>
           <td class="td-customer" title="${esc(o.customer)}">${esc(o.customer || "—")}</td>
           <td>${typeBadge(o.order_type)}</td>
           <td>${stagePill(o.stage)}</td>
+          <td class="td-referral" title="${esc(o.referral_source)}">${esc(o.referral_source || "—")}</td>
           <td style="white-space:nowrap">${esc(fmtDate(o.created_date))}</td>
           <td style="white-space:nowrap">${esc(fmtDate(o.closing_date))}</td>
           <td>
@@ -317,12 +325,18 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
 
   return `
     <div class="table-controls op-animate">
-      <input  class="op-search"  id="op-search-input" type="search" placeholder="Search by name or customer…" value="${esc(search)}">
+      <input  class="op-search"  id="op-search-input"    type="search" placeholder="Search by name or customer…" value="${esc(search)}">
       <select class="op-select"  id="op-filter-type">
         <option value="">All types</option>${typeOptions}
       </select>
       <select class="op-select"  id="op-filter-stage">
         <option value="">All stages</option>${stageOptions}
+      </select>
+      <select class="op-select"  id="op-filter-referral">
+        <option value="">All referral sources</option>${referralOptions}
+      </select>
+      <select class="op-select"  id="op-filter-month">
+        <option value="">All months</option>${monthOptions}
       </select>
       <span class="table-count">${filtered.length} order${filtered.length !== 1 ? "s" : ""}</span>
     </div>
@@ -334,6 +348,7 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
             <th>Customer</th>
             <th>Type</th>
             <th>Stage</th>
+            <th>Referral Source</th>
             <th>Created Date</th>
             <th>Closing Date</th>
             <th></th>
@@ -347,8 +362,6 @@ function renderOrders(orders: Order[], filterType: string, filterStage: string, 
 function renderTrends(orders: Order[]): string {
   // Group by created_date month (when the Order Process entry was made)
   // and by closing_date month (when completed).
-  // order_date (original placement) is intentionally excluded from trend charts —
-  // it predates the Order Process entry and would skew the timeline.
   const placedMap: Record<string, number> = {};
   const closedMap: Record<string, number> = {};
 
@@ -422,9 +435,11 @@ function renderTrends(orders: Order[]): string {
 export function initOrderDashboard() {
   let allOrders: Order[] = [];
   let currentView: "pipeline" | "orders" | "trends" = "pipeline";
-  let filterType  = "";
-  let filterStage = "";
-  let searchTerm  = "";
+  let filterType     = "";
+  let filterStage    = "";
+  let filterReferral = "";
+  let filterMonth    = "";
+  let searchTerm     = "";
 
   const content = () => document.getElementById("op-content")!;
 
@@ -438,30 +453,42 @@ export function initOrderDashboard() {
 
   function render() {
     if      (currentView === "pipeline") content().innerHTML = renderPipeline(allOrders);
-    else if (currentView === "orders")   content().innerHTML = renderOrders(allOrders, filterType, filterStage, searchTerm);
+    else if (currentView === "orders")   content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterMonth, searchTerm);
     else                                  content().innerHTML = renderTrends(allOrders);
     wireFilters();
   }
 
   function wireFilters() {
-    const searchEl = document.getElementById("op-search-input") as HTMLInputElement | null;
-    const typeEl   = document.getElementById("op-filter-type")  as HTMLSelectElement | null;
-    const stageEl  = document.getElementById("op-filter-stage") as HTMLSelectElement | null;
+    const searchEl   = document.getElementById("op-search-input")   as HTMLInputElement  | null;
+    const typeEl     = document.getElementById("op-filter-type")     as HTMLSelectElement | null;
+    const stageEl    = document.getElementById("op-filter-stage")    as HTMLSelectElement | null;
+    const referralEl = document.getElementById("op-filter-referral") as HTMLSelectElement | null;
+    const monthEl    = document.getElementById("op-filter-month")    as HTMLSelectElement | null;
+
+    const rerender = () => {
+      content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterMonth, searchTerm);
+      wireFilters();
+    };
 
     searchEl?.addEventListener("input", (e) => {
       searchTerm = (e.target as HTMLInputElement).value;
-      content().innerHTML = renderOrders(allOrders, filterType, filterStage, searchTerm);
-      wireFilters();
+      rerender();
     });
     typeEl?.addEventListener("change", (e) => {
       filterType = (e.target as HTMLSelectElement).value;
-      content().innerHTML = renderOrders(allOrders, filterType, filterStage, searchTerm);
-      wireFilters();
+      rerender();
     });
     stageEl?.addEventListener("change", (e) => {
       filterStage = (e.target as HTMLSelectElement).value;
-      content().innerHTML = renderOrders(allOrders, filterType, filterStage, searchTerm);
-      wireFilters();
+      rerender();
+    });
+    referralEl?.addEventListener("change", (e) => {
+      filterReferral = (e.target as HTMLSelectElement).value;
+      rerender();
+    });
+    monthEl?.addEventListener("change", (e) => {
+      filterMonth = (e.target as HTMLSelectElement).value;
+      rerender();
     });
   }
 
