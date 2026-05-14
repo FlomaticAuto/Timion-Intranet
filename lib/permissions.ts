@@ -54,6 +54,7 @@ export const SECTIONS = [
   { path: "/inventory",  label: "Inventory",          icon: "📦" },
   { path: "/books",      label: "Books",              icon: "💰" },
   { path: "/workshop",   label: "Workshop",           icon: "🛠️" },
+  { path: "/hr",         label: "HR",                 icon: "🧑‍💼" },
   { path: "/iso",        label: "ISO / Compliance",   icon: "✅" },
   { path: "/documents",  label: "Documents",          icon: "📁" },
   { path: "/board",      label: "Board & Reporting",  icon: "📈" },
@@ -86,6 +87,7 @@ export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
     "/inventory": "full",
     "/books":     "full",
     "/workshop":  "full",
+    "/hr":        "full",
     "/iso":       "full",
     "/documents": "full",
     "/board":     "full",
@@ -97,6 +99,7 @@ export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
     "/inventory": "full",
     "/books":     "full",
     "/workshop":  "full",
+    "/hr":        "full",
     "/iso":       "full",
     "/documents": "full",
     "/board":     "full",
@@ -105,6 +108,7 @@ export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
     "/":          "full",
     "/inventory": "full",
     "/workshop":  "full",
+    "/hr":        "read",
     "/documents": "read",
   },
   carpenter: {
@@ -121,6 +125,7 @@ export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
   office: {
     "/":          "full",
     "/books":     "read",
+    "/hr":        "full",
     "/iso":       "full",
     "/documents": "full",
   },
@@ -131,6 +136,7 @@ export const DEFAULT_SECTION_ACCESS: AccessPolicy = {
   },
   board: {
     "/":          "full",
+    "/hr":        "read",
     "/board":     "full",
     "/documents": "read",
   },

@@ -18,6 +18,7 @@ const TABS: Tab[] = [
   { href: "/inventory", icon: "📦",  label: "Inventory" },
   { href: "/books",     icon: "💰",  label: "Books" },
   { href: "/workshop",  icon: "🛠️", label: "Workshop" },
+  { href: "/hr",        icon: "🧑‍💼", label: "HR" },
   { href: "/iso",       icon: "✅",  label: "ISO / Compliance" },
   { href: "/documents", icon: "📁",  label: "Documents" },
   { href: "/board",     icon: "📈",  label: "Board & Reporting" },

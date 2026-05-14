@@ -32,6 +32,7 @@ export default function HomePage() {
         <HeroTile href="/inventory"  icon="📦"  title="Inventory"         desc="Production dashboard, reorder levels, production schedule and Zoho Inventory." />
         <HeroTile href="/books"      icon="💰"  title="Books"             desc="Sales orders, purchase orders, inventory valuation and Zoho Books." />
         <HeroTile href="/workshop"   icon="🛠️" title="Workshop"          desc="Production management, job cards, carpenter view and quality control." />
+        <HeroTile href="/hr"         icon="🧑‍💼" title="HR"               desc="Leave requests and approvals, staff profiles, and HR dashboards." />
         <HeroTile href="/iso"        icon="✅"  title="ISO / Compliance"  desc="SOP library, auditor portal, compliance documentation and audit calendar." />
         <HeroTile href="/documents"  icon="📁"  title="Documents"         desc="SOPs, BM onboarding pack, policies and organisational templates." />
         <HeroTile href="/board"      icon="📈"  title="Board & Reporting" desc="Annual report, board pack, presentation deck and high-level KPI summaries." />

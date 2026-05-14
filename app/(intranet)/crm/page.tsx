@@ -29,8 +29,26 @@ export default function CrmPage() {
         <Tile
           variant="comingSoon"
           icon="🦽"
-          title="Equipment Dashboard"
-          description="Dashboard for equipment history — issuances, pipeline, demand by device type."
+          title="Equipment Issued"
+          description="Dashboard for equipment issuances — pipeline, by device type and patient."
+        />
+        <Tile
+          variant="comingSoon"
+          icon="🛒"
+          title="Order Process Dashboard"
+          description="Live view of orders moving through the pipeline — status, stage, and bottlenecks."
+        />
+        <Tile
+          variant="comingSoon"
+          icon="📦"
+          title="Orders Packed Dashboard"
+          description="Packed and dispatched orders — volumes, timelines and fulfilment tracking."
+        />
+        <Tile
+          variant="comingSoon"
+          icon="🌍"
+          title="Outreach Orders"
+          description="Outreach-specific order tracking — community visits, off-site fulfilment and delivery status."
         />
         <Tile
           variant="comingSoon"

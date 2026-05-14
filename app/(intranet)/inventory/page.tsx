@@ -21,6 +21,12 @@ export default function InventoryPage() {
         />
         <Tile
           variant="comingSoon"
+          icon="🔧"
+          title="Equipment"
+          description="Equipment catalogue — specifications, condition, location, maintenance history and lifecycle status."
+        />
+        <Tile
+          variant="comingSoon"
           icon="⚠️"
           title="Reorder Level Report"
           description="Stock tracker: all items close to their reorder level, plus out-of-stock alerts."
