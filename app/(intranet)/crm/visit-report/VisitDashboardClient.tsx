@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { initVisitDashboard } from "./visitDashboard";
+import { SyncButton } from "@/components/SyncButton";
 
 export default function VisitDashboardClient() {
   useEffect(() => {
@@ -11,7 +12,10 @@ export default function VisitDashboardClient() {
   return (
     <div className="visit-dashboard-root">
       <div className="dash-subheader">
-        <span className="last-synced" id="last-synced">Loading…</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span className="last-synced" id="last-synced">Loading…</span>
+          <SyncButton />
+        </div>
         <div className="view-toggle">
           <button className="view-btn active" id="btn-view-monthly" type="button">Monthly</button>
           <button className="view-btn"        id="btn-view-analytics" type="button">Analytics</button>

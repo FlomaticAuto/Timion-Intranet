@@ -167,7 +167,6 @@ function renderPipeline(orders: Order[]): string {
   const onHold   = orders.filter((o) => o.stage === "On hold");
   const canceled = orders.filter((o) => o.stage === "Canceled");
 
-  // KPI chips
   const kpis = `
     <div class="kpi-row op-animate">
       <div class="kpi-card c-active">
@@ -192,7 +191,6 @@ function renderPipeline(orders: Order[]): string {
       </div>
     </div>`;
 
-  // Stage counts
   const byStage: Record<string, Order[]> = {};
   orders.forEach((o) => {
     byStage[o.stage] = byStage[o.stage] ?? [];
@@ -219,7 +217,7 @@ function renderPipeline(orders: Order[]): string {
       </div>`;
   }).join("");
 
-  // Order type breakdown — derived from actual data
+  // Derive types from actual data
   const typeCount: Record<string, number> = {};
   orders.forEach((o) => { if (o.order_type) typeCount[o.order_type] = (typeCount[o.order_type] ?? 0) + 1; });
   const uniqueTypes = Object.keys(typeCount).sort((a, b) => typeCount[b] - typeCount[a]);
@@ -263,6 +261,7 @@ function renderOrders(
   filterType: string,
   filterStage: string,
   filterReferral: string,
+  filterYear: string,
   filterMonth: string,
   search: string,
 ): string {
@@ -271,7 +270,11 @@ function renderOrders(
   if (filterType)     filtered = filtered.filter((o) => o.order_type === filterType);
   if (filterStage)    filtered = filtered.filter((o) => o.stage === filterStage);
   if (filterReferral) filtered = filtered.filter((o) => o.referral_source === filterReferral);
-  if (filterMonth)    filtered = filtered.filter((o) => o.created_date?.slice(0, 7) === filterMonth);
+  if (filterYear && filterMonth) {
+    filtered = filtered.filter((o) => o.created_date?.slice(0, 7) === `${filterYear}-${filterMonth}`);
+  } else if (filterYear) {
+    filtered = filtered.filter((o) => o.created_date?.startsWith(filterYear + "-"));
+  }
   if (search) {
     const q = search.toLowerCase();
     filtered = filtered.filter((o) =>
@@ -300,11 +303,23 @@ function renderOrders(
     `<option value="${esc(r)}"${filterReferral === r ? " selected" : ""}>${esc(r)}</option>`,
   ).join("");
 
-  const uniqueMonths = [...new Set(
-    orders.map((o) => o.created_date?.slice(0, 7)).filter(Boolean) as string[],
+  const uniqueYears = [...new Set(
+    orders.map((o) => o.created_date?.slice(0, 4)).filter(Boolean) as string[],
   )].sort().reverse();
-  const monthOptions = uniqueMonths.map((ym) =>
-    `<option value="${esc(ym)}"${filterMonth === ym ? " selected" : ""}>${esc(fmtMonth(ym))}</option>`,
+  const yearOptions = uniqueYears.map((y) =>
+    `<option value="${esc(y)}"${filterYear === y ? " selected" : ""}>${esc(y)}</option>`,
+  ).join("");
+
+  const monthsForYear = filterYear
+    ? ([...new Set(
+        orders
+          .filter((o) => o.created_date?.startsWith(filterYear + "-"))
+          .map((o) => o.created_date?.slice(5, 7))
+          .filter(Boolean) as string[],
+      )].sort())
+    : [];
+  const monthOptions = monthsForYear.map((m) =>
+    `<option value="${esc(m)}"${filterMonth === m ? " selected" : ""}>${esc(MONTH_NAMES[parseInt(m, 10) - 1])}</option>`,
   ).join("");
 
   const rows = filtered.length === 0
@@ -335,7 +350,10 @@ function renderOrders(
       <select class="op-select"  id="op-filter-referral">
         <option value="">All referral sources</option>${referralOptions}
       </select>
-      <select class="op-select"  id="op-filter-month">
+      <select class="op-select"  id="op-filter-year">
+        <option value="">All years</option>${yearOptions}
+      </select>
+      <select class="op-select"  id="op-filter-month"${!filterYear ? ' disabled style="opacity:0.45"' : ''}>
         <option value="">All months</option>${monthOptions}
       </select>
       <span class="table-count">${filtered.length} order${filtered.length !== 1 ? "s" : ""}</span>
@@ -360,8 +378,6 @@ function renderOrders(
 }
 
 function renderTrends(orders: Order[]): string {
-  // Group by created_date month (when the Order Process entry was made)
-  // and by closing_date month (when completed).
   const placedMap: Record<string, number> = {};
   const closedMap: Record<string, number> = {};
 
@@ -376,7 +392,6 @@ function renderTrends(orders: Order[]): string {
     }
   });
 
-  // Union of all months, sorted
   const allMonths = [...new Set([...Object.keys(placedMap), ...Object.keys(closedMap)])].sort();
 
   const placedPoints = allMonths.map((ym) => ({ month: ym, label: fmtMonth(ym), count: placedMap[ym] ?? 0 }));
@@ -385,7 +400,6 @@ function renderTrends(orders: Order[]): string {
   const placedChart = buildBarChart(placedPoints, "bar-fill-accent", "Orders placed");
   const closedChart = buildBarChart(closedPoints, "bar-fill-green",  "Orders closed");
 
-  // Type distribution over all data
   const typeCount: Record<string, number> = {};
   orders.forEach((o) => {
     const t = o.order_type || "Unknown";
@@ -438,6 +452,7 @@ export function initOrderDashboard() {
   let filterType     = "";
   let filterStage    = "";
   let filterReferral = "";
+  let filterYear     = "";
   let filterMonth    = "";
   let searchTerm     = "";
 
@@ -453,7 +468,7 @@ export function initOrderDashboard() {
 
   function render() {
     if      (currentView === "pipeline") content().innerHTML = renderPipeline(allOrders);
-    else if (currentView === "orders")   content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterMonth, searchTerm);
+    else if (currentView === "orders")   content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterYear, filterMonth, searchTerm);
     else                                  content().innerHTML = renderTrends(allOrders);
     wireFilters();
   }
@@ -463,10 +478,11 @@ export function initOrderDashboard() {
     const typeEl     = document.getElementById("op-filter-type")     as HTMLSelectElement | null;
     const stageEl    = document.getElementById("op-filter-stage")    as HTMLSelectElement | null;
     const referralEl = document.getElementById("op-filter-referral") as HTMLSelectElement | null;
+    const yearEl     = document.getElementById("op-filter-year")     as HTMLSelectElement | null;
     const monthEl    = document.getElementById("op-filter-month")    as HTMLSelectElement | null;
 
     const rerender = () => {
-      content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterMonth, searchTerm);
+      content().innerHTML = renderOrders(allOrders, filterType, filterStage, filterReferral, filterYear, filterMonth, searchTerm);
       wireFilters();
     };
 
@@ -484,6 +500,11 @@ export function initOrderDashboard() {
     });
     referralEl?.addEventListener("change", (e) => {
       filterReferral = (e.target as HTMLSelectElement).value;
+      rerender();
+    });
+    yearEl?.addEventListener("change", (e) => {
+      filterYear  = (e.target as HTMLSelectElement).value;
+      filterMonth = ""; // reset month when year changes
       rerender();
     });
     monthEl?.addEventListener("change", (e) => {

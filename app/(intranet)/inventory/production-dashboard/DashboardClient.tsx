@@ -2,14 +2,8 @@
 
 import { useEffect } from "react";
 import { initDashboard } from "./dashboard";
+import { SyncButton } from "@/components/SyncButton";
 
-/**
- * Production Dashboard — client wrapper.
- *
- * Renders the static JSX skeleton (with all the IDs the imperative
- * dashboard logic depends on) and then runs `initDashboard` once
- * after mount to fetch data and wire up event handlers.
- */
 export default function DashboardClient() {
   useEffect(() => {
     initDashboard();
@@ -18,7 +12,10 @@ export default function DashboardClient() {
   return (
     <div className="production-dashboard-root">
       <div className="dash-subheader">
-        <span className="last-synced" id="last-synced">Loading…</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span className="last-synced" id="last-synced">Loading…</span>
+          <SyncButton />
+        </div>
         <div className="view-toggle">
           <button className="view-btn active" id="btn-view-monthly" type="button">Monthly</button>
           <button className="view-btn"        id="btn-view-analytics" type="button">Analytics</button>
