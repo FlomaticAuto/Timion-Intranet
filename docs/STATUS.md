@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-16 (session 6)
+**Last updated:** 2026-05-16 (session 7)
 
 ## Deployment
 
@@ -22,7 +22,7 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 
 ### Sections — landing pages with tile grids
 All exist with appropriate tiles. Live tiles:
-- **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard**, **Equipment Issued Dashboard** (all live internal routes)
+- **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard**, **Equipment Ordered Dashboard** (all live internal routes)
 - **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders Dashboard**, **Reorder Level Report** (all live internal routes)
 - **Books** — Zoho Books link
 - **HR** — 4 comingSoon tiles: Leave Requests, Leave Approvals, Leave Dashboard, Staff Profile
@@ -52,15 +52,18 @@ Native Next.js route. Pulls JSON from `public/data/inventory/stock_orders.json`.
 - Also writes `public/data/inventory/reorder.json` for the Reorder Level Report
 - **Note:** This dashboard is temporary until the stock split is implemented later this year; at that point donation items will carry real stock and the name-mapping step can be removed.
 
-### Equipment Issued Dashboard (`/crm/equipment-issued`)
-Native Next.js route. Reuses `visit-dashboard-styles.css` — identical layout to Visit Dashboard. Data from `Issued_Equipment` CRM module, stored in `public/data/crm/equipment/`.
+### Equipment Ordered Dashboard (`/crm/equipment-issued`)
+Native Next.js route. Reuses `visit-dashboard-styles.css`. Data from `Issued_Equipment` CRM module, stored in `public/data/crm/equipment/`.
 
-- **Script:** `scripts/fetch_zoho_crm_equipment.py` — uses `ZOHO_CRM_*` credentials, same pattern as `fetch_zoho_crm.py`
-- **Fields:** `Name` (record title), `Patient`, `Device_Equipment` (device), `Qty`, `Order_Date`, `Approval_Status`, `Order_from` (referral source)
-- **Data:** 211 records backfilled Dec 2025–May 2026. 12,592 total records in module (all time); script caps at `FROM_MONTH = "2025-12"` and filters out future-dated records (e.g. typo year 2106 found in data)
-- **Analytics:** by Device, by Approval Status, by Referral Source
-- **Deep-link:** `https://crm.zoho.com/crm/org878871386/tab/Issued_Equipment/{id}` — verify URL slug is correct once tested in browser
-- **Pending approval count:** monthly chip counts records where `approval_status != "Approved"`
+- **Script:** `scripts/fetch_zoho_crm_equipment.py` — uses `ZOHO_CRM_*` credentials
+- **Fields:** `Name` (record title), `Patient`, `Device_Equipment` (device), `Qty`, `Order_Date`, `Approval_Status`, `Order_from` (referral source), `Status` (mirrors linked order process stage)
+- **Data:** 210 records Dec 2025–May 2026. 12,592 total records in module (all time); script caps at `FROM_MONTH = "2025-12"` and filters out future-dated records (typo year 2106 found in live data)
+- **Filter toolbar:** search (patient / device / name) + Status dropdown + Approval Status dropdown; filter state persists across month navigation; chips always show full unfiltered totals
+- **Status values (13):** Therapist's request, Private Sale/Government Tender, In production, Therapist's To Issue, Picked & Packed, With External Therapists - To Issue, Out With Therapist's, Ready for donation collection, On hold, Received Feedback Form, Spontaneous Issue, Issued, Canceled
+- **Approval Status values (7):** Ready for Evaluation, Needs Further Information, Approved, Converted to Order, Rejected, Spontaneous Issue, Private Sale/Government Tender
+- **Colour-coded badges** for both Status and Approval Status on every card (inline styles, no new CSS)
+- **Analytics:** 4 KPI cards, 2 bar charts, 4 rank lists (By Device, By Status, By Approval Status, By Referral Source)
+- **Deep-link:** `https://crm.zoho.com/crm/org878871386/tab/Issued_Equipment/{id}`
 
 ### Reorder Level Report (`/inventory/reorder-report`)
 Native Next.js route. Pulls JSON from `public/data/inventory/reorder.json`. Shows all tracked inventory items at or approaching their reorder level.
