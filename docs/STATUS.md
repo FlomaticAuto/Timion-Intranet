@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-15 (session 3)
+**Last updated:** 2026-05-16 (session 4)
 
 ## Deployment
 
@@ -23,7 +23,7 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 ### Sections — landing pages with tile grids
 All exist with appropriate tiles. Live tiles:
 - **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard** (both live internal routes)
-- **Inventory** — Zoho Inventory link, **Production Dashboard** (live internal route)
+- **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders** (both live internal routes)
 - **Books** — Zoho Books link
 - **HR** — 4 comingSoon tiles: Leave Requests, Leave Approvals, Leave Dashboard, Staff Profile
 - **Board & Reporting** — Timion Presentation, Annual Report 2026 PDF (both static files in `/public/`)
@@ -42,6 +42,16 @@ Native Next.js route. Pulls JSON from `public/data/crm/*.json`. Monthly view (4 
 
 **Note:** `visit_number` and `patient` were added in session 3 — run workflow_dispatch with `crm_all_months: true` to backfill older months.
 
+### Stock vs Orders Dashboard (`/inventory/stock-orders`)
+Native Next.js route. Pulls JSON from `public/data/inventory/stock_orders.json`. Two views: Items (one row per finished item with demand, filterable by status, expandable to show which orders need it) and Orders (one row per In-Production SO with item list and CRM link).
+
+- **Data:** 21 In-Production CRM deals → 21 matched Inventory Sales Orders → line items → finished item stock comparison
+- **Status logic:** Insufficient (available < needed, shows shortfall) / At Risk (available >= needed but remaining drops below reorder level) / OK
+- **Filter:** only processes line items with "(Donation) " prefix — skips service/cost lines
+- **Script:** `scripts/fetch_zoho_stock_orders.py` — uses COQL for CRM deals, Inventory API for SOs + items
+- Also writes `public/data/inventory/reorder.json` — all 1268 finished items with stock + reorder data (seeds the future Reorder Level Report)
+- **Note:** This dashboard is temporary until the stock split is implemented later this year; at that point donation items will carry real stock and the name-mapping step can be removed.
+
 ### Order Process Dashboard (`/crm/order-process`)
 Native Next.js route. Pulls JSON from `public/data/crm/orders.json`. Three views: Pipeline (stage grid + order-type breakdown), Orders (filterable table), Trends (bar charts).
 
@@ -52,7 +62,7 @@ Native Next.js route. Pulls JSON from `public/data/crm/orders.json`. Three views
 - **Deal fields fetched:** `id`, `Deal_Name`, `Account_Name`, `Order_Type`, `Stage`, `Lead_Source`, `Closing_Date`, `Created_Time`
 
 ### Sync schedule and manual trigger
-All three dashboards sync in one workflow run:
+All four dashboards sync in one workflow run:
 - **Automatic:** `0 9,15 * * 1-5` = **11:00 + 17:00 SAST, Mon–Fri**
 - **Manual:** ↺ Sync button on each dashboard subheader → `POST /api/sync` → dispatches `sync-zoho.yml` via GitHub Actions API. Requires `GITHUB_SYNC_TOKEN` Vercel env var (fine-grained PAT, Actions read/write on this repo).
 
@@ -63,8 +73,9 @@ All three dashboards sync in one workflow run:
 
 ### Zoho deep-links (all dashboards)
 - **Visit cards** → `https://one.zoho.com/…/tab/CustomModule4/{id}`
-- **Production cards** → `https://one.zoho.com/…/inventory/app/878382704#/inventory/assembly/{id}` (needs a post-session-3 sync to get `bundle_id` into JSON)
+- **Production cards** → `https://one.zoho.com/…/inventory/app/878382704#/inventory/assembly/{id}`
 - **Order rows** → `https://crm.zoho.com/crm/org878871386/tab/Potentials/{id}`
+- **Stock vs Orders (CRM links)** → `https://crm.zoho.com/crm/org878871386/tab/Potentials/{crm_deal_id}`
 
 ### Auth
 - Email + password sign-in at `/login`
