@@ -29,15 +29,17 @@ export default function InventoryPage() {
           variant="live"
           href="/inventory/stock-orders"
           icon="⚖️"
-          title="Stock vs Orders"
+          title="Stock vs Orders Dashboard"
           description="Stock availability check for In-Production orders — see what's short, at risk, or fully covered."
           ctaLabel="Open dashboard"
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/inventory/reorder-report"
           icon="⚠️"
           title="Reorder Level Report"
-          description="Stock tracker: all items close to their reorder level, plus out-of-stock alerts."
+          description="Items at or approaching their reorder level — filter by type across finished items, subassemblies, and hardware."
+          ctaLabel="Open report"
         />
         <Tile
           variant="live"

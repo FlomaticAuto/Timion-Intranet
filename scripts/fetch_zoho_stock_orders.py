@@ -28,8 +28,9 @@ ZOHO_TOKEN_URL     = "https://accounts.zoho.com/oauth/v2/token"
 COQL_URL           = "https://www.zohoapis.com/crm/v2.1/coql"
 INV_BASE           = "https://www.zohoapis.com/inventory/v1"
 
-IN_PRODUCTION_STAGE = "In Production"
-DONATION_PREFIX     = "(Donation) "
+IN_PRODUCTION_STAGE    = "In Production"
+DONATION_PREFIX        = "(Donation) "
+NEAR_REORDER_MULTIPLIER = 1.5
 
 
 def get_access_token(client_id, client_secret, refresh_token):
@@ -101,11 +102,38 @@ def finished_name(donation_name):
     return donation_name
 
 
+def get_item_cf_type(item):
+    for cf in item.get("custom_fields") or []:
+        if cf.get("api_name") == "cf_item_type":
+            return cf.get("value") or ""
+    return ""
+
+
+def item_category(cf_type):
+    if cf_type == "Finished Product / Sales Product":
+        return "Finished Items"
+    if cf_type == "Subassembly":
+        return "Subassemblies"
+    return "Hardware & Materials"
+
+
 def determine_status(needed, available, reorder_level):
     if available < needed:
         return "insufficient"
     if (available - needed) < reorder_level:
         return "at_risk"
+    return "ok"
+
+
+def determine_reorder_status(available, reorder_level):
+    if reorder_level <= 0:
+        return "no_reorder_set"
+    if available < reorder_level:
+        return "below_reorder"
+    if available == reorder_level:
+        return "at_reorder"
+    if available <= reorder_level * NEAR_REORDER_MULTIPLIER:
+        return "near_reorder"
     return "ok"
 
 
@@ -172,6 +200,35 @@ def main():
     all_items = inv_fetch_all(headers, org_id, "/items", "items")
     print(f"  {len(all_items)} total")
 
+    # The list endpoint doesn't return custom_fields, so we build a name→type map
+    # by fetching individual detail only for items that have a reorder level set.
+    items_with_rl = [
+        item for item in all_items
+        if not item.get("name", "").startswith(DONATION_PREFIX)
+        and safe_float(item.get("reorder_level")) > 0
+    ]
+    print(f"  {len(items_with_rl)} items have reorder_level > 0 — fetching types...")
+    item_type_map = {}
+    for i, item in enumerate(items_with_rl):
+        item_id = item.get("item_id") or item.get("id")
+        name    = item.get("name", "")
+        if not item_id:
+            item_type_map[name] = "Hardware & Materials"
+            continue
+        resp = requests.get(f"{INV_BASE}/items/{item_id}",
+                            headers=headers,
+                            params={"organization_id": org_id})
+        if resp.ok:
+            detail  = resp.json().get("item", {})
+            cf_type = get_item_cf_type(detail)
+            item_type_map[name] = item_category(cf_type)
+        else:
+            item_type_map[name] = "Hardware & Materials"
+        if (i + 1) % 50 == 0:
+            print(f"    {i + 1}/{len(items_with_rl)}...")
+        time.sleep(0.05)
+    print(f"  Item types resolved")
+
     finished_items = {}
     all_finished   = []
     for item in all_items:
@@ -183,6 +240,7 @@ def main():
             "available":     safe_float(item.get("available_stock")),
             "stock_on_hand": safe_float(item.get("stock_on_hand")),
             "reorder_level": safe_float(item.get("reorder_level")),
+            "item_type":     item_type_map.get(name, "Hardware & Materials"),
         }
         finished_items[name] = entry
         all_finished.append(entry)
@@ -257,23 +315,24 @@ def main():
 
     # ── 7. Reorder Level Report data ──────────────────────────────────────────
     reorder_items = []
+    rl_counts = {"below_reorder": 0, "at_reorder": 0, "near_reorder": 0, "ok": 0}
+
     for entry in all_finished:
-        avail  = entry["available"]
-        rl     = entry["reorder_level"]
-        if rl > 0 and avail < rl:
-            rl_status = "below_reorder"
-        elif rl > 0 and avail == rl:
-            rl_status = "at_reorder"
-        else:
-            rl_status = "ok"
+        avail     = entry["available"]
+        rl        = entry["reorder_level"]
+        rl_status = determine_reorder_status(avail, rl)
+        if rl_status != "no_reorder_set":
+            rl_counts[rl_status] += 1
         reorder_items.append({
             "name":          entry["name"],
             "available":     avail,
             "stock_on_hand": entry["stock_on_hand"],
             "reorder_level": rl,
             "status":        rl_status,
+            "item_type":     entry["item_type"],
         })
-    rl_order = {"below_reorder": 0, "at_reorder": 1, "ok": 2}
+
+    rl_order = {"below_reorder": 0, "at_reorder": 1, "near_reorder": 2, "ok": 3, "no_reorder_set": 4}
     reorder_items.sort(key=lambda x: (rl_order[x["status"]], x["name"]))
 
     # ── 8. Write output ───────────────────────────────────────────────────────
@@ -297,7 +356,17 @@ def main():
     print(f"  {len(items_result)} items with demand — "
           f"insufficient={counts['insufficient']}  at_risk={counts['at_risk']}  ok={counts['ok']}")
 
-    reorder_out = {"synced_at": now, "items": reorder_items}
+    reorder_out = {
+        "synced_at": now,
+        "summary": {
+            "total_with_reorder": sum(rl_counts.values()),
+            "below_reorder":      rl_counts["below_reorder"],
+            "at_reorder":         rl_counts["at_reorder"],
+            "near_reorder":       rl_counts["near_reorder"],
+            "ok":                 rl_counts["ok"],
+        },
+        "items": reorder_items,
+    }
     with open("public/data/inventory/reorder.json", "w", encoding="utf-8") as f:
         json.dump(reorder_out, f, indent=2, ensure_ascii=False)
     print(f"Wrote public/data/inventory/reorder.json ({len(reorder_items)} finished items)")
