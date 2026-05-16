@@ -437,7 +437,7 @@ export function initEquipmentDashboard() {
           <div class="a-eyebrow">Equipment</div>
           <div class="a-title">By Device</div>
           <div class="section-divider"></div>
-          <div class="rank-list">${buildRankList(a.deviceList)}</div>
+          <div class="rank-list">${buildRankList(a.deviceList.slice(0, 10))}</div>
         </div>
         <div class="a-section">
           <div class="a-eyebrow">Pipeline</div>
