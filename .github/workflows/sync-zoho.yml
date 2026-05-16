@@ -94,6 +94,14 @@ jobs:
           fi
           python scripts/fetch_zoho_crm_orders.py
 
+      - name: Fetch Stock vs Orders data
+        env:
+          ZOHO_CLIENT_ID:     ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ORG_ID:        ${{ secrets.ZOHO_ORG_ID }}
+        run: python scripts/fetch_zoho_stock_orders.py
+
       - name: Commit and push if data changed
         run: |
           git config user.name  "github-actions[bot]"

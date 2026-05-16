@@ -1,0 +1,688 @@
+{
+  "synced_at": "2026-05-16T15:47:19Z",
+  "summary": {
+    "total_orders": 21,
+    "items_insufficient": 4,
+    "items_at_risk": 3,
+    "items_ok": 4
+  },
+  "items": [
+    {
+      "name": "Positioning Chair (Small)",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 5.0,
+      "remaining_after": -5.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00264",
+          "so_id": "6010567000015126272",
+          "crm_deal_id": "6673955000007837066",
+          "crm_deal_name": "Ndalwenhle Mlambo - Order",
+          "customer": "Ndalwenhle Mlambo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00263",
+          "so_id": "6010567000015143013",
+          "crm_deal_id": "6673955000007841013",
+          "crm_deal_name": "Mnotho Xolo - Order",
+          "customer": "Mnotho Xolo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00262",
+          "so_id": "6010567000015120039",
+          "crm_deal_id": "6673955000007841040",
+          "crm_deal_name": "Zethembe Sikobi - Order",
+          "customer": "Zethembe Sikobi",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00261",
+          "so_id": "6010567000015157140",
+          "crm_deal_id": "6673955000007841076",
+          "crm_deal_name": "Langelihle Ngcungama - order",
+          "customer": "Langelihle Ngcungama",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00260",
+          "so_id": "6010567000015157131",
+          "crm_deal_id": "6673955000007841100",
+          "crm_deal_name": "Yolatha Nyumbana - Order",
+          "customer": "Yolatha Nyumbana",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 5.0
+    },
+    {
+      "name": "Sidelyer 120",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 3.0,
+      "remaining_after": -3.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00264",
+          "so_id": "6010567000015126272",
+          "crm_deal_id": "6673955000007837066",
+          "crm_deal_name": "Ndalwenhle Mlambo - Order",
+          "customer": "Ndalwenhle Mlambo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00262",
+          "so_id": "6010567000015120039",
+          "crm_deal_id": "6673955000007841040",
+          "crm_deal_name": "Zethembe Sikobi - Order",
+          "customer": "Zethembe Sikobi",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00261",
+          "so_id": "6010567000015157140",
+          "crm_deal_id": "6673955000007841076",
+          "crm_deal_name": "Langelihle Ngcungama - order",
+          "customer": "Langelihle Ngcungama",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 3.0
+    },
+    {
+      "name": "Sidelyer 140",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 1.0
+    },
+    {
+      "name": "Table (CNC) Small Height Adjustable",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 12.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00259",
+          "so_id": "6010567000015157120",
+          "crm_deal_id": "6673955000007857014",
+          "crm_deal_name": "Smangaliso Shude - Order",
+          "customer": "Smangaliso Shude",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 1.0
+    },
+    {
+      "name": "Corner Chair (CNC)",
+      "available": 11.0,
+      "stock_on_hand": 11.0,
+      "reorder_level": 12.0,
+      "needed": 2.0,
+      "remaining_after": 9.0,
+      "status": "at_risk",
+      "orders": [
+        {
+          "so_number": "SO-00259",
+          "so_id": "6010567000015157120",
+          "crm_deal_id": "6673955000007857014",
+          "crm_deal_name": "Smangaliso Shude - Order",
+          "customer": "Smangaliso Shude",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Reverse Rollator (CNC) Medium",
+      "available": 2.0,
+      "stock_on_hand": 2.0,
+      "reorder_level": 3.0,
+      "needed": 2.0,
+      "remaining_after": 0.0,
+      "status": "at_risk",
+      "orders": [
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00244",
+          "so_id": "6010567000014700019",
+          "crm_deal_id": "6673955000007633048",
+          "crm_deal_name": "Eldine Ambraal Order",
+          "customer": "Eldine Ambraal",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Table (CNC) Med Height Adjustable",
+      "available": 9.0,
+      "stock_on_hand": 9.0,
+      "reorder_level": 12.0,
+      "needed": 1.0,
+      "remaining_after": 8.0,
+      "status": "at_risk",
+      "orders": [
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Bench L 33-46cm CNC",
+      "available": 15.0,
+      "stock_on_hand": 15.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": 14.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00258",
+          "so_id": "6010567000015165003",
+          "crm_deal_id": "6673955000007873001",
+          "crm_deal_name": "Percy Nqoko - Order",
+          "customer": "Percy Nqoko",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Bench M 22-35cm CNC",
+      "available": 12.0,
+      "stock_on_hand": 12.0,
+      "reorder_level": 0.0,
+      "needed": 3.0,
+      "remaining_after": 9.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00265",
+          "so_id": "6010567000015120048",
+          "crm_deal_id": "6673955000007837028",
+          "crm_deal_name": "Aphumelele Matwa - Order",
+          "customer": "Aphumelele Matwa",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00259",
+          "so_id": "6010567000015157120",
+          "crm_deal_id": "6673955000007857014",
+          "crm_deal_name": "Smangaliso Shude - Order",
+          "customer": "Smangaliso Shude",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Standing frame medium",
+      "available": 37.0,
+      "stock_on_hand": 35.0,
+      "reorder_level": 0.0,
+      "needed": 3.0,
+      "remaining_after": 34.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00265",
+          "so_id": "6010567000015120048",
+          "crm_deal_id": "6673955000007837028",
+          "crm_deal_name": "Aphumelele Matwa - Order",
+          "customer": "Aphumelele Matwa",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00244",
+          "so_id": "6010567000014700019",
+          "crm_deal_id": "6673955000007633048",
+          "crm_deal_name": "Eldine Ambraal Order",
+          "customer": "Eldine Ambraal",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Standing frame small",
+      "available": 45.0,
+      "stock_on_hand": 45.0,
+      "reorder_level": 0.0,
+      "needed": 5.0,
+      "remaining_after": 40.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00264",
+          "so_id": "6010567000015126272",
+          "crm_deal_id": "6673955000007837066",
+          "crm_deal_name": "Ndalwenhle Mlambo - Order",
+          "customer": "Ndalwenhle Mlambo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00263",
+          "so_id": "6010567000015143013",
+          "crm_deal_id": "6673955000007841013",
+          "crm_deal_name": "Mnotho Xolo - Order",
+          "customer": "Mnotho Xolo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00261",
+          "so_id": "6010567000015157140",
+          "crm_deal_id": "6673955000007841076",
+          "crm_deal_name": "Langelihle Ngcungama - order",
+          "customer": "Langelihle Ngcungama",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00260",
+          "so_id": "6010567000015157131",
+          "crm_deal_id": "6673955000007841100",
+          "crm_deal_name": "Yolatha Nyumbana - Order",
+          "customer": "Yolatha Nyumbana",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00259",
+          "so_id": "6010567000015157120",
+          "crm_deal_id": "6673955000007857014",
+          "crm_deal_name": "Smangaliso Shude - Order",
+          "customer": "Smangaliso Shude",
+          "quantity": 1.0
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "so_number": "SO-00272",
+      "so_id": "6010567000015212057",
+      "crm_deal_id": "6673955000007875046",
+      "crm_deal_name": "KZNHBETH Order H0075348 14/05/2026",
+      "customer": "KZN Health Bethesda Hospital",
+      "date": "2026-05-15",
+      "items": []
+    },
+    {
+      "so_number": "SO-00271",
+      "so_id": "6010567000015207015",
+      "crm_deal_id": "6673955000007954038",
+      "crm_deal_name": "GPHHillb 4251304198 14/05/26",
+      "customer": "GP Health Hillbrow CHC",
+      "date": "2026-05-15",
+      "items": []
+    },
+    {
+      "so_number": "SO-00270",
+      "so_id": "6010567000015184148",
+      "crm_deal_id": "6673955000007954004",
+      "crm_deal_name": "Carpe Diem 14/05/2026",
+      "customer": "Carpe Diem Special school",
+      "date": "2026-05-15",
+      "items": []
+    },
+    {
+      "so_number": "SO-00267",
+      "so_id": "6010567000015165959",
+      "crm_deal_id": "6673955000007875009",
+      "crm_deal_name": "WCHKhaye OR-026761 06/05/2026",
+      "customer": "WC Health Khayelitsha Hospital",
+      "date": "2026-05-06",
+      "items": []
+    },
+    {
+      "so_number": "SO-00265",
+      "so_id": "6010567000015120048",
+      "crm_deal_id": "6673955000007837028",
+      "crm_deal_name": "Aphumelele Matwa - Order",
+      "customer": "Aphumelele Matwa",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Bench M 22-35cm CNC",
+          "donation_name": "(Donation) Bench M 22-35cm CNC",
+          "quantity": 1.0
+        },
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00264",
+      "so_id": "6010567000015126272",
+      "crm_deal_id": "6673955000007837066",
+      "crm_deal_name": "Ndalwenhle Mlambo - Order",
+      "customer": "Ndalwenhle Mlambo",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Sidelyer 120",
+          "donation_name": "(Donation) Sidelyer 120",
+          "quantity": 1.0
+        },
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Standing frame small",
+          "donation_name": "(Donation) Standing frame small",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00263",
+      "so_id": "6010567000015143013",
+      "crm_deal_id": "6673955000007841013",
+      "crm_deal_name": "Mnotho Xolo - Order",
+      "customer": "Mnotho Xolo",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Standing frame small",
+          "donation_name": "(Donation) Standing frame small",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00262",
+      "so_id": "6010567000015120039",
+      "crm_deal_id": "6673955000007841040",
+      "crm_deal_name": "Zethembe Sikobi - Order",
+      "customer": "Zethembe Sikobi",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Sidelyer 120",
+          "donation_name": "(Donation) Sidelyer 120",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00261",
+      "so_id": "6010567000015157140",
+      "crm_deal_id": "6673955000007841076",
+      "crm_deal_name": "Langelihle Ngcungama - order",
+      "customer": "Langelihle Ngcungama",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Sidelyer 120",
+          "donation_name": "(Donation) Sidelyer 120",
+          "quantity": 1.0
+        },
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Standing frame small",
+          "donation_name": "(Donation) Standing frame small",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00260",
+      "so_id": "6010567000015157131",
+      "crm_deal_id": "6673955000007841100",
+      "crm_deal_name": "Yolatha Nyumbana - Order",
+      "customer": "Yolatha Nyumbana",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Standing frame small",
+          "donation_name": "(Donation) Standing frame small",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00259",
+      "so_id": "6010567000015157120",
+      "crm_deal_id": "6673955000007857014",
+      "crm_deal_name": "Smangaliso Shude - Order",
+      "customer": "Smangaliso Shude",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Standing frame small",
+          "donation_name": "(Donation) Standing frame small",
+          "quantity": 1.0
+        },
+        {
+          "name": "Table (CNC) Small Height Adjustable",
+          "donation_name": "(Donation) Table (CNC) Small Height Adjustable",
+          "quantity": 1.0
+        },
+        {
+          "name": "Corner Chair (CNC)",
+          "donation_name": "(Donation) Corner Chair (CNC)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Bench M 22-35cm CNC",
+          "donation_name": "(Donation) Bench M 22-35cm CNC",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00258",
+      "so_id": "6010567000015165003",
+      "crm_deal_id": "6673955000007873001",
+      "crm_deal_name": "Percy Nqoko - Order",
+      "customer": "Percy Nqoko",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Bench L 33-46cm CNC",
+          "donation_name": "(Donation) Bench L 33-46cm CNC",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00257",
+      "so_id": "6010567000015120006",
+      "crm_deal_id": "6673955000007873049",
+      "crm_deal_name": "Amahle Dlamini - Order",
+      "customer": "Amahle Dlamini",
+      "date": "2026-05-14",
+      "items": [
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Reverse Rollator (CNC) Medium",
+          "donation_name": "(Donation) Reverse Rollator (CNC) Medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Corner Chair (CNC)",
+          "donation_name": "(Donation) Corner Chair (CNC)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Bench M 22-35cm CNC",
+          "donation_name": "(Donation) Bench M 22-35cm CNC",
+          "quantity": 1.0
+        },
+        {
+          "name": "Table (CNC) Med Height Adjustable",
+          "donation_name": "(Donation) Table (CNC) Med Height Adjustable",
+          "quantity": 1.0
+        },
+        {
+          "name": "Sidelyer 140",
+          "donation_name": "(Donation) Sidelyer 140",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00247",
+      "so_id": "6010567000014806022",
+      "crm_deal_id": "6673955000007730006",
+      "crm_deal_name": "WCHeld OR-40510 27/02/2026",
+      "customer": "WC Health Helderberg Hosp",
+      "date": "2026-02-27",
+      "items": []
+    },
+    {
+      "so_number": "SO-00244",
+      "so_id": "6010567000014700019",
+      "crm_deal_id": "6673955000007633048",
+      "crm_deal_name": "Eldine Ambraal Order",
+      "customer": "Eldine Ambraal",
+      "date": "2026-05-05",
+      "items": [
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Reverse Rollator (CNC) Medium",
+          "donation_name": "(Donation) Reverse Rollator (CNC) Medium",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00242",
+      "so_id": "6010567000014563004",
+      "crm_deal_id": "6673955000007544035",
+      "crm_deal_name": "WCHRehab OR-029308 23/04/2026",
+      "customer": "WC Health Rehabilitation Centre",
+      "date": "2026-04-23",
+      "items": []
+    },
+    {
+      "so_number": "SO-00241",
+      "so_id": "6010567000014258003",
+      "crm_deal_id": "6673955000007355028",
+      "crm_deal_name": "WCHKarl OR-062953 17/04/2026",
+      "customer": "WC Health Karl Bremer Hos",
+      "date": "2026-04-20",
+      "items": []
+    },
+    {
+      "so_number": "SO-00235",
+      "so_id": "6010567000012748782",
+      "crm_deal_id": "6673955000006714015",
+      "crm_deal_name": "Marissa Nel & Ass EL QT39 23032026",
+      "customer": "Marissa Nel & Associates EL",
+      "date": "2026-03-25",
+      "items": []
+    },
+    {
+      "so_number": "SO-00229",
+      "so_id": "6010567000012416001",
+      "crm_deal_id": "6673955000006470001",
+      "crm_deal_name": "WCHKarl OR-062747 13/03/2026",
+      "customer": "WC Health Karl Bremer Hos",
+      "date": "2026-03-16",
+      "items": []
+    },
+    {
+      "so_number": "SO-00186",
+      "so_id": "6010567000011868016",
+      "crm_deal_id": "6673955000006164140",
+      "crm_deal_name": "WCHG order OR-067225",
+      "customer": "WC Health George Hospital",
+      "date": "2026-03-05",
+      "items": []
+    },
+    {
+      "so_number": "SO-00185",
+      "so_id": "6010567000011849639",
+      "crm_deal_id": "6673955000006164168",
+      "crm_deal_name": "WCHG order OR-067224",
+      "customer": "WC Health George Hospital",
+      "date": "2026-03-05",
+      "items": []
+    }
+  ]
+}

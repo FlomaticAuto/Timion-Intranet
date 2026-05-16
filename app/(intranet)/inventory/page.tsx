@@ -26,6 +26,14 @@ export default function InventoryPage() {
           description="Equipment catalogue — specifications, condition, location, maintenance history and lifecycle status."
         />
         <Tile
+          variant="live"
+          href="/inventory/stock-orders"
+          icon="⚖️"
+          title="Stock vs Orders"
+          description="Stock availability check for In-Production orders — see what's short, at risk, or fully covered."
+          ctaLabel="Open dashboard"
+        />
+        <Tile
           variant="comingSoon"
           icon="⚠️"
           title="Reorder Level Report"
