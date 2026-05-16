@@ -51,6 +51,15 @@ def str_value(raw):
     return str(raw)
 
 
+def normalize(s: str) -> str:
+    """Replace curly/smart quotes with straight ASCII equivalents.
+    Zoho CRM stores stage names with U+2019 (') which breaks exact-match
+    lookups in the dashboard's STAGE_META table."""
+    return (s
+            .replace("‘", "'").replace("’", "'")
+            .replace("“", '"').replace("”", '"'))
+
+
 def fetch_all_deals(headers):
     records, page = [], 1
     while True:
@@ -103,11 +112,11 @@ def main():
 
         orders.append({
             "id":              deal["id"],
-            "name":            str_value(deal.get("Deal_Name", "")),
-            "customer":        str(customer or ""),
-            "order_type":      str_value(deal.get("Order_Type", "")),
-            "stage":           str_value(deal.get("Stage", "")),
-            "referral_source": str_value(deal.get("Lead_Source", "")),
+            "name":            normalize(str_value(deal.get("Deal_Name", ""))),
+            "customer":        normalize(str(customer or "")),
+            "order_type":      normalize(str_value(deal.get("Order_Type", ""))),
+            "stage":           normalize(str_value(deal.get("Stage", ""))),
+            "referral_source": normalize(str_value(deal.get("Lead_Source", ""))),
             "created_date":    created_date,
             "closing_date":    deal.get("Closing_Date") or None,
         })
