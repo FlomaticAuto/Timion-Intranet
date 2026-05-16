@@ -30,8 +30,8 @@ export default function CrmPage() {
           variant="live"
           href="/crm/equipment-issued"
           icon="🦽"
-          title="Equipment Issued Dashboard"
-          description="Dashboard for equipment issuances — pipeline, by device type and patient."
+          title="Equipment Ordered Dashboard"
+          description="Dashboard for equipment orders — pipeline, approval status, by device type and patient."
           ctaLabel="Open dashboard"
         />
         <Tile

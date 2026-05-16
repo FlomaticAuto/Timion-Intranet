@@ -17,8 +17,9 @@ FIELD_PATIENT         = "Patient"         # lookup → patient/customer
 FIELD_DEVICE          = "Device_Equipment"# lookup or picklist — device/equipment type
 FIELD_QTY             = "Qty"             # quantity issued
 FIELD_ORDER_DATE      = "Order_Date"      # date used for monthly grouping
-FIELD_APPROVAL_STATUS = "Approval_Status" # picklist — approval state
+FIELD_APPROVAL_STATUS = "Approval_Status" # picklist — approval workflow state
 FIELD_ORDER_FROM      = "Order_from"      # referral source
+FIELD_STATUS          = "Status"          # picklist — mirrors order process stage
 
 
 def get_access_token(client_id, client_secret, refresh_token):
@@ -42,6 +43,15 @@ def str_value(raw):
     if isinstance(raw, dict):
         return raw.get("name") or raw.get("full_name") or ""
     return str(raw)
+
+
+def normalize(s: str) -> str:
+    """Replace curly/smart quotes with straight ASCII equivalents.
+    Zoho CRM stores some picklist values with U+2018/U+2019 apostrophes
+    which break exact-match lookups in the dashboard."""
+    return (s
+            .replace("‘", "'").replace("’", "'")
+            .replace("“", '"').replace("”", '"'))
 
 
 def fetch_all_records(headers):
@@ -71,13 +81,14 @@ def fetch_all_records(headers):
 def build_record(r):
     return {
         "id":              r.get("id", ""),
-        "name":            str_value(r.get(FIELD_NAME, "")),
-        "patient":         str_value(r.get(FIELD_PATIENT, "")),
-        "device":          str_value(r.get(FIELD_DEVICE, "")),
+        "name":            normalize(str_value(r.get(FIELD_NAME, ""))),
+        "patient":         normalize(str_value(r.get(FIELD_PATIENT, ""))),
+        "device":          normalize(str_value(r.get(FIELD_DEVICE, ""))),
         "qty":             str_value(r.get(FIELD_QTY, "")),
         "order_date":      str_value(r.get(FIELD_ORDER_DATE, "")),
-        "approval_status": str_value(r.get(FIELD_APPROVAL_STATUS, "")),
-        "order_from":      str_value(r.get(FIELD_ORDER_FROM, "")),
+        "approval_status": normalize(str_value(r.get(FIELD_APPROVAL_STATUS, ""))),
+        "order_from":      normalize(str_value(r.get(FIELD_ORDER_FROM, ""))),
+        "status":          normalize(str_value(r.get(FIELD_STATUS, ""))),
     }
 
 

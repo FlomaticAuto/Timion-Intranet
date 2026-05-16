@@ -1,14 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * Equipment Issued Dashboard — imperative DOM logic.
- * Mirrors the Visit Dashboard pattern. Data at /data/crm/equipment/*.json,
- * written by scripts/fetch_zoho_crm_equipment.py.
+ * Equipment Ordered Dashboard — imperative DOM logic.
+ * Data at /data/crm/equipment/*.json, written by scripts/fetch_zoho_crm_equipment.py.
  */
 
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
+
+// Status badge colours  [background, text]
+const STATUS_STYLE: Record<string, [string, string]> = {
+  "Therapist's request":              ["rgba(124,92,252,0.15)", "#a78bfa"],
+  "Private Sale / Government Tender": ["rgba(124,92,252,0.15)", "#a78bfa"],
+  "In production":                    ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "Therapist's To Issue":             ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "Picked & Packed":                  ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "With External Therapists - To Issue": ["rgba(79,142,247,0.15)", "#4f8ef7"],
+  "Out With Therapist's":             ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "Ready for donation collection":    ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "On hold":                          ["rgba(255,140,66,0.15)",  "#ff8c42"],
+  "Received Feedback Form":           ["rgba(16,217,138,0.12)",  "#10d98a"],
+  "Spontaneous Issue":                ["rgba(16,217,138,0.12)",  "#10d98a"],
+  "Issued":                           ["rgba(16,217,138,0.12)",  "#10d98a"],
+  "Canceled":                         ["rgba(255,75,110,0.15)",  "#ff4b6e"],
+};
+
+// Approval Status badge colours
+const APPROVAL_STYLE: Record<string, [string, string]> = {
+  "Ready for Evaluation":             ["rgba(255,140,66,0.15)",  "#ff8c42"],
+  "Needs Further Information":        ["rgba(249,115,22,0.15)",  "#f97316"],
+  "Approved":                         ["rgba(16,217,138,0.12)",  "#10d98a"],
+  "Converted to Order":               ["rgba(79,142,247,0.15)",  "#4f8ef7"],
+  "Rejected":                         ["rgba(255,75,110,0.15)",  "#ff4b6e"],
+  "Spontaneous Issue":                ["rgba(16,217,138,0.12)",  "#10d98a"],
+  "Private Sale / Government Tender": ["rgba(124,92,252,0.15)", "#a78bfa"],
+};
 
 interface EquipmentRecord {
   id:              string;
@@ -19,6 +46,7 @@ interface EquipmentRecord {
   order_date:      string;
   approval_status: string;
   order_from:      string;
+  status:          string;
 }
 
 interface MonthlyData {
@@ -29,10 +57,14 @@ interface MonthlyData {
 }
 
 export function initEquipmentDashboard() {
-  let availableMonths: string[] = [];
-  let currentIndex = 0;
-  let analyticsCache: any = null;
+  let availableMonths: string[]     = [];
+  let currentIndex                  = 0;
+  let analyticsCache: any           = null;
   let currentView: "monthly" | "analytics" = "monthly";
+  let currentMonthData: MonthlyData | null = null;
+  let filterStatus   = "";
+  let filterApproval = "";
+  let searchTerm     = "";
 
   // ── Helpers ────────────────────────────────────────────────────────
   function formatMonth(ym: string) {
@@ -59,21 +91,96 @@ export function initEquipmentDashboard() {
 
   function esc(str: any) {
     return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  // Update if the tab name in Zoho CRM URL differs for this module
+  function colorBadge(value: string, styleMap: Record<string, [string, string]>): string {
+    const [bg, color] = styleMap[value] ?? ["rgba(255,255,255,0.07)", "#8888aa"];
+    return `<span style="display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;background:${bg};color:${color};white-space:nowrap">${esc(value || "—")}</span>`;
+  }
+
   const EQ_BASE = "https://crm.zoho.com/crm/org878871386/tab/Issued_Equipment";
 
+  // ── Filter logic ───────────────────────────────────────────────────
+  function applyFilters(items: EquipmentRecord[]): EquipmentRecord[] {
+    return items.filter((item) => {
+      if (filterStatus   && item.status          !== filterStatus)   return false;
+      if (filterApproval && item.approval_status !== filterApproval) return false;
+      if (searchTerm) {
+        const q = searchTerm.toLowerCase();
+        if (!item.patient.toLowerCase().includes(q) &&
+            !item.device.toLowerCase().includes(q)  &&
+            !item.name.toLowerCase().includes(q))    return false;
+      }
+      return true;
+    });
+  }
+
   // ── Monthly view ───────────────────────────────────────────────────
-  function renderCards(items: EquipmentRecord[]) {
-    if (!items || items.length === 0) {
-      return `<p class="empty-state">No equipment issued for this period</p>`;
+  function renderChips(items: EquipmentRecord[]): string {
+    const needsEval = items.filter((i) =>
+      i.approval_status === "Ready for Evaluation" ||
+      i.approval_status === "Needs Further Information",
+    ).length;
+    const approved = items.filter((i) =>
+      i.approval_status === "Approved" ||
+      i.approval_status === "Converted to Order",
+    ).length;
+    const issued = items.filter((i) => i.status === "Issued").length;
+
+    return `<div class="summary-row">
+      <div class="summary-chip v-total">
+        <strong>${items.length}</strong>Total Orders
+      </div>
+      <div class="summary-chip v-locations">
+        <strong>${needsEval}</strong>Needs Evaluation
+      </div>
+      <div class="summary-chip v-therapists">
+        <strong>${approved}</strong>Approved
+      </div>
+      <div class="summary-chip v-types">
+        <strong>${issued}</strong>Issued
+      </div>
+    </div>`;
+  }
+
+  function renderFilteredView(items: EquipmentRecord[]): string {
+    const filtered = applyFilters(items);
+
+    const uniqueStatuses  = [...new Set(items.map((i) => i.status).filter(Boolean))].sort();
+    const uniqueApprovals = [...new Set(items.map((i) => i.approval_status).filter(Boolean))].sort();
+
+    const selectStyle = "height:36px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#f0f0f8;font-size:12px;font-family:inherit;padding:0 10px;cursor:pointer;outline:none";
+    const inputStyle  = "flex:1;min-width:180px;height:36px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#f0f0f8;font-size:13px;font-family:inherit;padding:0 12px;outline:none";
+
+    const statusOpts   = uniqueStatuses.map((s) =>
+      `<option value="${esc(s)}"${filterStatus === s ? " selected" : ""}>${esc(s)}</option>`,
+    ).join("");
+    const approvalOpts = uniqueApprovals.map((s) =>
+      `<option value="${esc(s)}"${filterApproval === s ? " selected" : ""}>${esc(s)}</option>`,
+    ).join("");
+
+    const toolbar = `
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px">
+        <input id="eq-search" type="text" placeholder="Search patient, device or name…"
+               value="${esc(searchTerm)}" style="${inputStyle}" />
+        <select id="eq-filter-status" style="${selectStyle}">
+          <option value="">All statuses</option>${statusOpts}
+        </select>
+        <select id="eq-filter-approval" style="${selectStyle}">
+          <option value="">All approval statuses</option>${approvalOpts}
+        </select>
+        <span style="font-size:11px;color:#8888aa;margin-left:auto">
+          ${filtered.length} record${filtered.length !== 1 ? "s" : ""}
+        </span>
+      </div>`;
+
+    if (filtered.length === 0) {
+      return toolbar + `<p class="empty-state">No records match the current filters.</p>`;
     }
-    return items.map((item, idx) => `
+
+    const cards = filtered.map((item, idx) => `
       <div class="card" style="animation-delay:${(idx * 0.03).toFixed(2)}s">
         <div class="card-title">${esc(item.name || item.device || "Equipment")}</div>
         <div class="card-meta">
@@ -81,39 +188,48 @@ export function initEquipmentDashboard() {
           <span data-label="Device">${esc(item.device || "—")}</span>
           <span data-label="Qty">${esc(item.qty || "—")}</span>
           <span data-label="Order Date">${esc(formatDate(item.order_date))}</span>
-          <span data-label="Status">${esc(item.approval_status || "—")}</span>
           <span data-label="Referral">${esc(item.order_from || "—")}</span>
         </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          ${item.status          ? colorBadge(item.status,          STATUS_STYLE)   : ""}
+          ${item.approval_status ? colorBadge(item.approval_status, APPROVAL_STYLE) : ""}
+        </div>
         ${item.id ? `<div class="card-footer"><a class="zoho-link" href="${EQ_BASE}/${esc(item.id)}" target="_blank" rel="noopener noreferrer" title="Open in Zoho CRM">↗</a></div>` : ""}
-      </div>
-    `).join("");
+      </div>`).join("");
+
+    return toolbar + `<div class="card-grid">${cards}</div>`;
   }
 
   function renderDashboard(data: MonthlyData) {
     document.getElementById("eq-last-synced")!.textContent = formatTimestamp(data.generated_at);
+    currentMonthData = data;
+    renderAll();
+  }
 
-    const items           = data.items || [];
-    const uniquePatients  = new Set(items.map((v) => v.patient).filter(Boolean)).size;
-    const uniqueDevices   = new Set(items.map((v) => v.device).filter(Boolean)).size;
-    const pendingCount    = items.filter((v) => v.approval_status && v.approval_status !== "Approved").length;
+  function renderAll() {
+    const items = currentMonthData?.items ?? [];
+    document.getElementById("eq-main-content")!.innerHTML =
+      renderChips(items) + renderFilteredView(items);
+    wireFilters();
+  }
 
-    document.getElementById("eq-main-content")!.innerHTML = `
-      <div class="summary-row">
-        <div class="summary-chip v-total">
-          <strong>${items.length}</strong>Total Issued
-        </div>
-        <div class="summary-chip v-therapists">
-          <strong>${uniquePatients}</strong>Patients
-        </div>
-        <div class="summary-chip v-types">
-          <strong>${uniqueDevices}</strong>Device Types
-        </div>
-        <div class="summary-chip v-locations">
-          <strong>${pendingCount}</strong>Pending Approval
-        </div>
-      </div>
-      <div class="card-grid">${renderCards(items)}</div>
-    `;
+  function wireFilters() {
+    const searchEl   = document.getElementById("eq-search")          as HTMLInputElement   | null;
+    const statusEl   = document.getElementById("eq-filter-status")   as HTMLSelectElement  | null;
+    const approvalEl = document.getElementById("eq-filter-approval") as HTMLSelectElement  | null;
+
+    searchEl?.addEventListener("input", (e) => {
+      searchTerm = (e.target as HTMLInputElement).value;
+      renderAll();
+    });
+    statusEl?.addEventListener("change", (e) => {
+      filterStatus = (e.target as HTMLSelectElement).value;
+      renderAll();
+    });
+    approvalEl?.addEventListener("change", (e) => {
+      filterApproval = (e.target as HTMLSelectElement).value;
+      renderAll();
+    });
   }
 
   function renderError(msg: string) {
@@ -125,7 +241,7 @@ export function initEquipmentDashboard() {
   function updateNav() {
     const ym = availableMonths[currentIndex];
     if (!ym) return;
-    const [year] = ym.split("-");
+    const [year]        = ym.split("-");
     const years         = [...new Set(availableMonths.map((m) => m.split("-")[0]))];
     const monthsForYear = availableMonths.filter((m) => m.startsWith(year + "-"));
 
@@ -135,7 +251,6 @@ export function initEquipmentDashboard() {
     selYear.innerHTML = years.map((y) =>
       `<option value="${y}"${y === year ? " selected" : ""}>${y}</option>`,
     ).join("");
-
     selMonth.innerHTML = monthsForYear.map((m) => {
       const [, mm] = m.split("-");
       return `<option value="${m}"${m === ym ? " selected" : ""}>${MONTH_NAMES[parseInt(mm, 10) - 1]}</option>`;
@@ -176,7 +291,7 @@ export function initEquipmentDashboard() {
 
   function computeAnalytics(allData: Record<string, MonthlyData>) {
     const months = [...availableMonths].reverse().filter((ym) => allData[ym]);
-    const stats = months.map((ym) => {
+    const stats  = months.map((ym) => {
       const items = allData[ym].items || [];
       return { month: ym, label: formatMonth(ym), count: items.length, items };
     });
@@ -186,36 +301,35 @@ export function initEquipmentDashboard() {
     const current    = stats[stats.length - 1] || ({} as any);
 
     const cutoff90  = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
-    const rolling90 = allItems.filter((v) => v.order_date && new Date(v.order_date) >= cutoff90).length;
+    const rolling90 = allItems.filter(
+      (v) => v.order_date && new Date(v.order_date) >= cutoff90,
+    ).length;
 
-    const deviceMap: Record<string, number> = {};
-    allItems.forEach((v) => {
-      if (v.device) deviceMap[v.device] = (deviceMap[v.device] || 0) + 1;
-    });
-    const deviceList = Object.entries(deviceMap).sort((a, b) => b[1] - a[1]);
-
-    const statusMap: Record<string, number> = {};
-    allItems.forEach((v) => {
-      const s = v.approval_status || "Unknown";
-      statusMap[s] = (statusMap[s] || 0) + 1;
-    });
-    const statusList = Object.entries(statusMap).sort((a, b) => b[1] - a[1]);
-
+    const deviceMap: Record<string, number>   = {};
+    const statusMap: Record<string, number>   = {};
+    const approvalMap: Record<string, number> = {};
     const referralMap: Record<string, number> = {};
-    allItems.forEach((v) => {
-      if (v.order_from) referralMap[v.order_from] = (referralMap[v.order_from] || 0) + 1;
-    });
-    const referralList = Object.entries(referralMap).sort((a, b) => b[1] - a[1]);
 
-    return { stats, totalCount, current, rolling90, deviceList, statusList, referralList };
+    allItems.forEach((v) => {
+      if (v.device)          deviceMap[v.device]          = (deviceMap[v.device]          || 0) + 1;
+      if (v.status)          statusMap[v.status]          = (statusMap[v.status]          || 0) + 1;
+      if (v.approval_status) approvalMap[v.approval_status] = (approvalMap[v.approval_status] || 0) + 1;
+      if (v.order_from)      referralMap[v.order_from]    = (referralMap[v.order_from]    || 0) + 1;
+    });
+
+    return {
+      stats, totalCount, current, rolling90,
+      deviceList:   Object.entries(deviceMap).sort((a, b) => b[1] - a[1]),
+      statusList:   Object.entries(statusMap).sort((a, b) => b[1] - a[1]),
+      approvalList: Object.entries(approvalMap).sort((a, b) => b[1] - a[1]),
+      referralList: Object.entries(referralMap).sort((a, b) => b[1] - a[1]),
+    };
   }
 
   function niceMax(val: number) {
     if (val <= 0) return 5;
     const exp = Math.pow(10, Math.floor(Math.log10(val)));
-    for (const m of [1, 2, 5, 10]) {
-      if (m * exp >= val) return m * exp;
-    }
+    for (const m of [1, 2, 5, 10]) { if (m * exp >= val) return m * exp; }
     return Math.ceil(val / exp) * exp;
   }
 
@@ -223,9 +337,7 @@ export function initEquipmentDashboard() {
     const rawStep = yMax / 4;
     const exp = Math.pow(10, Math.floor(Math.log10(rawStep || 1)));
     let step = exp;
-    for (const m of [1, 2, 5, 10]) {
-      if (m * exp >= rawStep) { step = m * exp; break; }
-    }
+    for (const m of [1, 2, 5, 10]) { if (m * exp >= rawStep) { step = m * exp; break; } }
     const ticks: number[] = [];
     for (let v = 0; v <= yMax + step * 0.01; v += step) ticks.push(Math.round(v));
     return ticks;
@@ -233,33 +345,19 @@ export function initEquipmentDashboard() {
 
   function buildBarChart(stats: any[]) {
     if (!stats.length) return `<p class="empty-state">No data</p>`;
-
     const maxVal = Math.max(...stats.map((m) => m.count), 1);
     const yMax   = niceMax(maxVal);
     const ticks  = computeTicks(yMax);
 
-    const yLabels = ticks.map((v) => {
-      const pct = (v / yMax * 100).toFixed(2);
-      return `<span class="y-label" style="bottom:calc(${pct}% - 7px)">${v}</span>`;
-    }).join("");
-
-    const gridLines = ticks.map((v) => {
-      const pct = (v / yMax * 100).toFixed(2);
-      return `<div class="grid-line" style="bottom:${pct}%"></div>`;
-    }).join("");
-
-    const barCols = stats.map((m) => {
+    const yLabels   = ticks.map((v) => `<span class="y-label" style="bottom:calc(${(v/yMax*100).toFixed(2)}% - 7px)">${v}</span>`).join("");
+    const gridLines = ticks.map((v) => `<div class="grid-line" style="bottom:${(v/yMax*100).toFixed(2)}%"></div>`).join("");
+    const barCols   = stats.map((m) => {
       const pct = (m.count / yMax * 100).toFixed(2);
       return `<div class="bar-col">
-        <div class="bar-stack" style="height:${pct}%">
-          <div class="bar-visit-seg"></div>
-        </div>
-        <div class="bar-tooltip">
-          <div>Issued: <strong>${m.count}</strong></div>
-        </div>
+        <div class="bar-stack" style="height:${pct}%"><div class="bar-visit-seg"></div></div>
+        <div class="bar-tooltip">Ordered: <strong>${m.count}</strong></div>
       </div>`;
     }).join("");
-
     const xLabels = stats.map((m) => {
       const [y, mo] = m.month.split("-");
       return `<div class="x-label">${MONTH_NAMES[parseInt(mo, 10) - 1].slice(0, 3)} '${y.slice(2)}</div>`;
@@ -268,10 +366,7 @@ export function initEquipmentDashboard() {
     return `<div class="chart-wrap">
       <div class="chart-y-axis">${yLabels}</div>
       <div class="chart-inner">
-        <div class="chart-bars-zone">
-          ${gridLines}
-          <div class="chart-bars-row">${barCols}</div>
-        </div>
+        <div class="chart-bars-zone">${gridLines}<div class="chart-bars-row">${barCols}</div></div>
         <div class="chart-x-row">${xLabels}</div>
       </div>
     </div>`;
@@ -289,17 +384,13 @@ export function initEquipmentDashboard() {
                style="width:${(count / maxVal * 100).toFixed(1)}%"></div>
         </div>
         <span class="rank-val">${count}</span>
-      </div>
-    `).join("");
+      </div>`).join("");
   }
 
   function renderAnalytics(a: any) {
     const last6     = a.stats.slice(-6);
-    const last6Bars = buildBarChart(last6);
-
-    const currentYear = String(new Date().getFullYear());
-    const yearStats   = a.stats.filter((s: any) => s.month.startsWith(currentYear));
-    const yearBars    = buildBarChart(yearStats);
+    const curYear   = String(new Date().getFullYear());
+    const yearStats = a.stats.filter((s: any) => s.month.startsWith(curYear));
 
     document.getElementById("eq-main-content")!.innerHTML = `
       <div class="a-section">
@@ -307,12 +398,12 @@ export function initEquipmentDashboard() {
         <div class="kpi-row">
           <div class="kpi-card">
             <div class="kpi-value">${a.totalCount}</div>
-            <div class="kpi-label">Total Issued</div>
+            <div class="kpi-label">Total Ordered</div>
             <div class="kpi-sub">${a.stats.length} month${a.stats.length !== 1 ? "s" : ""} of data</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-value">${a.current.count || 0}</div>
-            <div class="kpi-label">Issued This Month</div>
+            <div class="kpi-label">Ordered This Month</div>
             <div class="kpi-sub">${a.current.label || "—"}</div>
           </div>
           <div class="kpi-card">
@@ -323,7 +414,7 @@ export function initEquipmentDashboard() {
           <div class="kpi-card">
             <div class="kpi-value">${a.rolling90}</div>
             <div class="kpi-label">Last 90 Days</div>
-            <div class="kpi-sub">Items issued</div>
+            <div class="kpi-sub">Orders entered</div>
           </div>
         </div>
       </div>
@@ -332,16 +423,16 @@ export function initEquipmentDashboard() {
           <div class="a-eyebrow">Trend</div>
           <div class="a-title">Last 6 Months</div>
           <div class="section-divider"></div>
-          ${last6Bars}
+          ${buildBarChart(last6)}
         </div>
         <div class="a-section" style="margin-bottom:0;">
           <div class="a-eyebrow">Annual Overview</div>
-          <div class="a-title">${currentYear}</div>
+          <div class="a-title">${curYear}</div>
           <div class="section-divider"></div>
-          ${yearBars}
+          ${buildBarChart(yearStats)}
         </div>
       </div>
-      <div class="a-columns" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="a-columns" style="grid-template-columns:1fr 1fr;">
         <div class="a-section">
           <div class="a-eyebrow">Equipment</div>
           <div class="a-title">By Device</div>
@@ -349,19 +440,26 @@ export function initEquipmentDashboard() {
           <div class="rank-list">${buildRankList(a.deviceList)}</div>
         </div>
         <div class="a-section">
-          <div class="a-eyebrow">Breakdown</div>
-          <div class="a-title">By Approval Status</div>
+          <div class="a-eyebrow">Pipeline</div>
+          <div class="a-title">By Status</div>
           <div class="section-divider"></div>
           <div class="rank-list">${buildRankList(a.statusList, "green")}</div>
+        </div>
+      </div>
+      <div class="a-columns" style="grid-template-columns:1fr 1fr;">
+        <div class="a-section">
+          <div class="a-eyebrow">Approval</div>
+          <div class="a-title">By Approval Status</div>
+          <div class="section-divider"></div>
+          <div class="rank-list">${buildRankList(a.approvalList, "amber")}</div>
         </div>
         <div class="a-section">
           <div class="a-eyebrow">Source</div>
           <div class="a-title">By Referral Source</div>
           <div class="section-divider"></div>
-          <div class="rank-list">${buildRankList(a.referralList, "amber")}</div>
+          <div class="rank-list">${buildRankList(a.referralList)}</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
   async function showAnalytics() {
@@ -380,7 +478,8 @@ export function initEquipmentDashboard() {
     const monthNav = document.querySelector<HTMLElement>(".visit-dashboard-root .month-nav");
     if (monthNav) monthNav.style.display = view === "monthly" ? "" : "none";
     if (view === "monthly") {
-      loadMonth(availableMonths[currentIndex]);
+      if (currentMonthData) renderAll();
+      else loadMonth(availableMonths[currentIndex]);
     } else {
       showAnalytics();
     }
@@ -410,14 +509,14 @@ export function initEquipmentDashboard() {
       updateNav();
       if (availableMonths.length === 0) {
         document.getElementById("eq-main-content")!.innerHTML =
-          `<div class="error-message">No data available yet — run the GitHub Action manually to pull the first month of equipment data.</div>`;
+          `<div class="error-message">No data available yet — trigger the GitHub Action to pull the first month of equipment data.</div>`;
       } else {
         renderError(`Could not load dashboard data: ${e.message}`);
       }
     }
   }
 
-  // ── Wire up controls ───────────────────────────────────────────────
+  // ── Wire up nav controls ───────────────────────────────────────────
   document.getElementById("eq-btn-view-monthly")!.addEventListener("click", () => {
     if (currentView !== "monthly") showView("monthly");
   });
@@ -427,6 +526,7 @@ export function initEquipmentDashboard() {
   document.getElementById("eq-btn-prev")!.addEventListener("click", () => {
     if (currentIndex < availableMonths.length - 1) {
       currentIndex++;
+      currentMonthData = null;
       updateNav();
       loadMonth(availableMonths[currentIndex]);
     }
@@ -434,6 +534,7 @@ export function initEquipmentDashboard() {
   document.getElementById("eq-btn-next")!.addEventListener("click", () => {
     if (currentIndex > 0) {
       currentIndex--;
+      currentMonthData = null;
       updateNav();
       loadMonth(availableMonths[currentIndex]);
     }
@@ -442,7 +543,8 @@ export function initEquipmentDashboard() {
     const yr    = (e.target as HTMLSelectElement).value;
     const match = availableMonths.find((m) => m.startsWith(yr + "-"));
     if (match) {
-      currentIndex = availableMonths.indexOf(match);
+      currentIndex     = availableMonths.indexOf(match);
+      currentMonthData = null;
       updateNav();
       if (currentView === "monthly") loadMonth(availableMonths[currentIndex]);
     }
@@ -450,7 +552,8 @@ export function initEquipmentDashboard() {
   document.getElementById("eq-sel-month")!.addEventListener("change", (e) => {
     const idx = availableMonths.indexOf((e.target as HTMLSelectElement).value);
     if (idx >= 0) {
-      currentIndex = idx;
+      currentIndex     = idx;
+      currentMonthData = null;
       updateNav();
       if (currentView === "monthly") loadMonth(availableMonths[currentIndex]);
     }

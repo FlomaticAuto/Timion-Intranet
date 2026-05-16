@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T18:23:04Z",
+  "generated_at": "2026-05-16T19:30:51Z",
   "month": "2025-12",
   "total": 39,
   "items": [
@@ -11,7 +11,8 @@
       "qty": "1",
       "order_date": "2025-12-02",
       "approval_status": "Approved",
-      "order_from": ""
+      "order_from": "",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000006048599",
@@ -21,7 +22,8 @@
       "qty": "2",
       "order_date": "2025-12-03",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006623214",
@@ -31,7 +33,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006623213",
@@ -41,7 +44,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006623212",
@@ -51,7 +55,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048634",
@@ -61,7 +66,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048633",
@@ -71,7 +77,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048632",
@@ -81,7 +88,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006048631",
@@ -91,7 +99,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006048630",
@@ -101,7 +110,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006048283",
@@ -111,7 +121,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048281",
@@ -121,7 +132,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048278",
@@ -131,7 +143,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048276",
@@ -141,7 +154,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048275",
@@ -151,7 +165,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048273",
@@ -161,7 +176,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048263",
@@ -171,7 +187,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048258",
@@ -181,7 +198,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006047767",
@@ -191,7 +209,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Canceled"
     },
     {
       "id": "6673955000006047421",
@@ -201,7 +220,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Approved",
-      "order_from": ""
+      "order_from": "",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000006047420",
@@ -211,7 +231,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Approved",
-      "order_from": ""
+      "order_from": "",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000006047419",
@@ -221,7 +242,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Canceled"
     },
     {
       "id": "6673955000006047384",
@@ -231,7 +253,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Approved",
-      "order_from": ""
+      "order_from": "",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000006046588",
@@ -241,7 +264,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006046587",
@@ -251,7 +275,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006046580",
@@ -261,7 +286,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006033947",
@@ -271,7 +297,8 @@
       "qty": "1",
       "order_date": "2025-12-04",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "With therapist to issue (old)"
     },
     {
       "id": "6673955000006048593",
@@ -281,7 +308,8 @@
       "qty": "1",
       "order_date": "2025-12-05",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Canceled"
     },
     {
       "id": "6673955000006048302",
@@ -291,7 +319,8 @@
       "qty": "1",
       "order_date": "2025-12-08",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006632598",
@@ -301,7 +330,8 @@
       "qty": "1",
       "order_date": "2025-12-11",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006632313",
@@ -311,7 +341,8 @@
       "qty": "1",
       "order_date": "2025-12-11",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "For billing purpose"
     },
     {
       "id": "6673955000006048635",
@@ -321,7 +352,8 @@
       "qty": "1",
       "order_date": "2025-12-11",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006047869",
@@ -331,7 +363,8 @@
       "qty": "1",
       "order_date": "2025-12-11",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     },
     {
       "id": "6673955000006047806",
@@ -341,7 +374,8 @@
       "qty": "40",
       "order_date": "2025-12-15",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "In production"
     },
     {
       "id": "6673955000006047805",
@@ -351,7 +385,8 @@
       "qty": "50",
       "order_date": "2025-12-15",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "In production"
     },
     {
       "id": "6673955000006047804",
@@ -361,7 +396,8 @@
       "qty": "50",
       "order_date": "2025-12-15",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "In production"
     },
     {
       "id": "6673955000006047803",
@@ -371,7 +407,8 @@
       "qty": "40",
       "order_date": "2025-12-15",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "In production"
     },
     {
       "id": "6673955000006047802",
@@ -381,7 +418,8 @@
       "qty": "20",
       "order_date": "2025-12-15",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "In production"
     },
     {
       "id": "6673955000006048554",
@@ -391,7 +429,8 @@
       "qty": "1",
       "order_date": "2025-12-22",
       "approval_status": "Converted to Order",
-      "order_from": ""
+      "order_from": "",
+      "status": "Issued"
     }
   ]
 }

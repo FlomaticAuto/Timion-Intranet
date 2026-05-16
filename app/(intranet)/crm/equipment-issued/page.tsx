@@ -3,8 +3,8 @@ import EquipmentClient from "./EquipmentClient";
 import "@/app/visit-dashboard-styles.css";
 
 export const metadata = {
-  title: "Equipment Issued Dashboard — Timion HQ",
-  description: "Monthly equipment issuances from Zoho CRM — volumes, devices, patients and referral sources.",
+  title: "Equipment Ordered Dashboard — Timion HQ",
+  description: "Monthly equipment orders from Zoho CRM — pipeline, approval status, devices and referral sources.",
 };
 
 export default function EquipmentIssuedPage() {
@@ -12,8 +12,8 @@ export default function EquipmentIssuedPage() {
     <>
       <SectionHeader
         eyebrow="CRM"
-        title="Equipment Issued Dashboard"
-        subtitle="Monthly equipment issuances from Zoho CRM — volumes, devices, patients and referral sources."
+        title="Equipment Ordered Dashboard"
+        subtitle="Monthly equipment orders from Zoho CRM — pipeline, approval status, devices and referral sources."
       />
       <EquipmentClient />
     </>
