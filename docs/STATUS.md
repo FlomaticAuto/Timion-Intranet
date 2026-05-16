@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-16 (session 4)
+**Last updated:** 2026-05-16 (session 5)
 
 ## Deployment
 
@@ -23,7 +23,7 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 ### Sections — landing pages with tile grids
 All exist with appropriate tiles. Live tiles:
 - **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard** (both live internal routes)
-- **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders** (both live internal routes)
+- **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders Dashboard**, **Reorder Level Report** (all live internal routes)
 - **Books** — Zoho Books link
 - **HR** — 4 comingSoon tiles: Leave Requests, Leave Approvals, Leave Dashboard, Staff Profile
 - **Board & Reporting** — Timion Presentation, Annual Report 2026 PDF (both static files in `/public/`)
@@ -49,8 +49,18 @@ Native Next.js route. Pulls JSON from `public/data/inventory/stock_orders.json`.
 - **Status logic:** Insufficient (available < needed, shows shortfall) / At Risk (available >= needed but remaining drops below reorder level) / OK
 - **Filter:** only processes line items with "(Donation) " prefix — skips service/cost lines
 - **Script:** `scripts/fetch_zoho_stock_orders.py` — uses COQL for CRM deals, Inventory API for SOs + items
-- Also writes `public/data/inventory/reorder.json` — all 1268 finished items with stock + reorder data (seeds the future Reorder Level Report)
+- Also writes `public/data/inventory/reorder.json` for the Reorder Level Report
 - **Note:** This dashboard is temporary until the stock split is implemented later this year; at that point donation items will carry real stock and the name-mapping step can be removed.
+
+### Reorder Level Report (`/inventory/reorder-report`)
+Native Next.js route. Pulls JSON from `public/data/inventory/reorder.json`. Shows all tracked inventory items at or approaching their reorder level.
+
+- **Data:** 1268 items (non-donation); 327 have a reorder level configured
+- **Status tiers:** Below Reorder (order immediately) / At Reorder (order now) / Approaching (≤ 1.5× reorder level) / OK
+- **Filters:** keyword search, type tabs (All / Finished Items / Subassemblies / Hardware & Materials), Show All toggle (OK items hidden by default)
+- **Columns:** Item, Type badge, Available (coloured by status), Reorder Level, Gap (available − reorder level)
+- **Item type resolution:** `custom_fields` not returned by the list endpoint — script fetches individual item detail for each of the ~327 items with a reorder level to get `cf_item_type`. Adds ~20 s to each sync run.
+- **Type distribution (current data):** 8 Finished Items, 39 Subassemblies, 1221 Hardware & Materials (of items with reorder level set)
 
 ### Order Process Dashboard (`/crm/order-process`)
 Native Next.js route. Pulls JSON from `public/data/crm/orders.json`. Three views: Pipeline (stage grid + order-type breakdown), Orders (filterable table), Trends (bar charts).
