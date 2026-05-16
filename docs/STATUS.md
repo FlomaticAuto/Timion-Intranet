@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-16 (session 5)
+**Last updated:** 2026-05-16 (session 6)
 
 ## Deployment
 
@@ -22,7 +22,7 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 
 ### Sections — landing pages with tile grids
 All exist with appropriate tiles. Live tiles:
-- **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard** (both live internal routes)
+- **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard**, **Equipment Issued Dashboard** (all live internal routes)
 - **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders Dashboard**, **Reorder Level Report** (all live internal routes)
 - **Books** — Zoho Books link
 - **HR** — 4 comingSoon tiles: Leave Requests, Leave Approvals, Leave Dashboard, Staff Profile
@@ -51,6 +51,16 @@ Native Next.js route. Pulls JSON from `public/data/inventory/stock_orders.json`.
 - **Script:** `scripts/fetch_zoho_stock_orders.py` — uses COQL for CRM deals, Inventory API for SOs + items
 - Also writes `public/data/inventory/reorder.json` for the Reorder Level Report
 - **Note:** This dashboard is temporary until the stock split is implemented later this year; at that point donation items will carry real stock and the name-mapping step can be removed.
+
+### Equipment Issued Dashboard (`/crm/equipment-issued`)
+Native Next.js route. Reuses `visit-dashboard-styles.css` — identical layout to Visit Dashboard. Data from `Issued_Equipment` CRM module, stored in `public/data/crm/equipment/`.
+
+- **Script:** `scripts/fetch_zoho_crm_equipment.py` — uses `ZOHO_CRM_*` credentials, same pattern as `fetch_zoho_crm.py`
+- **Fields:** `Name` (record title), `Patient`, `Device_Equipment` (device), `Qty`, `Order_Date`, `Approval_Status`, `Order_from` (referral source)
+- **Data:** 211 records backfilled Dec 2025–May 2026. 12,592 total records in module (all time); script caps at `FROM_MONTH = "2025-12"` and filters out future-dated records (e.g. typo year 2106 found in data)
+- **Analytics:** by Device, by Approval Status, by Referral Source
+- **Deep-link:** `https://crm.zoho.com/crm/org878871386/tab/Issued_Equipment/{id}` — verify URL slug is correct once tested in browser
+- **Pending approval count:** monthly chip counts records where `approval_status != "Approved"`
 
 ### Reorder Level Report (`/inventory/reorder-report`)
 Native Next.js route. Pulls JSON from `public/data/inventory/reorder.json`. Shows all tracked inventory items at or approaching their reorder level.
