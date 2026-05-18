@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-18 (session 8)
+**Last updated:** 2026-05-18 (session 9)
 
 ## Deployment
 
@@ -108,8 +108,13 @@ All four dashboards sync in one workflow run:
 
 ### Admin panel (admin-only)
 - `/admin` — hub with two tiles
-- `/admin/users` — table of all profiles; inline role dropdown + active toggle; per-role count chips
-- `/admin/access` — **editable** role × section matrix; click a cell to cycle Full → Read → Scoped → Hidden; optimistic updates with rollback; "last updated" timestamp; Reset-to-defaults button
+- `/admin/users` — table of all profiles; inline role dropdown + active toggle; per-role count chips; **Add User button** — invite by email with name + role pre-assigned (sends Supabase invite email)
+- `/admin/access` — **editable** role × section matrix; dropdown per cell (Full / Read-only / Scoped / Hidden); optimistic updates with rollback; "last updated" timestamp; Reset-to-defaults button
+- `/auth/callback` — PKCE code-exchange route for invite acceptance, magic link, and OAuth (future)
+
+**Invite flow prerequisites (one-time Supabase/Vercel setup):**
+1. Vercel env vars → add `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API → service_role key — never NEXT_PUBLIC_ prefix)
+2. Supabase → Authentication → URL Configuration → set Site URL to production Vercel URL; add `<url>/auth/callback` to Redirect URLs list
 
 ## Users
 
