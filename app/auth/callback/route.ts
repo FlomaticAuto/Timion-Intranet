@@ -19,11 +19,16 @@ export async function GET(request: Request) {
   const supabase = await createClient();
 
   if (code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       return NextResponse.redirect(
         new URL(`/login?error=${encodeURIComponent(error.message)}`, url.origin),
       );
+    }
+    // Invited users have needs_password_setup in their metadata — send
+    // them to the set-password page regardless of the `next` param.
+    if (data.user?.user_metadata?.needs_password_setup) {
+      return NextResponse.redirect(new URL("/auth/set-password", url.origin));
     }
   }
 

@@ -65,9 +65,15 @@ export async function inviteUser(
   const origin = process.env.NEXT_PUBLIC_SITE_URL
     ?? (host ? `${proto}://${host}` : null);
 
+  // needs_password_setup flag lets /auth/callback redirect to the
+  // set-password page without embedding query params in redirectTo
+  // (Supabase does exact-match on redirectTo including query strings).
   const opts: Parameters<typeof admin.auth.admin.inviteUserByEmail>[1] = {
-    ...(fullName?.trim() ? { data: { full_name: fullName.trim() } } : {}),
-    ...(origin ? { redirectTo: `${origin}/auth/callback?next=/auth/set-password` } : {}),
+    data: {
+      ...(fullName?.trim() ? { full_name: fullName.trim() } : {}),
+      needs_password_setup: true,
+    },
+    ...(origin ? { redirectTo: `${origin}/auth/callback` } : {}),
   };
 
   const { data, error: inviteErr } = await admin.auth.admin.inviteUserByEmail(
