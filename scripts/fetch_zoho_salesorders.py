@@ -42,6 +42,17 @@ def _parse_crm_id(reference: str) -> str:
     return ""
 
 
+def _get_custom_field(record: dict, api_name: str) -> str:
+    """Read a custom field by api_name — checks top-level key first, then custom_fields array."""
+    val = record.get(api_name)
+    if val:
+        return str(val)
+    for cf in record.get("custom_fields", []):
+        if cf.get("api_name") == api_name:
+            return str(cf.get("value", ""))
+    return ""
+
+
 def fetch_all_pages(url, headers, params, data_key):
     results = []
     page = 1
@@ -98,6 +109,7 @@ def main():
             "currency":        so.get("currency_code", "ZAR"),
             # Zoho stores the linked CRM deal in reference_number as "CRM Deal <id>"
             "crm_deal_id":     _parse_crm_id(so.get("reference_number", "") or ""),
+            "order_type":      _get_custom_field(so, "cf_order_type"),
         })
 
     output = {

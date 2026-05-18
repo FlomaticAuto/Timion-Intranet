@@ -16,6 +16,7 @@ interface SalesOrder {
   balance:         number;
   currency:        string;
   crm_deal_id:     string;
+  order_type:      string;
 }
 
 interface DataFile {
@@ -28,6 +29,13 @@ const STATUS_META: Record<string, { label: string; bg: string; text: string }> =
   draft:     { label: "Draft",     bg: "rgba(255,140,66,0.14)",  text: "#ff8c42" },
   confirmed: { label: "Confirmed", bg: "rgba(79,142,247,0.14)",  text: "#4f8ef7" },
   fulfilled: { label: "Fulfilled", bg: "rgba(16,217,138,0.12)",  text: "#10d98a" },
+};
+
+const ORDER_TYPE_META: Record<string, { label: string; bg: string; text: string }> = {
+  Government: { label: "Government", bg: "rgba(79,142,247,0.14)",  text: "#4f8ef7" },
+  Private:    { label: "Private",    bg: "rgba(124,92,252,0.14)",  text: "#a78bfa" },
+  Donation:   { label: "Donation",   bg: "rgba(16,217,138,0.12)",  text: "#10d98a" },
+  Daycare:    { label: "Daycare",    bg: "rgba(255,140,66,0.14)",  text: "#ff8c42" },
 };
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -216,11 +224,12 @@ export function SalesOrderClient() {
   const [data,        setData]        = useState<DataFile | null>(null);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState<string | null>(null);
-  const [view,        setView]        = useState<"table" | "analytics">("table");
-  const [status,      setStatus]      = useState("all");
-  const [yearFilter,  setYearFilter]  = useState("all");
-  const [monthFilter, setMonthFilter] = useState("all");
-  const [search,      setSearch]      = useState("");
+  const [view,            setView]            = useState<"table" | "analytics">("table");
+  const [status,          setStatus]          = useState("all");
+  const [yearFilter,      setYearFilter]      = useState("all");
+  const [monthFilter,     setMonthFilter]     = useState("all");
+  const [orderTypeFilter, setOrderTypeFilter] = useState("all");
+  const [search,          setSearch]          = useState("");
 
   useEffect(() => {
     fetch("/data/salesorders.json")
@@ -255,12 +264,22 @@ export function SalesOrderClient() {
     return c;
   }, [orders]);
 
+  const orderTypeCounts = useMemo(() => {
+    const c: Record<string, number> = {};
+    for (const o of orders) {
+      const t = o.order_type || "Unknown";
+      c[t] = (c[t] ?? 0) + 1;
+    }
+    return c;
+  }, [orders]);
+
   const dateStatusFiltered = useMemo(() => orders.filter((o) => {
     if (status !== "all" && o.status !== status) return false;
     if (yearFilter !== "all" && !o.date.startsWith(yearFilter)) return false;
     if (monthFilter !== "all" && !o.date.startsWith(monthFilter)) return false;
+    if (orderTypeFilter !== "all" && o.order_type !== orderTypeFilter) return false;
     return true;
-  }), [orders, status, yearFilter, monthFilter]);
+  }), [orders, status, yearFilter, monthFilter, orderTypeFilter]);
 
   const filtered = useMemo(() => {
     if (!search) return dateStatusFiltered;
@@ -366,7 +385,7 @@ export function SalesOrderClient() {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filters — row 1: date + status */}
       <div className="flex flex-wrap items-center gap-3">
         <select
           value={yearFilter}
@@ -411,6 +430,41 @@ export function SalesOrderClient() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Filters — row 2: order type + search */}
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">Order Type</span>
+        <div className="flex rounded-lg overflow-hidden border border-border">
+          <button
+            type="button"
+            onClick={() => setOrderTypeFilter("all")}
+            className={[
+              "px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors",
+              orderTypeFilter === "all" ? "bg-surface-2 text-text" : "text-text-muted hover:text-text",
+            ].join(" ")}
+          >
+            All
+          </button>
+          {(["Government", "Private", "Donation", "Daycare"] as const).map((t) => {
+            const meta = ORDER_TYPE_META[t];
+            const n    = orderTypeCounts[t] ?? 0;
+            return (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setOrderTypeFilter(orderTypeFilter === t ? "all" : t)}
+                className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors border-l border-border"
+                style={{
+                  background: orderTypeFilter === t ? meta.bg : "transparent",
+                  color: orderTypeFilter === t ? meta.text : "#8888aa",
+                }}
+              >
+                {t} ({n})
+              </button>
+            );
+          })}
+        </div>
 
         {view === "table" && (
           <input
@@ -432,7 +486,7 @@ export function SalesOrderClient() {
             <table className="w-full min-w-[700px] text-[12px]">
               <thead>
                 <tr className="border-b border-border bg-surface">
-                  {["SO #", "Date", "Customer", "Status", "Total", "Balance", "CRM"].map((h) => (
+                  {["SO #", "Date", "Customer", "Status", "Type", "Total", "Balance", "CRM"].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-text-muted whitespace-nowrap">
                       {h}
                     </th>
@@ -442,7 +496,7 @@ export function SalesOrderClient() {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-4 py-10 text-center text-text-muted">
+                    <td colSpan={8} className="px-4 py-10 text-center text-text-muted">
                       No orders match your filters.
                     </td>
                   </tr>
@@ -466,6 +520,21 @@ export function SalesOrderClient() {
                         >
                           {meta?.label ?? o.status}
                         </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {o.order_type ? (
+                          <span
+                            className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap"
+                            style={{
+                              background: ORDER_TYPE_META[o.order_type]?.bg ?? "rgba(255,255,255,0.06)",
+                              color:      ORDER_TYPE_META[o.order_type]?.text ?? "#8888aa",
+                            }}
+                          >
+                            {o.order_type}
+                          </span>
+                        ) : (
+                          <span className="text-text-dim text-[11px]">—</span>
+                        )}
                       </td>
                       <td className="px-4 py-3 text-text whitespace-nowrap text-right tabular-nums">{fmt(o.total)}</td>
                       <td className="px-4 py-3 whitespace-nowrap text-right font-semibold tabular-nums"
@@ -524,6 +593,35 @@ export function SalesOrderClient() {
                     <div className="text-[11px] text-text-muted mt-0.5">{pct}% of total</div>
                     <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${pct}%`, background: meta?.text ?? "#8888aa" }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Order type breakdown */}
+          <div className="rounded-xl border border-border bg-surface p-5">
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">Orders by Type</h3>
+            <div className="flex flex-wrap gap-3">
+              {(["Government", "Private", "Donation", "Daycare"] as const).map((t) => {
+                const meta  = ORDER_TYPE_META[t];
+                const n     = dateStatusFiltered.filter((o) => o.order_type === t).length;
+                const val   = dateStatusFiltered.filter((o) => o.order_type === t).reduce((s, o) => s + o.total, 0);
+                const pct   = Math.round((n / Math.max(dateStatusFiltered.length, 1)) * 100);
+                return (
+                  <div
+                    key={t}
+                    className="flex-1 min-w-[130px] rounded-lg px-4 py-3 border border-border"
+                    style={{ background: meta.bg }}
+                  >
+                    <div className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: meta.text }}>
+                      {t}
+                    </div>
+                    <div className="text-3xl font-bold text-text">{n}</div>
+                    <div className="text-[11px] text-text-muted mt-0.5">{pct}% · {fmtShort(val)}</div>
+                    <div className="mt-2 h-1.5 rounded-full bg-border overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${pct}%`, background: meta.text }} />
                     </div>
                   </div>
                 );
