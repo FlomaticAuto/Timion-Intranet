@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-16T19:43:38Z",
+  "generated_at": "2026-05-18T13:25:06Z",
   "month": "2026-05",
-  "total": 41,
+  "total": 43,
   "items": [
     {
       "id": "6673955000007597125",
@@ -241,9 +241,9 @@
       "device": "(Donation) Bench L 33-46cm CNC",
       "qty": "1",
       "order_date": "2026-05-04",
-      "approval_status": "Approved",
+      "approval_status": "Converted to Order",
       "order_from": "External Referral",
-      "status": "Therapist's request"
+      "status": "In production"
     },
     {
       "id": "6673955000007579243",
@@ -252,9 +252,9 @@
       "device": "(Donation) Positioning Chair (Small)",
       "qty": "1",
       "order_date": "2026-05-04",
-      "approval_status": "Approved",
+      "approval_status": "Converted to Order",
       "order_from": "External Referral",
-      "status": "Therapist's request"
+      "status": "In production"
     },
     {
       "id": "6673955000007579231",
@@ -263,9 +263,9 @@
       "device": "(Donation) Bench M 22-35cm CNC",
       "qty": "1",
       "order_date": "2026-05-04",
-      "approval_status": "Approved",
+      "approval_status": "Converted to Order",
       "order_from": "External Referral",
-      "status": "Therapist's request"
+      "status": "In production"
     },
     {
       "id": "6673955000007579229",
@@ -274,9 +274,9 @@
       "device": "(Donation) Standing frame medium",
       "qty": "1",
       "order_date": "2026-05-04",
-      "approval_status": "Approved",
+      "approval_status": "Converted to Order",
       "order_from": "External Referral",
-      "status": "Therapist's request"
+      "status": "In production"
     },
     {
       "id": "6673955000007623003",
@@ -442,6 +442,28 @@
       "approval_status": "Converted to Order",
       "order_from": "Government Tender",
       "status": "In production"
+    },
+    {
+      "id": "6673955000008045011",
+      "name": "(Donation) Bench S 15-24cm CNC 15/05/2026",
+      "patient": "Izaiyah Leander",
+      "device": "(Donation) Bench S 15-24cm CNC",
+      "qty": "1",
+      "order_date": "2026-05-15",
+      "approval_status": "Spontaneous Issue",
+      "order_from": "Zita Jacobs",
+      "status": "Therapist's request"
+    },
+    {
+      "id": "6673955000008045001",
+      "name": "(Donation) Table (CNC) Small Height Adjustable 15/05/2026",
+      "patient": "Mikyle Matabata",
+      "device": "(Donation) Table (CNC) Small Height Adjustable",
+      "qty": "1",
+      "order_date": "2026-05-15",
+      "approval_status": "Spontaneous Issue",
+      "order_from": "Zita Jacobs",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000007954002",

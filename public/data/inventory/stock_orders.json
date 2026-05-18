@@ -1,14 +1,42 @@
 {
-  "synced_at": "2026-05-16T19:43:37Z",
+  "synced_at": "2026-05-18T13:25:05Z",
   "summary": {
-    "total_orders": 21,
-    "items_insufficient": 4,
-    "items_at_risk": 3,
-    "items_ok": 4
+    "total_orders": 46,
+    "items_insufficient": 15,
+    "items_at_risk": 2,
+    "items_ok": 6
   },
   "items": [
     {
-      "name": "Positioning Chair (Small)",
+      "name": "Corner Chair (old design)",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 2.0,
+      "remaining_after": -2.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00289",
+          "so_id": "6010567000015401073",
+          "crm_deal_id": "6673955000007997034",
+          "crm_deal_name": "Amkitha Ncapai - Order",
+          "customer": "Amkitha Ncapai",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00288",
+          "so_id": "6010567000015353046",
+          "crm_deal_id": "6673955000007997020",
+          "crm_deal_name": "Mivuyo Manini - Order",
+          "customer": "Mivuyo Manini",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Positioning Chair (Medium)",
       "available": 0.0,
       "stock_on_hand": 0.0,
       "reorder_level": 0.0,
@@ -16,6 +44,82 @@
       "remaining_after": -5.0,
       "status": "insufficient",
       "orders": [
+        {
+          "so_number": "SO-00299",
+          "so_id": "6010567000015353075",
+          "crm_deal_id": "6673955000007997344",
+          "crm_deal_name": "Percy Nqoko - Order",
+          "customer": "Percy Nqoko",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00293",
+          "so_id": "6010567000015359020",
+          "crm_deal_id": "6673955000007997070",
+          "crm_deal_name": "lwandile Nyuswa - Order",
+          "customer": "lwandile Nyuswa",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00292",
+          "so_id": "6010567000015353065",
+          "crm_deal_id": "6673955000007997058",
+          "crm_deal_name": "Mpendulo Mzobe - Order",
+          "customer": "Mpendulo Mzobe",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00290",
+          "so_id": "6010567000015401091",
+          "crm_deal_id": "6673955000007997046",
+          "crm_deal_name": "Thandazani Njapha - order",
+          "customer": "Thandazani Njapha",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00275",
+          "so_id": "6010567000015274001",
+          "crm_deal_id": "6673955000007962056",
+          "crm_deal_name": "Ndalwenhle Cele - Order",
+          "customer": "Ndalwenhle Cele",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 5.0
+    },
+    {
+      "name": "Positioning Chair (Small)",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 8.0,
+      "remaining_after": -8.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00284",
+          "so_id": "6010567000015353018",
+          "crm_deal_id": "6673955000007958044",
+          "crm_deal_name": "Amahle Mzotho - Order",
+          "customer": "Amahle Mzotho",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00279",
+          "so_id": "6010567000015275019",
+          "crm_deal_id": "6673955000007962001",
+          "crm_deal_name": "Litemba Nombutho - Order",
+          "customer": "Litemba Nombutho",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00277",
+          "so_id": "6010567000015272011",
+          "crm_deal_id": "6673955000007962028",
+          "crm_deal_name": "Sandla Sontsonga - order",
+          "customer": "Sandla Sontsonga",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00264",
           "so_id": "6010567000015126272",
@@ -57,17 +161,89 @@
           "quantity": 1.0
         }
       ],
-      "shortfall": 5.0
+      "shortfall": 8.0
+    },
+    {
+      "name": "Reverse Rollator (CNC) Medium",
+      "available": 2.0,
+      "stock_on_hand": 2.0,
+      "reorder_level": 3.0,
+      "needed": 4.0,
+      "remaining_after": -2.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00298",
+          "so_id": "6010567000015359060",
+          "crm_deal_id": "6673955000007997332",
+          "crm_deal_name": "Asange Makiki - Order",
+          "customer": "Asange Makiki",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00276",
+          "so_id": "6010567000015275001",
+          "crm_deal_id": "6673955000007962044",
+          "crm_deal_name": "Hlengiwe N Mchunu - Order",
+          "customer": "Hlengiwe N Mchunu",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00257",
+          "so_id": "6010567000015120006",
+          "crm_deal_id": "6673955000007873049",
+          "crm_deal_name": "Amahle Dlamini - Order",
+          "customer": "Amahle Dlamini",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00244",
+          "so_id": "6010567000014700019",
+          "crm_deal_id": "6673955000007633048",
+          "crm_deal_name": "Eldine Ambraal Order",
+          "customer": "Eldine Ambraal",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Reverse Rollator (CNC) Small",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 6.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00282",
+          "so_id": "6010567000015349005",
+          "crm_deal_id": "6673955000007958070",
+          "crm_deal_name": "Omingaye Mbelu - Order",
+          "customer": "Omingaye Mbelu",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 1.0
     },
     {
       "name": "Sidelyer 120",
       "available": 0.0,
       "stock_on_hand": 0.0,
       "reorder_level": 0.0,
-      "needed": 3.0,
-      "remaining_after": -3.0,
+      "needed": 4.0,
+      "remaining_after": -4.0,
       "status": "insufficient",
       "orders": [
+        {
+          "so_number": "SO-00275",
+          "so_id": "6010567000015274001",
+          "crm_deal_id": "6673955000007962056",
+          "crm_deal_name": "Ndalwenhle Cele - Order",
+          "customer": "Ndalwenhle Cele",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00264",
           "so_id": "6010567000015126272",
@@ -93,17 +269,25 @@
           "quantity": 1.0
         }
       ],
-      "shortfall": 3.0
+      "shortfall": 4.0
     },
     {
       "name": "Sidelyer 140",
       "available": 0.0,
       "stock_on_hand": 0.0,
       "reorder_level": 0.0,
-      "needed": 1.0,
-      "remaining_after": -1.0,
+      "needed": 2.0,
+      "remaining_after": -2.0,
       "status": "insufficient",
       "orders": [
+        {
+          "so_number": "SO-00279",
+          "so_id": "6010567000015275019",
+          "crm_deal_id": "6673955000007962001",
+          "crm_deal_name": "Litemba Nombutho - Order",
+          "customer": "Litemba Nombutho",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00257",
           "so_id": "6010567000015120006",
@@ -113,23 +297,219 @@
           "quantity": 1.0
         }
       ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Sidelyer 150",
+      "available": 1.0,
+      "stock_on_hand": 1.0,
+      "reorder_level": 0.0,
+      "needed": 2.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00299",
+          "so_id": "6010567000015353075",
+          "crm_deal_id": "6673955000007997344",
+          "crm_deal_name": "Percy Nqoko - Order",
+          "customer": "Percy Nqoko",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00297",
+          "so_id": "6010567000015349057",
+          "crm_deal_id": "6673955000007997118",
+          "crm_deal_name": "Othembele Mncanywa - Order",
+          "customer": "Othembele Mncanywa",
+          "quantity": 1.0
+        }
+      ],
       "shortfall": 1.0
+    },
+    {
+      "name": "Sidelyer 160",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00274",
+          "so_id": "6010567000015273001",
+          "crm_deal_id": "6673955000007962072",
+          "crm_deal_name": "Azile Tsheketsha - order",
+          "customer": "Azile Tsheketsha",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 1.0
+    },
+    {
+      "name": "Soft splint M",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 2.0,
+      "remaining_after": -2.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00297",
+          "so_id": "6010567000015349057",
+          "crm_deal_id": "6673955000007997118",
+          "crm_deal_name": "Othembele Mncanywa - Order",
+          "customer": "Othembele Mncanywa",
+          "quantity": 2.0
+        }
+      ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Soft splint XL",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00278",
+          "so_id": "6010567000015270012",
+          "crm_deal_id": "6673955000007962016",
+          "crm_deal_name": "Sisonke Mvalankulu - Order",
+          "customer": "Sisonke Mvalankulu",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 1.0
+    },
+    {
+      "name": "Standing frame medium w/ extra footplate",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 5.0,
+      "remaining_after": -5.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00296",
+          "so_id": "6010567000015396013",
+          "crm_deal_id": "6673955000007997106",
+          "crm_deal_name": "Salusiwe Nkohla - order",
+          "customer": "Salusiwe Nkohla",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00295",
+          "so_id": "6010567000015359038",
+          "crm_deal_id": "6673955000007997094",
+          "crm_deal_name": "Olathiwe telelwa - Order",
+          "customer": "Olathiwe Mtelelwa",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00294",
+          "so_id": "6010567000015401109",
+          "crm_deal_id": "6673955000007997082",
+          "crm_deal_name": "Othaliwe Libumbe/Mkosana - Order",
+          "customer": "Othawe Libumbe/Mkosana",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00288",
+          "so_id": "6010567000015353046",
+          "crm_deal_id": "6673955000007997020",
+          "crm_deal_name": "Mivuyo Manini - Order",
+          "customer": "Mivuyo Manini",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00273",
+          "so_id": "6010567000015271001",
+          "crm_deal_id": "6673955000007962084",
+          "crm_deal_name": "Kwahlwa Mbobo - Order",
+          "customer": "Kwahlwa Mbobo",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 5.0
     },
     {
       "name": "Table (CNC) Small Height Adjustable",
       "available": 0.0,
       "stock_on_hand": 0.0,
       "reorder_level": 12.0,
-      "needed": 1.0,
-      "remaining_after": -1.0,
+      "needed": 2.0,
+      "remaining_after": -2.0,
       "status": "insufficient",
       "orders": [
+        {
+          "so_number": "SO-00287",
+          "so_id": "6010567000015349034",
+          "crm_deal_id": "6673955000007997004",
+          "crm_deal_name": "Soyama Tshisayo - order",
+          "customer": "Soyama Tshisayo",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00259",
           "so_id": "6010567000015157120",
           "crm_deal_id": "6673955000007857014",
           "crm_deal_name": "Smangaliso Shude - Order",
           "customer": "Smangaliso Shude",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Tactile toys",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 2.0,
+      "remaining_after": -2.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00287",
+          "so_id": "6010567000015349034",
+          "crm_deal_id": "6673955000007997004",
+          "crm_deal_name": "Soyama Tshisayo - order",
+          "customer": "Soyama Tshisayo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00277",
+          "so_id": "6010567000015272011",
+          "crm_deal_id": "6673955000007962028",
+          "crm_deal_name": "Sandla Sontsonga - order",
+          "customer": "Sandla Sontsonga",
+          "quantity": 1.0
+        }
+      ],
+      "shortfall": 2.0
+    },
+    {
+      "name": "Visual toys (Vision Box)",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": -1.0,
+      "status": "insufficient",
+      "orders": [
+        {
+          "so_number": "SO-00277",
+          "so_id": "6010567000015272011",
+          "crm_deal_id": "6673955000007962028",
+          "crm_deal_name": "Sandla Sontsonga - order",
+          "customer": "Sandla Sontsonga",
           "quantity": 1.0
         }
       ],
@@ -163,33 +543,6 @@
       ]
     },
     {
-      "name": "Reverse Rollator (CNC) Medium",
-      "available": 2.0,
-      "stock_on_hand": 2.0,
-      "reorder_level": 3.0,
-      "needed": 2.0,
-      "remaining_after": 0.0,
-      "status": "at_risk",
-      "orders": [
-        {
-          "so_number": "SO-00257",
-          "so_id": "6010567000015120006",
-          "crm_deal_id": "6673955000007873049",
-          "crm_deal_name": "Amahle Dlamini - Order",
-          "customer": "Amahle Dlamini",
-          "quantity": 1.0
-        },
-        {
-          "so_number": "SO-00244",
-          "so_id": "6010567000014700019",
-          "crm_deal_id": "6673955000007633048",
-          "crm_deal_name": "Eldine Ambraal Order",
-          "customer": "Eldine Ambraal",
-          "quantity": 1.0
-        }
-      ]
-    },
-    {
       "name": "Table (CNC) Med Height Adjustable",
       "available": 9.0,
       "stock_on_hand": 9.0,
@@ -213,10 +566,18 @@
       "available": 15.0,
       "stock_on_hand": 15.0,
       "reorder_level": 0.0,
-      "needed": 1.0,
-      "remaining_after": 14.0,
+      "needed": 2.0,
+      "remaining_after": 13.0,
       "status": "ok",
       "orders": [
+        {
+          "so_number": "SO-00280",
+          "so_id": "6010567000015401026",
+          "crm_deal_id": "6673955000007958032",
+          "crm_deal_name": "kuhlekonke Zakuza - Order",
+          "customer": "Kuhlekonke Zakuza",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00258",
           "so_id": "6010567000015165003",
@@ -232,10 +593,18 @@
       "available": 12.0,
       "stock_on_hand": 12.0,
       "reorder_level": 0.0,
-      "needed": 3.0,
-      "remaining_after": 9.0,
+      "needed": 4.0,
+      "remaining_after": 8.0,
       "status": "ok",
       "orders": [
+        {
+          "so_number": "SO-00283",
+          "so_id": "6010567000015359011",
+          "crm_deal_id": "6673955000007958056",
+          "crm_deal_name": "Thandolwethu Mtolo - Order",
+          "customer": "Thandolwethu Mtolo",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00265",
           "so_id": "6010567000015120048",
@@ -263,14 +632,76 @@
       ]
     },
     {
+      "name": "Bench S 15-24cm CNC",
+      "available": 9.0,
+      "stock_on_hand": 9.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": 8.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00287",
+          "so_id": "6010567000015349034",
+          "crm_deal_id": "6673955000007997004",
+          "crm_deal_name": "Soyama Tshisayo - order",
+          "customer": "Soyama Tshisayo",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "name": "Soft splint XXS",
+      "available": 12.0,
+      "stock_on_hand": 12.0,
+      "reorder_level": 0.0,
+      "needed": 1.0,
+      "remaining_after": 11.0,
+      "status": "ok",
+      "orders": [
+        {
+          "so_number": "SO-00281",
+          "so_id": "6010567000015359003",
+          "crm_deal_id": "6673955000007958082",
+          "crm_deal_name": "Rianno Snyers - Order",
+          "customer": "Rianno Snyers",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
       "name": "Standing frame medium",
       "available": 37.0,
       "stock_on_hand": 35.0,
       "reorder_level": 0.0,
-      "needed": 3.0,
-      "remaining_after": 34.0,
+      "needed": 6.0,
+      "remaining_after": 31.0,
       "status": "ok",
       "orders": [
+        {
+          "so_number": "SO-00299",
+          "so_id": "6010567000015353075",
+          "crm_deal_id": "6673955000007997344",
+          "crm_deal_name": "Percy Nqoko - Order",
+          "customer": "Percy Nqoko",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00283",
+          "so_id": "6010567000015359011",
+          "crm_deal_id": "6673955000007958056",
+          "crm_deal_name": "Thandolwethu Mtolo - Order",
+          "customer": "Thandolwethu Mtolo",
+          "quantity": 1.0
+        },
+        {
+          "so_number": "SO-00275",
+          "so_id": "6010567000015274001",
+          "crm_deal_id": "6673955000007962056",
+          "crm_deal_name": "Ndalwenhle Cele - Order",
+          "customer": "Ndalwenhle Cele",
+          "quantity": 1.0
+        },
         {
           "so_number": "SO-00265",
           "so_id": "6010567000015120048",
@@ -350,6 +781,435 @@
     }
   ],
   "orders": [
+    {
+      "so_number": "SO-00299",
+      "so_id": "6010567000015353075",
+      "crm_deal_id": "6673955000007997344",
+      "crm_deal_name": "Percy Nqoko - Order",
+      "customer": "Percy Nqoko",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Sidelyer 150",
+          "donation_name": "(Donation) Sidelyer 150",
+          "quantity": 1.0
+        },
+        {
+          "name": "Positioning Chair (Medium)",
+          "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00298",
+      "so_id": "6010567000015359060",
+      "crm_deal_id": "6673955000007997332",
+      "crm_deal_name": "Asange Makiki - Order",
+      "customer": "Asange Makiki",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Reverse Rollator (CNC) Medium",
+          "donation_name": "(Donation) Reverse Rollator (CNC) Medium",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00297",
+      "so_id": "6010567000015349057",
+      "crm_deal_id": "6673955000007997118",
+      "crm_deal_name": "Othembele Mncanywa - Order",
+      "customer": "Othembele Mncanywa",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Sidelyer 150",
+          "donation_name": "(Donation) Sidelyer 150",
+          "quantity": 1.0
+        },
+        {
+          "name": "Soft splint M",
+          "donation_name": "(Donation) Soft splint M",
+          "quantity": 2.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00296",
+      "so_id": "6010567000015396013",
+      "crm_deal_id": "6673955000007997106",
+      "crm_deal_name": "Salusiwe Nkohla - order",
+      "customer": "Salusiwe Nkohla",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium w/ extra footplate",
+          "donation_name": "(Donation) Standing frame medium w/ extra footplate",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00295",
+      "so_id": "6010567000015359038",
+      "crm_deal_id": "6673955000007997094",
+      "crm_deal_name": "Olathiwe telelwa - Order",
+      "customer": "Olathiwe Mtelelwa",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium w/ extra footplate",
+          "donation_name": "(Donation) Standing frame medium w/ extra footplate",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00294",
+      "so_id": "6010567000015401109",
+      "crm_deal_id": "6673955000007997082",
+      "crm_deal_name": "Othaliwe Libumbe/Mkosana - Order",
+      "customer": "Othawe Libumbe/Mkosana",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium w/ extra footplate",
+          "donation_name": "(Donation) Standing frame medium w/ extra footplate",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00293",
+      "so_id": "6010567000015359020",
+      "crm_deal_id": "6673955000007997070",
+      "crm_deal_name": "lwandile Nyuswa - Order",
+      "customer": "lwandile Nyuswa",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Positioning Chair (Medium)",
+          "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00292",
+      "so_id": "6010567000015353065",
+      "crm_deal_id": "6673955000007997058",
+      "crm_deal_name": "Mpendulo Mzobe - Order",
+      "customer": "Mpendulo Mzobe",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Positioning Chair (Medium)",
+          "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00291",
+      "so_id": "6010567000015398002",
+      "crm_deal_id": "6673955000008000011",
+      "crm_deal_name": "Nombulelo Jane Duma - Nest 19/03/2026",
+      "customer": "Nombulelo Jane Duma",
+      "date": "2026-03-19",
+      "items": []
+    },
+    {
+      "so_number": "SO-00290",
+      "so_id": "6010567000015401091",
+      "crm_deal_id": "6673955000007997046",
+      "crm_deal_name": "Thandazani Njapha - order",
+      "customer": "Thandazani Njapha",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Positioning Chair (Medium)",
+          "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00289",
+      "so_id": "6010567000015401073",
+      "crm_deal_id": "6673955000007997034",
+      "crm_deal_name": "Amkitha Ncapai - Order",
+      "customer": "Amkitha Ncapai",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Corner Chair (old design)",
+          "donation_name": "(Donation) Corner Chair (old design)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00288",
+      "so_id": "6010567000015353046",
+      "crm_deal_id": "6673955000007997020",
+      "crm_deal_name": "Mivuyo Manini - Order",
+      "customer": "Mivuyo Manini",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium w/ extra footplate",
+          "donation_name": "(Donation) Standing frame medium w/ extra footplate",
+          "quantity": 1.0
+        },
+        {
+          "name": "Corner Chair (old design)",
+          "donation_name": "(Donation) Corner Chair (old design)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00287",
+      "so_id": "6010567000015349034",
+      "crm_deal_id": "6673955000007997004",
+      "crm_deal_name": "Soyama Tshisayo - order",
+      "customer": "Soyama Tshisayo",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Tactile toys",
+          "donation_name": "(Donation) Tactile toys",
+          "quantity": 1.0
+        },
+        {
+          "name": "Bench S 15-24cm CNC",
+          "donation_name": "(Donation) Bench S 15-24cm CNC",
+          "quantity": 1.0
+        },
+        {
+          "name": "Table (CNC) Small Height Adjustable",
+          "donation_name": "(Donation) Table (CNC) Small Height Adjustable",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00284",
+      "so_id": "6010567000015353018",
+      "crm_deal_id": "6673955000007958044",
+      "crm_deal_name": "Amahle Mzotho - Order",
+      "customer": "Amahle Mzotho",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00283",
+      "so_id": "6010567000015359011",
+      "crm_deal_id": "6673955000007958056",
+      "crm_deal_name": "Thandolwethu Mtolo - Order",
+      "customer": "Thandolwethu Mtolo",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Bench M 22-35cm CNC",
+          "donation_name": "(Donation) Bench M 22-35cm CNC",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00282",
+      "so_id": "6010567000015349005",
+      "crm_deal_id": "6673955000007958070",
+      "crm_deal_name": "Omingaye Mbelu - Order",
+      "customer": "Omingaye Mbelu",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Reverse Rollator (CNC) Small",
+          "donation_name": "(Donation) Reverse Rollator (CNC) Small",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00281",
+      "so_id": "6010567000015359003",
+      "crm_deal_id": "6673955000007958082",
+      "crm_deal_name": "Rianno Snyers - Order",
+      "customer": "Rianno Snyers",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Soft splint XXS",
+          "donation_name": "(Donation) Soft splint XXS",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00280",
+      "so_id": "6010567000015401026",
+      "crm_deal_id": "6673955000007958032",
+      "crm_deal_name": "kuhlekonke Zakuza - Order",
+      "customer": "Kuhlekonke Zakuza",
+      "date": "2026-05-18",
+      "items": [
+        {
+          "name": "Bench L 33-46cm CNC",
+          "donation_name": "(Donation) Bench L 33-46cm CNC",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00279",
+      "so_id": "6010567000015275019",
+      "crm_deal_id": "6673955000007962001",
+      "crm_deal_name": "Litemba Nombutho - Order",
+      "customer": "Litemba Nombutho",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Sidelyer 140",
+          "donation_name": "(Donation) Sidelyer 140",
+          "quantity": 1.0
+        },
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00278",
+      "so_id": "6010567000015270012",
+      "crm_deal_id": "6673955000007962016",
+      "crm_deal_name": "Sisonke Mvalankulu - Order",
+      "customer": "Sisonke Mvalankulu",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Soft splint XL",
+          "donation_name": "(Donation) Soft splint XL",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00277",
+      "so_id": "6010567000015272011",
+      "crm_deal_id": "6673955000007962028",
+      "crm_deal_name": "Sandla Sontsonga - order",
+      "customer": "Sandla Sontsonga",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Positioning Chair (Small)",
+          "donation_name": "(Donation) Positioning Chair (Small)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Visual toys (Vision Box)",
+          "donation_name": "(Donation) Visual toys (Vision Box)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Tactile toys",
+          "donation_name": "(Donation) Tactile toys",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00276",
+      "so_id": "6010567000015275001",
+      "crm_deal_id": "6673955000007962044",
+      "crm_deal_name": "Hlengiwe N Mchunu - Order",
+      "customer": "Hlengiwe N Mchunu",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Reverse Rollator (CNC) Medium",
+          "donation_name": "(Donation) Reverse Rollator (CNC) Medium",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00275",
+      "so_id": "6010567000015274001",
+      "crm_deal_id": "6673955000007962056",
+      "crm_deal_name": "Ndalwenhle Cele - Order",
+      "customer": "Ndalwenhle Cele",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Standing frame medium",
+          "donation_name": "(Donation) Standing frame medium",
+          "quantity": 1.0
+        },
+        {
+          "name": "Sidelyer 120",
+          "donation_name": "(Donation) Sidelyer 120",
+          "quantity": 1.0
+        },
+        {
+          "name": "Positioning Chair (Medium)",
+          "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00274",
+      "so_id": "6010567000015273001",
+      "crm_deal_id": "6673955000007962072",
+      "crm_deal_name": "Azile Tsheketsha - order",
+      "customer": "Azile Tsheketsha",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Sidelyer 160",
+          "donation_name": "(Donation) Sidelyer 160",
+          "quantity": 1.0
+        }
+      ]
+    },
+    {
+      "so_number": "SO-00273",
+      "so_id": "6010567000015271001",
+      "crm_deal_id": "6673955000007962084",
+      "crm_deal_name": "Kwahlwa Mbobo - Order",
+      "customer": "Kwahlwa Mbobo",
+      "date": "2026-05-15",
+      "items": [
+        {
+          "name": "Standing frame medium w/ extra footplate",
+          "donation_name": "(Donation) Standing frame medium w/ extra footplate",
+          "quantity": 1.0
+        }
+      ]
+    },
     {
       "so_number": "SO-00272",
       "so_id": "6010567000015212057",
