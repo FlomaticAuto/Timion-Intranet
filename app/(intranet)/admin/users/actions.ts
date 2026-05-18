@@ -63,7 +63,7 @@ export async function inviteUser(
 
   const opts: Parameters<typeof admin.auth.admin.inviteUserByEmail>[1] = {
     ...(fullName?.trim() ? { data: { full_name: fullName.trim() } } : {}),
-    ...(origin ? { redirectTo: `${origin}/auth/callback` } : {}),
+    ...(origin ? { redirectTo: `${origin}/auth/callback?next=/auth/set-password` } : {}),
   };
 
   const { data, error: inviteErr } = await admin.auth.admin.inviteUserByEmail(
