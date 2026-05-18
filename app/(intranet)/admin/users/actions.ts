@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -56,10 +57,13 @@ export async function inviteUser(
     return { error: (e as Error).message };
   }
 
-  // Build the redirect URL for the invite email.
-  // VERCEL_URL is set automatically on Vercel deployments.
+  // Derive the origin from the live request so it always matches the URL
+  // the admin is actually using — works on production, preview, and local.
+  const headersList = await headers();
+  const host  = headersList.get("host");
+  const proto = headersList.get("x-forwarded-proto") ?? "https";
   const origin = process.env.NEXT_PUBLIC_SITE_URL
-    ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+    ?? (host ? `${proto}://${host}` : null);
 
   const opts: Parameters<typeof admin.auth.admin.inviteUserByEmail>[1] = {
     ...(fullName?.trim() ? { data: { full_name: fullName.trim() } } : {}),
