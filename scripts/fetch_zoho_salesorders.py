@@ -34,6 +34,14 @@ def get_access_token(client_id, client_secret, refresh_token):
     return data["access_token"]
 
 
+def _parse_crm_id(reference: str) -> str:
+    """Extract numeric CRM deal ID from 'CRM Deal 123456' reference strings."""
+    prefix = "CRM Deal "
+    if reference.startswith(prefix):
+        return reference[len(prefix):].strip()
+    return ""
+
+
 def fetch_all_pages(url, headers, params, data_key):
     results = []
     page = 1
@@ -88,7 +96,8 @@ def main():
             "total":           float(so.get("total", 0) or 0),
             "balance":         float(so.get("balance", 0) or 0),
             "currency":        so.get("currency_code", "ZAR"),
-            "crm_deal_id":     str(so.get("crm_deal_id", "") or ""),
+            # Zoho stores the linked CRM deal in reference_number as "CRM Deal <id>"
+            "crm_deal_id":     _parse_crm_id(so.get("reference_number", "") or ""),
         })
 
     output = {
