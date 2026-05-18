@@ -124,10 +124,6 @@ export default async function UsersPage() {
         </div>
       )}
 
-      <div className="mt-6 text-[12px] text-text-muted">
-        Use <span className="text-text font-semibold">Add User</span> above to invite staff by email — they&apos;ll receive a link to set their password.
-        Requires <code className="text-text">SUPABASE_SERVICE_ROLE_KEY</code> in Vercel env vars and the Supabase Site URL set to the production URL.
-      </div>
     </>
   );
 }

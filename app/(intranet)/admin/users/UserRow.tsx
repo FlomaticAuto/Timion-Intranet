@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { ROLES, ROLE_LABELS, type Role } from "@/lib/permissions";
-import { updateRole, setActive } from "./actions";
+import { updateRole, setActive, deleteUser } from "./actions";
 
 interface ProfileRow {
   id:         string;
@@ -15,7 +15,6 @@ interface ProfileRow {
 
 interface UserRowProps {
   profile: ProfileRow;
-  /** If true, the row's controls are disabled (you can't demote yourself). */
   isSelf:  boolean;
 }
 
@@ -30,10 +29,11 @@ const dateFmt = (iso: string) => {
 };
 
 export function UserRow({ profile, isSelf }: UserRowProps) {
-  const [role,     setRole]     = useState<Role | "">(profile.role ?? "");
-  const [isActive, setIsActive] = useState(profile.isActive);
-  const [error,    setError]    = useState<string | null>(null);
-  const [pending,  startTransition] = useTransition();
+  const [role,        setRole]        = useState<Role | "">(profile.role ?? "");
+  const [isActive,    setIsActive]    = useState(profile.isActive);
+  const [error,       setError]       = useState<string | null>(null);
+  const [deleteStep,  setDeleteStep]  = useState<"idle" | "confirm">("idle");
+  const [pending,     startTransition] = useTransition();
 
   const onRoleChange = (next: Role | "") => {
     setError(null);
@@ -41,10 +41,7 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
     setRole(next);
     startTransition(async () => {
       const result = await updateRole(profile.id, next === "" ? null : (next as Role));
-      if (result.error) {
-        setRole(prev);
-        setError(result.error);
-      }
+      if (result.error) { setRole(prev); setError(result.error); }
     });
   };
 
@@ -54,10 +51,16 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
     setIsActive(next);
     startTransition(async () => {
       const result = await setActive(profile.id, next);
-      if (result.error) {
-        setIsActive(!next);
-        setError(result.error);
-      }
+      if (result.error) { setIsActive(!next); setError(result.error); }
+    });
+  };
+
+  const onDelete = () => {
+    setError(null);
+    startTransition(async () => {
+      const result = await deleteUser(profile.id);
+      if (result.error) { setError(result.error); setDeleteStep("idle"); }
+      // On success the row disappears via revalidatePath — no local state needed.
     });
   };
 
@@ -66,6 +69,7 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
 
   return (
     <tr className="border-t border-border align-middle">
+      {/* User */}
       <td className="py-3 pr-3">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full grid place-items-center text-xs font-bold text-white timion-gradient shrink-0">
@@ -81,6 +85,7 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
         </div>
       </td>
 
+      {/* Role */}
       <td className="py-3 px-3">
         <select
           value={role}
@@ -98,6 +103,7 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
         )}
       </td>
 
+      {/* Status */}
       <td className="py-3 px-3">
         <button
           type="button"
@@ -115,13 +121,46 @@ export function UserRow({ profile, isSelf }: UserRowProps) {
         </button>
       </td>
 
+      {/* Created */}
       <td className="py-3 px-3 text-[12px] text-text-muted whitespace-nowrap">
         {dateFmt(profile.createdAt)}
       </td>
 
-      <td className="py-3 pl-3 text-right text-[11px]">
+      {/* Actions */}
+      <td className="py-3 pl-3 pr-4 text-right text-[11px] whitespace-nowrap">
         {pending && <span className="text-text-muted">Saving…</span>}
-        {error && <span className="text-[#ff4b6e]">{error}</span>}
+        {!pending && error && <span className="text-[#ff4b6e]">{error}</span>}
+
+        {!pending && !error && !isSelf && (
+          deleteStep === "idle" ? (
+            <button
+              type="button"
+              onClick={() => setDeleteStep("confirm")}
+              className="text-text-dim hover:text-[#ff4b6e] transition-colors text-[11px] font-medium"
+            >
+              Remove
+            </button>
+          ) : (
+            <span className="inline-flex items-center gap-2">
+              <span className="text-text-muted">Sure?</span>
+              <button
+                type="button"
+                onClick={onDelete}
+                disabled={pending}
+                className="text-[#ff4b6e] font-semibold hover:underline disabled:opacity-50"
+              >
+                Yes, remove
+              </button>
+              <button
+                type="button"
+                onClick={() => setDeleteStep("idle")}
+                className="text-text-muted hover:text-text transition-colors"
+              >
+                Cancel
+              </button>
+            </span>
+          )
+        )}
       </td>
     </tr>
   );

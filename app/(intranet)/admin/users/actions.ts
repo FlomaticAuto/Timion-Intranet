@@ -83,6 +83,28 @@ export async function inviteUser(
 }
 
 /**
+ * Permanently delete a user from Supabase Auth. The ON DELETE CASCADE
+ * on profiles removes their profile row automatically.
+ * Uses the service-role admin client — RLS cannot protect auth.users.
+ */
+export async function deleteUser(userId: string) {
+  if (!userId) return { error: "User ID is required." };
+
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch (e) {
+    return { error: (e as Error).message };
+  }
+
+  const { error } = await admin.auth.admin.deleteUser(userId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/users");
+  return { ok: true as const };
+}
+
+/**
  * Flip a profile's is_active flag. Doesn't sign them out — Supabase
  * Auth still considers them authenticated. We'll wire `is_active`
  * into the proxy when we start enforcing it.
