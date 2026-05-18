@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-18 (session 9)
+**Last updated:** 2026-05-18 (session 10)
 
 ## Deployment
 
@@ -24,7 +24,7 @@ Snapshot of where Timion Intranet is right now. Updated when state of deployment
 All exist with appropriate tiles. Live tiles:
 - **CRM** — Zoho CRM link, **Visit Dashboard**, **Order Process Dashboard**, **Equipment Ordered Dashboard** (all live internal routes)
 - **Inventory** — Zoho Inventory link, **Production Dashboard**, **Stock vs Orders Dashboard**, **Reorder Level Report** (all live internal routes)
-- **Books** — Zoho Books link
+- **Books** — Zoho Books link, **Sales Order Dashboard**, **Purchase Order Dashboard** (both live internal routes)
 - **HR** — 4 comingSoon tiles: Leave Requests, Leave Approvals, Leave Dashboard, Staff Profile
 - **Board & Reporting** — Timion Presentation, Annual Report 2026 PDF (both static files in `/public/`)
 
@@ -84,9 +84,29 @@ Native Next.js route. Pulls JSON from `public/data/crm/orders.json`. Three views
 - **Script:** `scripts/fetch_zoho_crm_orders.py` — fetches Deal fields only. No `order_date` from Equipment History; Zoho CRM v2 multi-lookup fields are inaccessible without COQL scope.
 - **Deal fields fetched:** `id`, `Deal_Name`, `Account_Name`, `Order_Type`, `Stage`, `Lead_Source`, `Closing_Date`, `Created_Time`
 
+### Sales Order Dashboard (`/books/sales-orders`)
+Native Next.js route. Pulls JSON from `public/data/salesorders.json`. Two views: Orders (filterable table) and Analytics.
+
+- **Data:** current-year sales orders from Zoho Inventory. Script: `scripts/fetch_zoho_salesorders.py`.
+- **Filters:** year select, month select, status tabs (Draft / Confirmed / Fulfilled), Order Type tabs (Government / Private / Donation / Daycare), keyword search.
+- **Table columns:** SO #, Date, Customer, Status (badge), Type (badge), Total, Balance, CRM (links to `crm.zoho.com/crm/tab/Potentials/{crm_deal_id}` when present).
+- **Row click:** opens the SO in Zoho Inventory (`https://inventory.zoho.com/app/timionnpc#/salesorders/{id}`).
+- **Analytics:** Orders by Status breakdown, Orders by Type breakdown (4 types, colour-coded), monthly count + value bar charts (visit-dashboard style with y-axis / grid lines / hover tooltips), top customers rank list, CRM deal coverage stat.
+- **CRM deal ID:** stored in Zoho's `reference_number` field as `"CRM Deal {id}"`. `_parse_crm_id()` in the fetch script extracts it; `parseCrmId()` in the client provides a fallback for older data.
+- **Order Type custom field:** `cf_order_type` — extracted via `_get_custom_field()` which checks top-level key first, then `custom_fields` array. Options: Government, Private, Donation, Daycare.
+
+### Purchase Order Dashboard (`/books/purchase-orders`)
+Native Next.js route. Pulls JSON from `public/data/purchaseorders.json`. Two views: Orders (filterable table) and Analytics.
+
+- **Data:** current-year purchase orders from Zoho Inventory. Script: `scripts/fetch_zoho_purchaseorders.py`.
+- **Filters:** year select, month select, status tabs (Issued / Received), keyword search.
+- **Table columns:** PO #, Date, Vendor, Status (badge), Delivery Date, Total, Balance.
+- **Row click:** opens the PO in Zoho Inventory (`https://inventory.zoho.com/app/timionnpc#/purchaseorders/{id}`).
+- **Analytics:** Orders by Status breakdown, monthly count + value bar charts (visit-dashboard style), top vendors rank list.
+
 ### Sync schedule and manual trigger
-All four dashboards sync in one workflow run:
-- **Automatic:** `0 9,15 * * 1-5` = **11:00 + 17:00 SAST, Mon–Fri**
+All six dashboards sync in one workflow run (Production, Visit, Order Process, Equipment, Sales Orders, Purchase Orders):
+- **Automatic (primary):** Vercel Cron in `vercel.json` — `0 9,15 * * 1-5` → calls `GET /api/sync` (authenticated with auto-generated `CRON_SECRET`) → dispatches `sync-zoho.yml`. Vercel cron is the reliable trigger; GitHub Actions scheduled jobs silently skip runs with no trace when the repo is quiet.
 - **Manual:** ↺ Sync button on each dashboard subheader → `POST /api/sync` → dispatches `sync-zoho.yml` via GitHub Actions API. Requires `GITHUB_SYNC_TOKEN` Vercel env var (fine-grained PAT, Actions read/write on this repo).
 
 ### CRM data pipeline notes
@@ -99,6 +119,9 @@ All four dashboards sync in one workflow run:
 - **Production cards** → `https://one.zoho.com/…/inventory/app/878382704#/inventory/assembly/{id}`
 - **Order rows** → `https://crm.zoho.com/crm/org878871386/tab/Potentials/{id}`
 - **Stock vs Orders (CRM links)** → `https://crm.zoho.com/crm/org878871386/tab/Potentials/{crm_deal_id}`
+- **Sales Order rows** → `https://inventory.zoho.com/app/timionnpc#/salesorders/{id}`
+- **Purchase Order rows** → `https://inventory.zoho.com/app/timionnpc#/purchaseorders/{id}`
+- **SO CRM links** → `https://crm.zoho.com/crm/tab/Potentials/{crm_deal_id}` (parsed from `reference_number`)
 
 ### Auth
 - Email + password sign-in at `/login`

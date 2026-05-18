@@ -98,6 +98,42 @@ All three dashboard sync scripts (Production, Visit, Order Process) run in a sin
 
 ---
 
+## 2026-05-18 · Vercel Cron as primary sync trigger (supersedes GitHub Actions schedule)
+
+`vercel.json` declares a cron at `0 9,15 * * 1-5` that calls `GET /api/sync`. Vercel authenticates the call with an auto-generated `CRON_SECRET` header. The route then `workflow_dispatch`es `sync-zoho.yml` on GitHub Actions.
+
+**Why:** GitHub Actions scheduled jobs silently skip runs when the repo has been inactive and leave no trace in the Actions log. Vercel Cron runs reliably every time and appears in Vercel's cron execution log. The GitHub Actions workflow still does all the actual data fetching; Vercel is just the reliable clock.
+
+**Note:** `GET /api/sync` checks `Authorization: Bearer <CRON_SECRET>`. `POST /api/sync` (from the UI Sync button) checks for a valid Supabase session instead.
+
+---
+
+## 2026-05-18 · Shared bar chart component pattern — visit-dashboard style
+
+All bar charts across the Books dashboards (and future dashboards) should follow the visit-dashboard chart design, not an ad-hoc pixel-height approach:
+
+- Y-axis with `niceMax()` + `computeTicks()` for clean round tick intervals
+- Horizontal grid lines at each tick
+- L-shaped axis borders (left + bottom, `rgba(255,255,255,0.15)`)
+- Bars use the brand gradient (`linear-gradient(135deg, #7c5cfc, #4f8ef7)`), `border-radius: 5px 5px 0 0`
+- Hover: `group/bar` → `group-hover/bar:brightness-125` on bar fill + tooltip fades in via `opacity-0 group-hover/bar:opacity-100`
+- Tooltip: dark `#1a1a2e` surface, `backdropFilter: blur(8px)`, HTML content via `dangerouslySetInnerHTML` (content is 100% internal, never from external input)
+- Chart height: 180px. Bars use `height: ${(value/yMax)*100}%` against a full-height flex column — NOT pixel heights, which broke when the column had no explicit height.
+
+**Why:** CSS percentage heights only work when the parent has an explicit height. The flex-column (`height: 100%`) approach means bars size correctly relative to the 180px zone. The visit-dashboard pattern was already proven and its CSS is scoped, so copying the logic (not the CSS) into React inline styles keeps the Books dashboards self-contained.
+
+---
+
+## 2026-05-18 · Zoho Inventory custom fields: `_get_custom_field()` helper pattern
+
+Custom fields on Zoho Inventory records (e.g. `cf_order_type`) are not reliably returned at the top level by all API calls. The fetch scripts use a helper that checks:
+1. Top-level key (`record.get("cf_order_type")`) — returned by list endpoints when the field is configured
+2. `custom_fields` array (`[{"api_name": "cf_order_type", "value": "..."}]`) — fallback for detail-endpoint or older records
+
+**Why:** Zoho's list API behaviour for custom fields varies by field type and configuration. Checking both prevents silent empty strings if the API changes how it surfaces the field.
+
+---
+
 ## 2026-05-13 · Memory file system
 
 `docs/STATUS.md`, `docs/BACKLOG.md`, `docs/DECISIONS.md` are the canonical session-handoff context. `AGENTS.md` points at them and documents workflows. Triggered by the user saying "save to memory" (or variants); agent uses Edit (not Write), supersedes rather than accumulates, moves shipped items from BACKLOG → STATUS, dates DECISIONS entries, never auto-modifies without explicit user request.
