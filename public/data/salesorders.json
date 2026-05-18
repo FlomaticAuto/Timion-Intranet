@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-18T13:59:43Z",
+  "synced_at": "2026-05-18T15:59:28Z",
   "year": 2026,
   "orders": [
     {
@@ -14,7 +14,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997344"
+      "crm_deal_id": "6673955000007997344",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015359060",
@@ -28,7 +29,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997332"
+      "crm_deal_id": "6673955000007997332",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015349057",
@@ -42,7 +44,8 @@
       "total": 431.25,
       "balance": 431.25,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997118"
+      "crm_deal_id": "6673955000007997118",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015396013",
@@ -56,7 +59,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997106"
+      "crm_deal_id": "6673955000007997106",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015359038",
@@ -70,7 +74,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997094"
+      "crm_deal_id": "6673955000007997094",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015401109",
@@ -84,7 +89,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997082"
+      "crm_deal_id": "6673955000007997082",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015359020",
@@ -98,7 +104,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997070"
+      "crm_deal_id": "6673955000007997070",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015353065",
@@ -112,7 +119,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997058"
+      "crm_deal_id": "6673955000007997058",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015398002",
@@ -126,7 +134,8 @@
       "total": 2141.96,
       "balance": 2141.96,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000015401091",
@@ -140,7 +149,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997046"
+      "crm_deal_id": "6673955000007997046",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015401073",
@@ -154,7 +164,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997034"
+      "crm_deal_id": "6673955000007997034",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015353046",
@@ -168,7 +179,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997020"
+      "crm_deal_id": "6673955000007997020",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015349034",
@@ -182,7 +194,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007997004"
+      "crm_deal_id": "6673955000007997004",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015396003",
@@ -196,7 +209,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958015"
+      "crm_deal_id": "6673955000007958015",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015401054",
@@ -210,7 +224,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958001"
+      "crm_deal_id": "6673955000007958001",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015353018",
@@ -224,7 +239,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958044"
+      "crm_deal_id": "6673955000007958044",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015359011",
@@ -238,7 +254,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958056"
+      "crm_deal_id": "6673955000007958056",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015349005",
@@ -252,7 +269,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958070"
+      "crm_deal_id": "6673955000007958070",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015359003",
@@ -266,7 +284,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958082"
+      "crm_deal_id": "6673955000007958082",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015401026",
@@ -280,7 +299,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007958032"
+      "crm_deal_id": "6673955000007958032",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015275019",
@@ -294,7 +314,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962001"
+      "crm_deal_id": "6673955000007962001",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015270012",
@@ -308,7 +329,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962016"
+      "crm_deal_id": "6673955000007962016",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015272011",
@@ -322,7 +344,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962028"
+      "crm_deal_id": "6673955000007962028",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015275001",
@@ -336,7 +359,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962044"
+      "crm_deal_id": "6673955000007962044",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015274001",
@@ -350,7 +374,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962056"
+      "crm_deal_id": "6673955000007962056",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015273001",
@@ -364,7 +389,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962072"
+      "crm_deal_id": "6673955000007962072",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015271001",
@@ -378,7 +404,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007962084"
+      "crm_deal_id": "6673955000007962084",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015212057",
@@ -392,7 +419,8 @@
       "total": 51093.25,
       "balance": 51093.25,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007875046"
+      "crm_deal_id": "6673955000007875046",
+      "order_type": "Government"
     },
     {
       "id": "6010567000015207015",
@@ -406,7 +434,8 @@
       "total": 39268.57,
       "balance": 39268.57,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007954038"
+      "crm_deal_id": "6673955000007954038",
+      "order_type": "Government"
     },
     {
       "id": "6010567000015184148",
@@ -420,7 +449,8 @@
       "total": 11549.55,
       "balance": 11549.55,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007954004"
+      "crm_deal_id": "6673955000007954004",
+      "order_type": "Private"
     },
     {
       "id": "6010567000015165959",
@@ -434,7 +464,8 @@
       "total": 4594.54,
       "balance": 4594.54,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007875009"
+      "crm_deal_id": "6673955000007875009",
+      "order_type": "Government"
     },
     {
       "id": "6010567000015120048",
@@ -448,7 +479,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007837028"
+      "crm_deal_id": "6673955000007837028",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015126272",
@@ -462,7 +494,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007837066"
+      "crm_deal_id": "6673955000007837066",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015143013",
@@ -476,7 +509,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007841013"
+      "crm_deal_id": "6673955000007841013",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015120039",
@@ -490,7 +524,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007841040"
+      "crm_deal_id": "6673955000007841040",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015157140",
@@ -504,7 +539,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007841076"
+      "crm_deal_id": "6673955000007841076",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015157131",
@@ -518,7 +554,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007841100"
+      "crm_deal_id": "6673955000007841100",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015157120",
@@ -532,7 +569,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007857014"
+      "crm_deal_id": "6673955000007857014",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015165003",
@@ -546,7 +584,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007873001"
+      "crm_deal_id": "6673955000007873001",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015120006",
@@ -560,7 +599,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007873049"
+      "crm_deal_id": "6673955000007873049",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015072014",
@@ -574,7 +614,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698046"
+      "crm_deal_id": "6673955000007698046",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015058033",
@@ -588,7 +629,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698058"
+      "crm_deal_id": "6673955000007698058",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015062051",
@@ -602,7 +644,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698074"
+      "crm_deal_id": "6673955000007698074",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015044080",
@@ -616,7 +659,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698099"
+      "crm_deal_id": "6673955000007698099",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015058015",
@@ -630,7 +674,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698137"
+      "crm_deal_id": "6673955000007698137",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015058007",
@@ -644,7 +689,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698153"
+      "crm_deal_id": "6673955000007698153",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000015062002",
@@ -658,7 +704,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698169"
+      "crm_deal_id": "6673955000007698169",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000014868003",
@@ -672,7 +719,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698224"
+      "crm_deal_id": "6673955000007698224",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000014806022",
@@ -686,7 +734,8 @@
       "total": 26883.0,
       "balance": 26882.99,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007730006"
+      "crm_deal_id": "6673955000007730006",
+      "order_type": "Government"
     },
     {
       "id": "6010567000014743017",
@@ -700,7 +749,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007698247"
+      "crm_deal_id": "6673955000007698247",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000014700019",
@@ -714,7 +764,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007633048"
+      "crm_deal_id": "6673955000007633048",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000014667005",
@@ -728,7 +779,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007633012"
+      "crm_deal_id": "6673955000007633012",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000014563004",
@@ -742,7 +794,8 @@
       "total": 34260.7,
       "balance": 34260.7,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007544035"
+      "crm_deal_id": "6673955000007544035",
+      "order_type": "Government"
     },
     {
       "id": "6010567000014258003",
@@ -756,7 +809,8 @@
       "total": 15152.92,
       "balance": 16342.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000007355028"
+      "crm_deal_id": "6673955000007355028",
+      "order_type": "Government"
     },
     {
       "id": "6010567000013864001",
@@ -770,7 +824,8 @@
       "total": 2139.0,
       "balance": 2139.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000012748782",
@@ -784,7 +839,8 @@
       "total": 9637.0,
       "balance": 9637.0,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000006714015"
+      "crm_deal_id": "6673955000006714015",
+      "order_type": "Private"
     },
     {
       "id": "6010567000012611019",
@@ -798,7 +854,8 @@
       "total": 2139.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000012488003",
@@ -812,7 +869,8 @@
       "total": 115.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000012416001",
@@ -826,7 +884,8 @@
       "total": 18591.42,
       "balance": 20057.85,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000006470001"
+      "crm_deal_id": "6673955000006470001",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011945795",
@@ -840,7 +899,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945723",
@@ -854,7 +914,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945651",
@@ -868,7 +929,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945579",
@@ -882,7 +944,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945493",
@@ -896,7 +959,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945393",
@@ -910,7 +974,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945335",
@@ -924,7 +989,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945249",
@@ -938,7 +1004,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945177",
@@ -952,7 +1019,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945105",
@@ -966,7 +1034,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011945033",
@@ -980,7 +1049,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944975",
@@ -994,7 +1064,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944903",
@@ -1008,7 +1079,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944845",
@@ -1022,7 +1094,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944773",
@@ -1036,7 +1109,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944673",
@@ -1050,7 +1124,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944615",
@@ -1064,7 +1139,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944557",
@@ -1078,7 +1154,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944499",
@@ -1092,7 +1169,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944427",
@@ -1106,7 +1184,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944369",
@@ -1120,7 +1199,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944283",
@@ -1134,7 +1214,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944183",
@@ -1148,7 +1229,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944083",
@@ -1162,7 +1244,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011944025",
@@ -1176,7 +1259,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943953",
@@ -1190,7 +1274,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943881",
@@ -1204,7 +1289,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943823",
@@ -1218,7 +1304,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943765",
@@ -1232,7 +1319,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943693",
@@ -1246,7 +1334,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943607",
@@ -1260,7 +1349,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943521",
@@ -1274,7 +1364,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943463",
@@ -1288,7 +1379,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943405",
@@ -1302,7 +1394,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943347",
@@ -1316,7 +1409,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943261",
@@ -1330,7 +1424,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943203",
@@ -1344,7 +1439,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943145",
@@ -1358,7 +1454,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943059",
@@ -1372,7 +1469,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011943001",
@@ -1386,7 +1484,8 @@
       "total": 0.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Donation"
     },
     {
       "id": "6010567000011868016",
@@ -1400,7 +1499,8 @@
       "total": 7431.7,
       "balance": 7431.7,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000006164140"
+      "crm_deal_id": "6673955000006164140",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011849639",
@@ -1414,7 +1514,8 @@
       "total": 23650.5,
       "balance": 23650.5,
       "currency": "ZAR",
-      "crm_deal_id": "6673955000006164168"
+      "crm_deal_id": "6673955000006164168",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011575129",
@@ -1428,7 +1529,8 @@
       "total": 1115.5,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011575063",
@@ -1442,7 +1544,8 @@
       "total": 11293.24,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011575005",
@@ -1456,7 +1559,8 @@
       "total": 709.88,
       "balance": 709.88,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011461315",
@@ -1470,7 +1574,8 @@
       "total": 48070.38,
       "balance": 48070.38,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011461259",
@@ -1484,7 +1589,8 @@
       "total": 4000.0,
       "balance": 4000.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011461099",
@@ -1498,7 +1604,8 @@
       "total": 31627.2,
       "balance": 31627.2,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011461023",
@@ -1512,7 +1619,8 @@
       "total": 8336.76,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011457237",
@@ -1526,7 +1634,8 @@
       "total": 6083.83,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011457173",
@@ -1540,7 +1649,8 @@
       "total": 4000.0,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Private"
     },
     {
       "id": "6010567000011457001",
@@ -1554,7 +1664,8 @@
       "total": 149584.01,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Government"
     },
     {
       "id": "6010567000011392117",
@@ -1568,7 +1679,8 @@
       "total": 24844.4,
       "balance": 0.0,
       "currency": "ZAR",
-      "crm_deal_id": ""
+      "crm_deal_id": "",
+      "order_type": "Government"
     }
   ]
 }

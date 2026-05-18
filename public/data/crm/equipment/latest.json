@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T13:59:09Z",
+  "generated_at": "2026-05-18T15:59:00Z",
   "month": "2026-05",
-  "total": 43,
+  "total": 45,
   "items": [
     {
       "id": "6673955000007597125",
@@ -442,6 +442,28 @@
       "approval_status": "Converted to Order",
       "order_from": "Government Tender",
       "status": "In production"
+    },
+    {
+      "id": "6673955000008045029",
+      "name": "(Donation) Bench S 15-24cm CNC 15/05/2026",
+      "patient": "Malique Heugh",
+      "device": "(Donation) Bench S 15-24cm CNC",
+      "qty": "1",
+      "order_date": "2026-05-15",
+      "approval_status": "Spontaneous Issue",
+      "order_from": "Zita Jacobs",
+      "status": "Therapist's request"
+    },
+    {
+      "id": "6673955000008045025",
+      "name": "(Donation) Standing frame small 15/05/2026",
+      "patient": "Malique Heugh",
+      "device": "(Donation) Standing frame small",
+      "qty": "1",
+      "order_date": "2026-05-15",
+      "approval_status": "Spontaneous Issue",
+      "order_from": "Zita Jacobs",
+      "status": "Therapist's request"
     },
     {
       "id": "6673955000008045011",
