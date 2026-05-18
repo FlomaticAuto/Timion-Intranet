@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { TabNav } from "@/components/TabNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { getCurrentProfile } from "@/lib/supabase/profile";
+import { getAccessPolicy } from "@/lib/access";
 
 /**
  * The intranet shell reads the user's profile from cookies, so every
@@ -12,23 +13,20 @@ import { getCurrentProfile } from "@/lib/supabase/profile";
  */
 export const dynamic = "force-dynamic";
 
-/**
- * Intranet shell — wraps every tab page with the persistent
- * header, tab navigation, and footer. Fetches the current user's
- * profile once and passes it to both the header and the tab nav,
- * so they share a single query per request.
- */
 export default async function IntranetLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const profile = await getCurrentProfile();
+  const [profile, policy] = await Promise.all([
+    getCurrentProfile(),
+    getAccessPolicy(),
+  ]);
 
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader profile={profile} />
-      <TabNav role={profile?.role ?? null} />
+      <TabNav role={profile?.role ?? null} policy={policy} />
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-7 pt-8 pb-16">
         {children}
       </main>

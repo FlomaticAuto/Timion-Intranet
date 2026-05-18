@@ -49,16 +49,16 @@ export const ROLE_DESCRIPTIONS: Record<Role, string> = {
    Sections (top-level tabs)
    ────────────────────────────────────────────────────────── */
 export const SECTIONS = [
-  { path: "/",           label: "Home",               icon: "🏠" },
-  { path: "/crm",        label: "CRM",                icon: "👥" },
-  { path: "/inventory",  label: "Inventory",          icon: "📦" },
-  { path: "/books",      label: "Books",              icon: "💰" },
-  { path: "/workshop",   label: "Workshop",           icon: "🛠️" },
-  { path: "/hr",         label: "HR",                 icon: "🧑‍💼" },
-  { path: "/iso",        label: "ISO / Compliance",   icon: "✅" },
-  { path: "/documents",  label: "Documents",          icon: "📁" },
-  { path: "/board",      label: "Board & Reporting",  icon: "📈" },
-  { path: "/admin",      label: "Admin",              icon: "⚙️" },
+  { path: "/",           label: "Home",               icon: "🏠",  description: "Timion HQ home — links to all sections." },
+  { path: "/crm",        label: "CRM",                icon: "👥",  description: "Patient records, visit & equipment reports, therapist KPIs and Zoho CRM access." },
+  { path: "/inventory",  label: "Inventory",          icon: "📦",  description: "Production dashboard, reorder levels, production schedule and Zoho Inventory." },
+  { path: "/books",      label: "Books",              icon: "💰",  description: "Sales orders, purchase orders, inventory valuation and Zoho Books." },
+  { path: "/workshop",   label: "Workshop",           icon: "🛠️", description: "Production management, job cards, carpenter view and quality control." },
+  { path: "/hr",         label: "HR",                 icon: "🧑‍💼", description: "Leave requests and approvals, staff profiles, and HR dashboards." },
+  { path: "/iso",        label: "ISO / Compliance",   icon: "✅",  description: "SOP library, auditor portal, compliance documentation and audit calendar." },
+  { path: "/documents",  label: "Documents",          icon: "📁",  description: "SOPs, BM onboarding pack, policies and organisational templates." },
+  { path: "/board",      label: "Board & Reporting",  icon: "📈",  description: "Annual report, board pack, presentation deck and high-level KPI summaries." },
+  { path: "/admin",      label: "Admin",              icon: "⚙️",  description: "User management, access policy, and system settings." },
 ] as const;
 
 export type SectionPath = (typeof SECTIONS)[number]["path"];

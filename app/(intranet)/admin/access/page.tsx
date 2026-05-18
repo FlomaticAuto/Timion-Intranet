@@ -20,7 +20,7 @@ export default async function AccessPolicyPage() {
       <SectionHeader
         eyebrow="Admin"
         title="Access Policy"
-        subtitle="Which roles can see which sections. Click any cell to edit — changes save immediately."
+        subtitle="Which roles can see which sections. Use the dropdown in each cell to change access — saves immediately."
       />
 
       <AccessMatrix initialPolicy={policy} updatedAt={updatedAt} />
@@ -42,8 +42,8 @@ export default async function AccessPolicyPage() {
       <p className="mt-6 text-[12px] text-text-muted">
         Policy is stored in <code className="text-text">public.app_settings</code>. The static
         default lives in <code className="text-text">lib/permissions.ts</code> and is what
-        &quot;Reset to defaults&quot; restores. Enforcement is not yet active — every signed-in
-        user can currently see every section.
+        &quot;Reset to defaults&quot; restores. Changes take effect immediately — tab navigation
+        and the home grid update on the user&apos;s next page load.
       </p>
     </>
   );

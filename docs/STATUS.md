@@ -2,7 +2,7 @@
 
 Snapshot of where Timion Intranet is right now. Updated when state of deployment, users, or features changes.
 
-**Last updated:** 2026-05-16 (session 7)
+**Last updated:** 2026-05-18 (session 8)
 
 ## Deployment
 
@@ -118,7 +118,17 @@ All four dashboards sync in one workflow run:
 
 ## Access enforcement
 
-**Not yet active.** Every signed-in user sees every tab (except Admin, which is admin-only). The access policy at `/admin/access` is editable but doesn't yet drive `TabNav` or `proxy.ts`. Wire-up is the next planned step — see BACKLOG.md.
+**Active as of session 8.** The live policy at `/admin/access` now drives all three enforcement surfaces:
+
+- **`proxy.ts`** — fetches user role + live policy on every request; redirects to `/forbidden` if `canAccess` is false. Admins always pass. `/`, `/forbidden`, and `/api/*` are open to all authenticated users.
+- **`TabNav`** — policy fetched once in the intranet layout; only tabs the user's role can access are rendered. Home always visible; Admin tab hardcoded to admin-only.
+- **Home hero grid** — server component; only shows section tiles the user can access. Displays Read-only / Scoped badges where applicable. Shows a "No sections assigned yet" message for users with no role assigned.
+
+**`/forbidden` page** — new friendly page at `/forbidden` with a "Back to Home" link, shown when the proxy rejects access.
+
+**Access matrix UI** — cells are now dropdowns (Full / Read-only / Scoped / Hidden) instead of click-to-cycle buttons.
+
+**Single source of truth** — `SECTIONS` in `lib/permissions.ts` now includes `description`, eliminating the previous drift between TabNav, the hero grid, and the permissions file.
 
 ## Supabase migrations applied
 

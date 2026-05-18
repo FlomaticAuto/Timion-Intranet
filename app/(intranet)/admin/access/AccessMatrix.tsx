@@ -13,16 +13,28 @@ import {
 } from "@/lib/permissions";
 import { setCell, resetToDefaults } from "./actions";
 
-const LEVELS: Record<AccessLevel, { label: string; cls: string; symbol: string }> = {
-  full:   { label: "Full",      symbol: "✓",  cls: "text-green   bg-[rgba(16,217,138,0.10)]  border-[rgba(16,217,138,0.30)]  hover:bg-[rgba(16,217,138,0.18)]"  },
-  read:   { label: "Read-only", symbol: "👁", cls: "text-accent  bg-[rgba(124,92,252,0.10)]  border-[rgba(124,92,252,0.30)]  hover:bg-[rgba(124,92,252,0.18)]"  },
-  scoped: { label: "Scoped",    symbol: "⚠",  cls: "text-amber   bg-[rgba(255,140,66,0.10)]  border-[rgba(255,140,66,0.30)]  hover:bg-[rgba(255,140,66,0.18)]"  },
-  none:   { label: "Hidden",    symbol: "—",  cls: "text-text-dim bg-transparent             border-border                   hover:bg-white/[0.04]"             },
+const LEVELS: Record<AccessLevel, { label: string; symbol: string }> = {
+  full:   { label: "Full",      symbol: "✓"  },
+  read:   { label: "Read-only", symbol: "👁" },
+  scoped: { label: "Scoped",    symbol: "⚠" },
+  none:   { label: "Hidden",    symbol: "—"  },
 };
 
-// Cycle order on click: most permissive → least, then wrap.
-const CYCLE: AccessLevel[] = ["full", "read", "scoped", "none"];
-const next = (lvl: AccessLevel): AccessLevel => CYCLE[(CYCLE.indexOf(lvl) + 1) % CYCLE.length];
+const LEGEND_CLS: Record<AccessLevel, string> = {
+  full:   "text-green   bg-[rgba(16,217,138,0.10)]  border-[rgba(16,217,138,0.30)]",
+  read:   "text-accent  bg-[rgba(124,92,252,0.10)]  border-[rgba(124,92,252,0.30)]",
+  scoped: "text-amber   bg-[rgba(255,140,66,0.10)]  border-[rgba(255,140,66,0.30)]",
+  none:   "text-text-dim bg-transparent             border-border",
+};
+
+const LEVEL_STYLES: Record<AccessLevel, React.CSSProperties> = {
+  full:   { color: "#10d98a", borderColor: "rgba(16,217,138,0.35)",  backgroundColor: "rgba(16,217,138,0.10)"  },
+  read:   { color: "#7c5cfc", borderColor: "rgba(124,92,252,0.35)", backgroundColor: "rgba(124,92,252,0.10)" },
+  scoped: { color: "#ff8c42", borderColor: "rgba(255,140,66,0.35)", backgroundColor: "rgba(255,140,66,0.10)" },
+  none:   { color: "#5e5e7a", borderColor: "rgba(88,88,120,0.25)",  backgroundColor: "transparent"            },
+};
+
+const ACCESS_LEVELS: AccessLevel[] = ["full", "read", "scoped", "none"];
 
 interface AccessMatrixProps {
   initialPolicy: AccessPolicy;
@@ -46,34 +58,30 @@ export function AccessMatrix({ initialPolicy, updatedAt }: AccessMatrixProps) {
   const [ts,      setTs]      = useState<string | null>(updatedAt);
   const [error,   setError]   = useState<string | null>(null);
   const [pending, startTrans] = useTransition();
-  const [busy,    setBusy]    = useState<string | null>(null);
 
   const levelAt = (role: Role, section: SectionPath): AccessLevel =>
     policy[role]?.[section] ?? "none";
 
-  const onCellClick = (role: Role, section: SectionPath) => {
+  const onCellChange = (role: Role, section: SectionPath, newLevel: AccessLevel) => {
     const current = levelAt(role, section);
-    const target  = next(current);
-    const prev    = policy;
+    if (newLevel === current) return;
+    const prev = policy;
 
-    // Optimistic update — patch the local policy immediately
     const patched: AccessPolicy = {
       ...policy,
       [role]: { ...(policy[role] ?? {}) },
     };
-    if (target === "none") {
+    if (newLevel === "none") {
       delete patched[role][section];
     } else {
-      patched[role][section] = target;
+      patched[role][section] = newLevel;
     }
 
     setPolicy(patched);
     setError(null);
-    setBusy(`${role}|${section}`);
 
     startTrans(async () => {
-      const result = await setCell(role, section, target);
-      setBusy(null);
+      const result = await setCell(role, section, newLevel);
       if (result.error) {
         setPolicy(prev);
         setError(result.error);
@@ -93,9 +101,6 @@ export function AccessMatrix({ initialPolicy, updatedAt }: AccessMatrixProps) {
         setPolicy(prev);
         setError(result.error);
       } else {
-        // Refresh from server by relying on revalidatePath — but for
-        // immediate visual feedback, set local state from a fresh fetch.
-        // Simplest: reload.
         window.location.reload();
       }
     });
@@ -109,7 +114,7 @@ export function AccessMatrix({ initialPolicy, updatedAt }: AccessMatrixProps) {
           {(Object.entries(LEVELS) as [AccessLevel, typeof LEVELS[AccessLevel]][]).map(([level, meta]) => (
             <div
               key={level}
-              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border text-[12px] font-semibold ${meta.cls.split(" ").filter((c) => !c.startsWith("hover:")).join(" ")}`}
+              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border text-[12px] font-semibold ${LEGEND_CLS[level]}`}
             >
               <span className="text-base leading-none">{meta.symbol}</span>
               <span>{meta.label}</span>
@@ -138,15 +143,8 @@ export function AccessMatrix({ initialPolicy, updatedAt }: AccessMatrixProps) {
         </div>
       )}
 
-      <div className="mb-3 text-[12px] text-text-muted">
-        Click any cell to cycle: <span className="text-green">Full</span> →{" "}
-        <span className="text-accent">Read</span> →{" "}
-        <span className="text-amber">Scoped</span> →{" "}
-        <span className="text-text-dim">Hidden</span> → Full.
-      </div>
-
       <div className="rounded-2xl border border-border bg-surface overflow-x-auto mb-8">
-        <table className="w-full text-left text-[13px] min-w-[800px]">
+        <table className="w-full text-left text-[13px] min-w-[1100px]">
           <thead>
             <tr className="border-b border-border">
               <th className="py-4 pl-5 pr-3 text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">
@@ -174,25 +172,23 @@ export function AccessMatrix({ initialPolicy, updatedAt }: AccessMatrixProps) {
                   </div>
                 </td>
                 {ROLES.map((r) => {
-                  const lvl   = levelAt(r, section.path);
-                  const meta  = LEVELS[lvl];
-                  const isBusy = busy === `${r}|${section.path}`;
+                  const lvl = levelAt(r, section.path);
                   return (
-                    <td key={r} className="py-3 px-3 text-center">
-                      <button
-                        type="button"
-                        onClick={() => onCellClick(r, section.path)}
+                    <td key={r} className="py-2 px-3 text-center">
+                      <select
+                        value={lvl}
+                        onChange={(e) => onCellChange(r, section.path, e.target.value as AccessLevel)}
                         disabled={pending}
-                        title={`${ROLE_LABELS[r]} → ${section.label}: ${meta.label}\nClick to change to ${LEVELS[next(lvl)].label}`}
-                        className={[
-                          "inline-flex items-center justify-center w-9 h-9 rounded-lg border text-base transition-colors",
-                          meta.cls,
-                          "disabled:cursor-wait disabled:opacity-50",
-                          isBusy ? "ring-2 ring-accent ring-offset-1 ring-offset-surface" : "",
-                        ].join(" ")}
+                        style={LEVEL_STYLES[lvl]}
+                        title={`${ROLE_LABELS[r]} → ${section.label}: ${LEVELS[lvl].label}`}
+                        className="w-[108px] rounded-lg border px-2 py-[7px] text-[12px] font-semibold cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-wait"
                       >
-                        {meta.symbol}
-                      </button>
+                        {ACCESS_LEVELS.map((level) => (
+                          <option key={level} value={level}>
+                            {LEVELS[level].label}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                   );
                 })}

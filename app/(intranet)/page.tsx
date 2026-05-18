@@ -1,12 +1,31 @@
 import Link from "next/link";
 import { TileGrid } from "@/components/TileGrid";
 import { SectionHeader } from "@/components/SectionHeader";
+import { getCurrentProfile } from "@/lib/supabase/profile";
+import { getAccessPolicy } from "@/lib/access";
+import {
+  SECTIONS,
+  canAccess,
+  accessFor,
+  type AccessLevel,
+  type SectionPath,
+} from "@/lib/permissions";
 
-/**
- * Home — welcome strip + hero grid linking to each section.
- * The hero tiles are internal navigation (Next.js Link).
- */
-export default function HomePage() {
+export default async function HomePage() {
+  const [profile, policy] = await Promise.all([
+    getCurrentProfile(),
+    getAccessPolicy(),
+  ]);
+  const role = profile?.role ?? null;
+
+  // Hero grid: all sections except "/" (home) and "/admin", filtered by access
+  const heroSections = SECTIONS.filter((s) => {
+    if (s.path === "/" || s.path === "/admin") return false;
+    return canAccess(role, s.path as SectionPath, policy);
+  });
+
+  const noSections = heroSections.length === 0;
+
   return (
     <>
       <div className="mb-8 flex items-center gap-[18px] flex-wrap rounded-2xl border border-[rgba(124,92,252,0.30)] px-7 py-6 shadow-md bg-[linear-gradient(135deg,rgba(124,92,252,0.12),rgba(79,142,247,0.08))]">
@@ -22,21 +41,40 @@ export default function HomePage() {
         </div>
       </div>
 
-      <SectionHeader
-        eyebrow="Sections"
-        title="Where would you like to go?"
-      />
+      {noSections ? (
+        <div className="rounded-2xl border border-border bg-surface p-12 text-center mt-4">
+          <div className="text-5xl mb-5">🔐</div>
+          <h3 className="font-[family-name:var(--font-sora)] text-lg font-bold text-white mb-2">
+            No sections assigned yet
+          </h3>
+          <p className="text-[14px] text-text-soft max-w-sm mx-auto leading-relaxed">
+            Welcome to Timion HQ. An admin will assign you access to specific sections shortly.
+          </p>
+        </div>
+      ) : (
+        <>
+          <SectionHeader
+            eyebrow="Sections"
+            title="Where would you like to go?"
+          />
 
-      <TileGrid hero>
-        <HeroTile href="/crm"        icon="👥"  title="CRM"               desc="Patient records, visit & equipment reports, therapist KPIs and Zoho CRM access." />
-        <HeroTile href="/inventory"  icon="📦"  title="Inventory"         desc="Production dashboard, reorder levels, production schedule and Zoho Inventory." />
-        <HeroTile href="/books"      icon="💰"  title="Books"             desc="Sales orders, purchase orders, inventory valuation and Zoho Books." />
-        <HeroTile href="/workshop"   icon="🛠️" title="Workshop"          desc="Production management, job cards, carpenter view and quality control." />
-        <HeroTile href="/hr"         icon="🧑‍💼" title="HR"               desc="Leave requests and approvals, staff profiles, and HR dashboards." />
-        <HeroTile href="/iso"        icon="✅"  title="ISO / Compliance"  desc="SOP library, auditor portal, compliance documentation and audit calendar." />
-        <HeroTile href="/documents"  icon="📁"  title="Documents"         desc="SOPs, BM onboarding pack, policies and organisational templates." />
-        <HeroTile href="/board"      icon="📈"  title="Board & Reporting" desc="Annual report, board pack, presentation deck and high-level KPI summaries." />
-      </TileGrid>
+          <TileGrid hero>
+            {heroSections.map((s) => {
+              const level = accessFor(role, s.path as SectionPath, policy);
+              return (
+                <HeroTile
+                  key={s.path}
+                  href={s.path}
+                  icon={s.icon}
+                  title={s.label}
+                  desc={s.description}
+                  level={level}
+                />
+              );
+            })}
+          </TileGrid>
+        </>
+      )}
     </>
   );
 }
@@ -46,11 +84,13 @@ function HeroTile({
   icon,
   title,
   desc,
+  level,
 }: {
   href: string;
   icon: string;
   title: string;
   desc: string;
+  level: AccessLevel;
 }) {
   return (
     <Link href={href} className="tile">
@@ -58,7 +98,12 @@ function HeroTile({
         <div className="w-[46px] h-[46px] flex items-center justify-center text-[26px] leading-none bg-white/[0.04] border border-border rounded-[10px]">
           {icon}
         </div>
-        <span className="status-pill status-pill--soon">Building</span>
+        {level === "read" && (
+          <span className="status-pill status-pill--soon">Read-only</span>
+        )}
+        {level === "scoped" && (
+          <span className="status-pill status-pill--soon">Scoped</span>
+        )}
       </div>
       <h3 className="font-[family-name:var(--font-sora)] text-base font-bold tracking-tight text-white leading-tight">
         {title}

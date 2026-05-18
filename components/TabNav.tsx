@@ -2,42 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Role } from "@/lib/permissions";
-
-interface Tab {
-  href:  string;
-  icon:  string;
-  label: string;
-  /** When true, only `admin` users see this tab. */
-  adminOnly?: boolean;
-}
-
-const TABS: Tab[] = [
-  { href: "/",          icon: "🏠",  label: "Home" },
-  { href: "/crm",       icon: "👥",  label: "CRM" },
-  { href: "/inventory", icon: "📦",  label: "Inventory" },
-  { href: "/books",     icon: "💰",  label: "Books" },
-  { href: "/workshop",  icon: "🛠️", label: "Workshop" },
-  { href: "/hr",        icon: "🧑‍💼", label: "HR" },
-  { href: "/iso",       icon: "✅",  label: "ISO / Compliance" },
-  { href: "/documents", icon: "📁",  label: "Documents" },
-  { href: "/board",     icon: "📈",  label: "Board & Reporting" },
-  { href: "/admin",     icon: "⚙️", label: "Admin", adminOnly: true },
-];
+import {
+  SECTIONS,
+  canAccess,
+  type Role,
+  type SectionPath,
+  type AccessPolicy,
+} from "@/lib/permissions";
 
 interface TabNavProps {
-  role: Role | null;
+  role:   Role | null;
+  policy: AccessPolicy;
 }
 
-/**
- * Sticky horizontal tab bar.
- * The Admin tab only renders for admins.
- * Active tab determined by `usePathname()`.
- */
-export function TabNav({ role }: TabNavProps) {
+export function TabNav({ role, policy }: TabNavProps) {
   const pathname = usePathname();
-  const isAdmin = role === "admin";
-  const visibleTabs = TABS.filter((t) => !t.adminOnly || isAdmin);
+  const isAdmin  = role === "admin";
+
+  const visibleTabs = SECTIONS.filter((s) => {
+    if (s.path === "/admin") return isAdmin;
+    if (s.path === "/")      return true; // Home always visible to authenticated users
+    return canAccess(role, s.path as SectionPath, policy);
+  });
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
@@ -45,11 +31,11 @@ export function TabNav({ role }: TabNavProps) {
   return (
     <nav className="sticky top-[68px] z-10 h-[52px] bg-surface border-b border-border px-7 flex items-center gap-1 overflow-x-auto no-scrollbar">
       {visibleTabs.map((tab) => {
-        const active = isActive(tab.href);
+        const active = isActive(tab.path);
         return (
           <Link
-            key={tab.href}
-            href={tab.href}
+            key={tab.path}
+            href={tab.path}
             className={[
               "relative inline-flex items-center gap-[6px] px-4 py-2 rounded-lg text-[13px] font-semibold whitespace-nowrap transition-colors",
               active
