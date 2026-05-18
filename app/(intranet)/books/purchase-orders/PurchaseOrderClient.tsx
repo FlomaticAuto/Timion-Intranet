@@ -52,30 +52,156 @@ const monthLabel = (ym: string) => {
   return `${MONTHS[parseInt(m, 10) - 1]} ${ym.slice(2, 4)}`;
 };
 
-const CHART_H = 80;
+// ── Chart helpers (mirrors visit dashboard logic) ──────────────────────────
 
-function BarChart({ bars }: { bars: { label: string; value: number; sub?: string }[] }) {
-  const max = Math.max(...bars.map((b) => b.value), 1);
+function niceMax(val: number) {
+  if (val <= 0) return 5;
+  const exp = Math.pow(10, Math.floor(Math.log10(val)));
+  for (const m of [1, 2, 5, 10]) {
+    if (m * exp >= val) return m * exp;
+  }
+  return Math.ceil(val / exp) * exp;
+}
+
+function computeTicks(yMax: number) {
+  const rawStep = yMax / 4;
+  const exp = Math.pow(10, Math.floor(Math.log10(rawStep || 1)));
+  let step = exp;
+  for (const m of [1, 2, 5, 10]) {
+    if (m * exp >= rawStep) { step = m * exp; break; }
+  }
+  const ticks: number[] = [];
+  for (let v = 0; v <= yMax + step * 0.01; v += step) ticks.push(Math.round(v));
+  return ticks;
+}
+
+interface BarDatum {
+  label:   string;
+  value:   number;
+  tooltip: string;
+}
+
+const CHART_H = 180;
+const BAR_GRADIENT = "linear-gradient(135deg, #7c5cfc, #4f8ef7)";
+
+function BarChart({ bars }: { bars: BarDatum[] }) {
+  const maxVal = Math.max(...bars.map((b) => b.value), 1);
+  const yMax   = niceMax(maxVal);
+  const ticks  = computeTicks(yMax);
+
   return (
-    <div className="flex items-end gap-1.5">
-      {bars.map((b) => {
-        const barH = b.value > 0 ? Math.max(Math.round((b.value / max) * CHART_H), 4) : 0;
-        return (
-          <div key={b.label} className="flex flex-col items-center gap-1 flex-1 min-w-0">
-            <span className="text-[9px] text-text-muted font-semibold" style={{ height: 14 }}>
-              {b.value > 0 ? b.value : ""}
-            </span>
+    <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
+      {/* Y-axis */}
+      <div style={{ width: 32, flexShrink: 0, position: "relative", height: CHART_H }}>
+        {ticks.map((v) => (
+          <span
+            key={v}
+            style={{
+              position: "absolute",
+              right: 4,
+              bottom: `calc(${(v / yMax) * 100}% - 7px)`,
+              fontSize: 10,
+              fontWeight: 500,
+              color: "#8888aa",
+              lineHeight: 1,
+              textAlign: "right",
+            }}
+          >
+            {v}
+          </span>
+        ))}
+      </div>
+
+      {/* Chart inner */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {/* Bars zone */}
+        <div
+          style={{
+            position: "relative",
+            height: CHART_H,
+            borderLeft: "2px solid rgba(255,255,255,0.15)",
+            borderBottom: "2px solid rgba(255,255,255,0.15)",
+            overflow: "visible",
+          }}
+        >
+          {/* Grid lines */}
+          {ticks.map((v) => (
             <div
-              className="w-full rounded-t-sm bg-accent/70"
-              style={{ height: barH }}
+              key={v}
+              style={{
+                position: "absolute",
+                left: 0, right: 0,
+                bottom: `${(v / yMax) * 100}%`,
+                height: 1,
+                background: "rgba(255,255,255,0.08)",
+                pointerEvents: "none",
+              }}
             />
-            <span className="text-[9px] text-text-dim truncate w-full text-center leading-tight">
-              {b.label}
-              {b.sub && <><br /><span className="text-[8px]">{b.sub}</span></>}
-            </span>
+          ))}
+
+          {/* Bars */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: "100%", padding: "0 4px" }}>
+            {bars.map((b) => (
+              <div
+                key={b.label}
+                className="group/bar"
+                style={{
+                  flex: 1, height: "100%",
+                  display: "flex", alignItems: "flex-end", justifyContent: "center",
+                  position: "relative", cursor: "pointer",
+                }}
+              >
+                {/* Bar fill */}
+                <div
+                  className="group-hover/bar:brightness-125 transition-[filter]"
+                  style={{
+                    width: "100%",
+                    maxWidth: 52,
+                    height: b.value > 0 ? `${Math.max((b.value / yMax) * 100, 1)}%` : 0,
+                    background: BAR_GRADIENT,
+                    borderRadius: "5px 5px 0 0",
+                  }}
+                />
+                {/* Tooltip */}
+                <div
+                  className="opacity-0 group-hover/bar:opacity-100 transition-opacity"
+                  style={{
+                    position: "absolute",
+                    bottom: "calc(100% + 8px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "#1a1a2e",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#f0f0f8",
+                    padding: "9px 13px",
+                    borderRadius: 8,
+                    fontSize: 11,
+                    whiteSpace: "nowrap",
+                    pointerEvents: "none",
+                    zIndex: 100,
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.6)",
+                    lineHeight: 1.9,
+                    backdropFilter: "blur(8px)",
+                  }}
+                  dangerouslySetInnerHTML={{ __html: b.tooltip }}
+                />
+              </div>
+            ))}
           </div>
-        );
-      })}
+        </div>
+
+        {/* X-axis labels */}
+        <div style={{ display: "flex", gap: 3, padding: "7px 4px 0", borderLeft: "2px solid transparent" }}>
+          {bars.map((b) => (
+            <div
+              key={b.label}
+              style={{ flex: 1, fontSize: 10, fontWeight: 500, color: "#8888aa", textAlign: "center", whiteSpace: "nowrap" }}
+            >
+              {b.label}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -115,10 +241,7 @@ export function PurchaseOrderClient() {
     return [...s].sort();
   }, [orders, yearFilter]);
 
-  const handleYearChange = (y: string) => {
-    setYearFilter(y);
-    setMonthFilter("all");
-  };
+  const handleYearChange = (y: string) => { setYearFilter(y); setMonthFilter("all"); };
 
   const statusCounts = useMemo(() => {
     const c: Record<string, number> = {};
@@ -126,17 +249,13 @@ export function PurchaseOrderClient() {
     return c;
   }, [orders]);
 
-  // Date + status filtered (used for analytics and as base for table)
-  const dateStatusFiltered = useMemo(() => {
-    return orders.filter((o) => {
-      if (status !== "all" && o.status !== status) return false;
-      if (yearFilter !== "all" && !o.date.startsWith(yearFilter)) return false;
-      if (monthFilter !== "all" && !o.date.startsWith(monthFilter)) return false;
-      return true;
-    });
-  }, [orders, status, yearFilter, monthFilter]);
+  const dateStatusFiltered = useMemo(() => orders.filter((o) => {
+    if (status !== "all" && o.status !== status) return false;
+    if (yearFilter !== "all" && !o.date.startsWith(yearFilter)) return false;
+    if (monthFilter !== "all" && !o.date.startsWith(monthFilter)) return false;
+    return true;
+  }), [orders, status, yearFilter, monthFilter]);
 
-  // Table rows — additionally filtered by search
   const filtered = useMemo(() => {
     if (!search) return dateStatusFiltered;
     const q = search.toLowerCase();
@@ -147,8 +266,8 @@ export function PurchaseOrderClient() {
     );
   }, [dateStatusFiltered, search]);
 
-  const outstanding     = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.balance, 0), [dateStatusFiltered]);
-  const totalValue      = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.total, 0), [dateStatusFiltered]);
+  const outstanding      = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.balance, 0), [dateStatusFiltered]);
+  const totalValue       = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.total, 0), [dateStatusFiltered]);
   const pendingApprovals = useMemo(
     () => orders.filter((o) => o.approval_status === "pending" || o.status === "draft").length,
     [orders],
@@ -259,9 +378,8 @@ export function PurchaseOrderClient() {
         )}
       </div>
 
-      {/* Date + status filters */}
+      {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        {/* Year */}
         <select
           value={yearFilter}
           onChange={(e) => handleYearChange(e.target.value)}
@@ -270,19 +388,15 @@ export function PurchaseOrderClient() {
           <option value="all">All years</option>
           {years.map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
-        {/* Month */}
         <select
           value={monthFilter}
           onChange={(e) => setMonthFilter(e.target.value)}
           className="rounded-lg bg-surface-2 border border-border-bright px-3 py-1.5 text-[12px] text-text outline-none focus:border-accent"
         >
           <option value="all">All months</option>
-          {months.map((ym) => (
-            <option key={ym} value={ym}>{monthLabel(ym)}</option>
-          ))}
+          {months.map((ym) => <option key={ym} value={ym}>{monthLabel(ym)}</option>)}
         </select>
 
-        {/* Status tabs */}
         <div className="flex rounded-lg overflow-hidden border border-border">
           <button
             type="button"
@@ -385,9 +499,7 @@ export function PurchaseOrderClient() {
 
           {/* Status breakdown */}
           <div className="rounded-xl border border-border bg-surface p-5">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">
-              Orders by Status
-            </h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">Orders by Status</h3>
             <div className="flex flex-wrap gap-3">
               {Object.entries(
                 dateStatusFiltered.reduce((acc, o) => {
@@ -417,54 +529,57 @@ export function PurchaseOrderClient() {
             </div>
           </div>
 
-          {/* Monthly trend */}
+          {/* Monthly charts */}
           {monthly.length > 0 && (
-            <div className="rounded-xl border border-border bg-surface p-5">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">
-                Monthly Order Count
-              </h3>
-              <p className="text-[11px] text-text-dim mb-4">Number of purchase orders created per month</p>
-              <BarChart bars={monthly.map((m) => ({ label: m.label, value: m.count }))} />
-            </div>
-          )}
-
-          {/* Monthly value trend */}
-          {monthly.length > 0 && (
-            <div className="rounded-xl border border-border bg-surface p-5">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">
-                Monthly Order Value (ZAR)
-              </h3>
-              <p className="text-[11px] text-text-dim mb-4">Total value of orders created per month</p>
-              <BarChart bars={monthly.map((m) => ({ label: m.label, value: Math.round(m.value), sub: fmtShort(m.value) }))} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-xl border border-border bg-surface p-5">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-accent mb-1">Order Trend</div>
+                <div className="text-lg font-bold text-text mb-1">Monthly Count</div>
+                <div className="w-9 h-0.5 rounded-full mb-4" style={{ background: BAR_GRADIENT }} />
+                <BarChart bars={monthly.map((m) => ({
+                  label: m.label,
+                  value: m.count,
+                  tooltip: `<div>Month: <strong>${m.label}</strong></div><div>Orders: <strong>${m.count}</strong></div>`,
+                }))} />
+              </div>
+              <div className="rounded-xl border border-border bg-surface p-5">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-accent mb-1">Order Value</div>
+                <div className="text-lg font-bold text-text mb-1">Monthly Value (ZAR)</div>
+                <div className="w-9 h-0.5 rounded-full mb-4" style={{ background: BAR_GRADIENT }} />
+                <BarChart bars={monthly.map((m) => ({
+                  label: m.label,
+                  value: Math.round(m.value),
+                  tooltip: `<div>Month: <strong>${m.label}</strong></div><div>Value: <strong>${fmtShort(m.value)}</strong></div>`,
+                }))} />
+              </div>
             </div>
           )}
 
           {/* Top vendors */}
           <div className="rounded-xl border border-border bg-surface p-5">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">
-              Top Vendors by Order Value
-            </h3>
-            <table className="w-full text-[12px]">
-              <thead>
-                <tr className="border-b border-border">
-                  {["Vendor", "Orders", "Total Value", "Outstanding"].map((h) => (
-                    <th key={h} className="pb-2 text-left text-[10px] font-bold uppercase tracking-wider text-text-muted">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {topVendors.map((v) => (
-                  <tr key={v.name} className="border-t border-border">
-                    <td className="py-2 pr-4 text-text font-medium max-w-[200px] truncate" title={v.name}>{v.name}</td>
-                    <td className="py-2 pr-4 text-text-muted tabular-nums">{v.count}</td>
-                    <td className="py-2 pr-4 text-text tabular-nums">{fmt(v.value)}</td>
-                    <td className="py-2 font-semibold tabular-nums" style={{ color: v.balance > 0 ? "#ff8c42" : "#10d98a" }}>
-                      {fmt(v.balance)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">Top Vendors by Order Value</h3>
+            <div className="flex flex-col gap-2.5">
+              {topVendors.map((v, i) => (
+                <div key={v.name} className="grid items-center gap-2.5" style={{ gridTemplateColumns: "26px 1fr 90px 48px 80px" }}>
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
+                    style={{
+                      background: i < 3 ? "rgba(124,92,252,0.15)" : "rgba(255,255,255,0.06)",
+                      border: `1px solid ${i < 3 ? "rgba(124,92,252,0.4)" : "rgba(255,255,255,0.1)"}`,
+                      color: i < 3 ? "#a78bfa" : "#8888aa",
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                  <span className="text-[13px] text-text font-medium truncate" title={v.name}>{v.name}</span>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                    <div className="h-full rounded-full" style={{ width: `${(v.value / topVendors[0].value) * 100}%`, background: BAR_GRADIENT }} />
+                  </div>
+                  <span className="text-[12px] text-text-muted text-right tabular-nums">{v.count} ord</span>
+                  <span className="text-[12px] text-text text-right tabular-nums font-semibold">{fmtShort(v.value)}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
