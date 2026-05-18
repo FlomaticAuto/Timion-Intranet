@@ -20,16 +20,18 @@ export default function BooksPage() {
           description="Open the live Zoho Books workspace — invoices, bills, banking and accounting."
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/books/sales-orders"
           icon="🧾"
           title="Sales Order Report"
-          description="Dashboard of sales orders — current state, approvals needed, outstanding and order type."
+          description="Current-year sales orders — status, outstanding balances and CRM deal links."
         />
         <Tile
-          variant="comingSoon"
+          variant="live"
+          href="/books/purchase-orders"
           icon="🛒"
           title="Purchase Order Report"
-          description="Dashboard of purchase orders — current state, approvals needed, outstanding, top items."
+          description="Current-year purchase orders — status, outstanding balances and vendor overview."
         />
         <Tile
           variant="comingSoon"

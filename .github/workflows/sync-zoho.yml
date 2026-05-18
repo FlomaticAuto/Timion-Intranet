@@ -114,6 +114,22 @@ jobs:
           fi
           python scripts/fetch_zoho_crm_equipment.py
 
+      - name: Fetch Sales Orders data
+        env:
+          ZOHO_CLIENT_ID:     ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ORG_ID:        ${{ secrets.ZOHO_ORG_ID }}
+        run: python scripts/fetch_zoho_salesorders.py
+
+      - name: Fetch Purchase Orders data
+        env:
+          ZOHO_CLIENT_ID:     ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+          ZOHO_REFRESH_TOKEN: ${{ secrets.ZOHO_REFRESH_TOKEN }}
+          ZOHO_ORG_ID:        ${{ secrets.ZOHO_ORG_ID }}
+        run: python scripts/fetch_zoho_purchaseorders.py
+
       - name: Commit and push if data changed
         run: |
           git config user.name  "github-actions[bot]"
