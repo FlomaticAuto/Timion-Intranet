@@ -23,14 +23,14 @@ export default function BooksPage() {
           variant="live"
           href="/books/sales-orders"
           icon="🧾"
-          title="Sales Order Report"
+          title="Sales Order Dashboard"
           description="Current-year sales orders — status, outstanding balances and CRM deal links."
         />
         <Tile
           variant="live"
           href="/books/purchase-orders"
           icon="🛒"
-          title="Purchase Order Report"
+          title="Purchase Order Dashboard"
           description="Current-year purchase orders — status, outstanding balances and vendor overview."
         />
         <Tile

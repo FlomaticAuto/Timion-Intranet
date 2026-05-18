@@ -23,24 +23,23 @@ interface DataFile {
   orders:    PurchaseOrder[];
 }
 
-// Actual statuses returned by Zoho Inventory
 const STATUS_META: Record<string, { label: string; bg: string; text: string }> = {
-  issued:   { label: "Issued",   bg: "rgba(255,140,66,0.14)",  text: "#ff8c42" },
-  received: { label: "Received", bg: "rgba(16,217,138,0.12)",  text: "#10d98a" },
-  billed:   { label: "Billed",   bg: "rgba(124,92,252,0.15)",  text: "#a78bfa" },
-  cancelled:{ label: "Cancelled",bg: "rgba(94,94,122,0.15)",   text: "#5e5e7a" },
-  draft:    { label: "Draft",    bg: "rgba(255,140,66,0.08)",  text: "#ff8c42" },
+  issued:    { label: "Issued",    bg: "rgba(255,140,66,0.14)",  text: "#ff8c42" },
+  received:  { label: "Received",  bg: "rgba(16,217,138,0.12)",  text: "#10d98a" },
+  billed:    { label: "Billed",    bg: "rgba(124,92,252,0.15)",  text: "#a78bfa" },
+  cancelled: { label: "Cancelled", bg: "rgba(94,94,122,0.15)",   text: "#5e5e7a" },
+  draft:     { label: "Draft",     bg: "rgba(255,140,66,0.08)",  text: "#ff8c42" },
 };
+
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 const fmt = (n: number) =>
   "R " + n.toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const fmtShort = (n: number) =>
-  n >= 1_000_000
-    ? `R ${(n / 1_000_000).toFixed(1)}M`
-    : n >= 1_000
-    ? `R ${(n / 1_000).toFixed(1)}k`
-    : fmt(n);
+  n >= 1_000_000 ? `R ${(n / 1_000_000).toFixed(1)}M`
+  : n >= 1_000   ? `R ${(n / 1_000).toFixed(1)}k`
+  : fmt(n);
 
 const fmtDate = (s: string) => {
   if (!s) return "—";
@@ -48,40 +47,48 @@ const fmtDate = (s: string) => {
   catch { return s; }
 };
 
-const monthLabel = (iso: string) => {
-  if (!iso) return "—";
-  try { return new Date(iso).toLocaleDateString("en-ZA", { month: "short", year: "2-digit" }); }
-  catch { return iso.slice(0, 7); }
+const monthLabel = (ym: string) => {
+  const [, m] = ym.split("-");
+  return `${MONTHS[parseInt(m, 10) - 1]} ${ym.slice(2, 4)}`;
 };
+
+const CHART_H = 80;
 
 function BarChart({ bars }: { bars: { label: string; value: number; sub?: string }[] }) {
   const max = Math.max(...bars.map((b) => b.value), 1);
   return (
-    <div className="flex items-end gap-1.5 h-28">
-      {bars.map((b) => (
-        <div key={b.label} className="flex flex-col items-center gap-1 flex-1 min-w-0">
-          <span className="text-[9px] text-text-muted font-semibold">{b.value > 0 ? b.value : ""}</span>
-          <div
-            className="w-full rounded-t-sm bg-accent/70 transition-all"
-            style={{ height: `${Math.max((b.value / max) * 100, b.value > 0 ? 4 : 0)}%` }}
-          />
-          <span className="text-[9px] text-text-dim truncate w-full text-center leading-tight">
-            {b.label}
-            {b.sub && <><br /><span className="text-[8px]">{b.sub}</span></>}
-          </span>
-        </div>
-      ))}
+    <div className="flex items-end gap-1.5">
+      {bars.map((b) => {
+        const barH = b.value > 0 ? Math.max(Math.round((b.value / max) * CHART_H), 4) : 0;
+        return (
+          <div key={b.label} className="flex flex-col items-center gap-1 flex-1 min-w-0">
+            <span className="text-[9px] text-text-muted font-semibold" style={{ height: 14 }}>
+              {b.value > 0 ? b.value : ""}
+            </span>
+            <div
+              className="w-full rounded-t-sm bg-accent/70"
+              style={{ height: barH }}
+            />
+            <span className="text-[9px] text-text-dim truncate w-full text-center leading-tight">
+              {b.label}
+              {b.sub && <><br /><span className="text-[8px]">{b.sub}</span></>}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 export function PurchaseOrderClient() {
-  const [data,    setData]    = useState<DataFile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState<string | null>(null);
-  const [view,    setView]    = useState<"table" | "analytics">("table");
-  const [status,  setStatus]  = useState("all");
-  const [search,  setSearch]  = useState("");
+  const [data,        setData]        = useState<DataFile | null>(null);
+  const [loading,     setLoading]     = useState(true);
+  const [error,       setError]       = useState<string | null>(null);
+  const [view,        setView]        = useState<"table" | "analytics">("table");
+  const [status,      setStatus]      = useState("all");
+  const [yearFilter,  setYearFilter]  = useState("all");
+  const [monthFilter, setMonthFilter] = useState("all");
+  const [search,      setSearch]      = useState("");
 
   useEffect(() => {
     fetch("/data/purchaseorders.json")
@@ -93,29 +100,63 @@ export function PurchaseOrderClient() {
 
   const orders = useMemo(() => data?.orders ?? [], [data]);
 
+  const years = useMemo(() => {
+    const s = new Set<string>();
+    for (const o of orders) if (o.date) s.add(o.date.slice(0, 4));
+    return [...s].sort().reverse();
+  }, [orders]);
+
+  const months = useMemo(() => {
+    const s = new Set<string>();
+    for (const o of orders) {
+      if (yearFilter !== "all" && !o.date.startsWith(yearFilter)) continue;
+      if (o.date) s.add(o.date.slice(0, 7));
+    }
+    return [...s].sort();
+  }, [orders, yearFilter]);
+
+  const handleYearChange = (y: string) => {
+    setYearFilter(y);
+    setMonthFilter("all");
+  };
+
   const statusCounts = useMemo(() => {
     const c: Record<string, number> = {};
     for (const o of orders) c[o.status] = (c[o.status] ?? 0) + 1;
     return c;
   }, [orders]);
 
-  const outstanding = useMemo(
-    () => orders.reduce((s, o) => s + o.balance, 0),
-    [orders],
-  );
-  const totalValue = useMemo(
-    () => orders.reduce((s, o) => s + o.total, 0),
-    [orders],
-  );
+  // Date + status filtered (used for analytics and as base for table)
+  const dateStatusFiltered = useMemo(() => {
+    return orders.filter((o) => {
+      if (status !== "all" && o.status !== status) return false;
+      if (yearFilter !== "all" && !o.date.startsWith(yearFilter)) return false;
+      if (monthFilter !== "all" && !o.date.startsWith(monthFilter)) return false;
+      return true;
+    });
+  }, [orders, status, yearFilter, monthFilter]);
+
+  // Table rows — additionally filtered by search
+  const filtered = useMemo(() => {
+    if (!search) return dateStatusFiltered;
+    const q = search.toLowerCase();
+    return dateStatusFiltered.filter((o) =>
+      o.vendor.toLowerCase().includes(q) ||
+      o.number.toLowerCase().includes(q) ||
+      o.reference.toLowerCase().includes(q)
+    );
+  }, [dateStatusFiltered, search]);
+
+  const outstanding     = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.balance, 0), [dateStatusFiltered]);
+  const totalValue      = useMemo(() => dateStatusFiltered.reduce((s, o) => s + o.total, 0), [dateStatusFiltered]);
   const pendingApprovals = useMemo(
     () => orders.filter((o) => o.approval_status === "pending" || o.status === "draft").length,
     [orders],
   );
 
-  // Monthly trend (count + value)
   const monthly = useMemo(() => {
     const map: Record<string, { count: number; value: number }> = {};
-    for (const o of orders) {
+    for (const o of dateStatusFiltered) {
       const key = o.date.slice(0, 7);
       if (!map[key]) map[key] = { count: 0, value: 0 };
       map[key].count++;
@@ -124,12 +165,11 @@ export function PurchaseOrderClient() {
     return Object.entries(map)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([k, v]) => ({ key: k, label: monthLabel(k), count: v.count, value: v.value }));
-  }, [orders]);
+  }, [dateStatusFiltered]);
 
-  // Top vendors by order value
   const topVendors = useMemo(() => {
     const map: Record<string, { count: number; value: number; balance: number }> = {};
-    for (const o of orders) {
+    for (const o of dateStatusFiltered) {
       const k = o.vendor || "Unknown";
       if (!map[k]) map[k] = { count: 0, value: 0, balance: 0 };
       map[k].count++;
@@ -140,22 +180,7 @@ export function PurchaseOrderClient() {
       .sort(([, a], [, b]) => b.value - a.value)
       .slice(0, 10)
       .map(([name, v]) => ({ name, ...v }));
-  }, [orders]);
-
-  const filtered = useMemo(() => {
-    return orders.filter((o) => {
-      if (status !== "all" && o.status !== status) return false;
-      if (search) {
-        const q = search.toLowerCase();
-        return (
-          o.vendor.toLowerCase().includes(q) ||
-          o.number.toLowerCase().includes(q) ||
-          o.reference.toLowerCase().includes(q)
-        );
-      }
-      return true;
-    });
-  }, [orders, status, search]);
+  }, [dateStatusFiltered]);
 
   if (loading) return (
     <div className="flex items-center justify-center py-24 text-text-muted text-[13px] animate-pulse">
@@ -202,7 +227,7 @@ export function PurchaseOrderClient() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl border border-border bg-surface px-4 py-3">
           <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted mb-1">Total Orders</div>
-          <div className="text-2xl font-bold text-text">{orders.length}</div>
+          <div className="text-2xl font-bold text-text">{dateStatusFiltered.length}</div>
         </div>
         <div className="rounded-xl border border-border bg-surface px-4 py-3">
           <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted mb-1">Total Value</div>
@@ -210,7 +235,9 @@ export function PurchaseOrderClient() {
         </div>
         <div className="rounded-xl border border-[rgba(16,217,138,0.3)] bg-[rgba(16,217,138,0.06)] px-4 py-3">
           <div className="text-[10px] font-bold uppercase tracking-wider text-green mb-1">Received</div>
-          <div className="text-2xl font-bold text-green">{statusCounts["received"] ?? 0}</div>
+          <div className="text-2xl font-bold text-green">
+            {dateStatusFiltered.filter((o) => o.status === "received").length}
+          </div>
         </div>
         {outstanding > 0 ? (
           <div className="rounded-xl border border-[rgba(255,140,66,0.3)] bg-[rgba(255,140,66,0.06)] px-4 py-3">
@@ -225,53 +252,78 @@ export function PurchaseOrderClient() {
         ) : (
           <div className="rounded-xl border border-[rgba(255,140,66,0.3)] bg-[rgba(255,140,66,0.06)] px-4 py-3">
             <div className="text-[10px] font-bold uppercase tracking-wider text-amber mb-1">Issued</div>
-            <div className="text-2xl font-bold text-amber">{statusCounts["issued"] ?? 0}</div>
+            <div className="text-2xl font-bold text-amber">
+              {dateStatusFiltered.filter((o) => o.status === "issued").length}
+            </div>
           </div>
+        )}
+      </div>
+
+      {/* Date + status filters */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Year */}
+        <select
+          value={yearFilter}
+          onChange={(e) => handleYearChange(e.target.value)}
+          className="rounded-lg bg-surface-2 border border-border-bright px-3 py-1.5 text-[12px] text-text outline-none focus:border-accent"
+        >
+          <option value="all">All years</option>
+          {years.map((y) => <option key={y} value={y}>{y}</option>)}
+        </select>
+        {/* Month */}
+        <select
+          value={monthFilter}
+          onChange={(e) => setMonthFilter(e.target.value)}
+          className="rounded-lg bg-surface-2 border border-border-bright px-3 py-1.5 text-[12px] text-text outline-none focus:border-accent"
+        >
+          <option value="all">All months</option>
+          {months.map((ym) => (
+            <option key={ym} value={ym}>{monthLabel(ym)}</option>
+          ))}
+        </select>
+
+        {/* Status tabs */}
+        <div className="flex rounded-lg overflow-hidden border border-border">
+          <button
+            type="button"
+            onClick={() => setStatus("all")}
+            className={[
+              "px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors",
+              status === "all" ? "bg-surface-2 text-text" : "text-text-muted hover:text-text",
+            ].join(" ")}
+          >
+            All ({orders.length})
+          </button>
+          {Object.entries(statusCounts).map(([s, n]) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setStatus(status === s ? "all" : s)}
+              className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors border-l border-border"
+              style={{
+                background: status === s ? (STATUS_META[s]?.bg ?? "rgba(255,255,255,0.06)") : "transparent",
+                color: status === s ? (STATUS_META[s]?.text ?? "#f0f0f8") : "#8888aa",
+              }}
+            >
+              {STATUS_META[s]?.label ?? s} ({n})
+            </button>
+          ))}
+        </div>
+
+        {view === "table" && (
+          <input
+            type="search"
+            placeholder="Search vendor or PO#…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="rounded-lg bg-surface-2 border border-border-bright px-3 py-1.5 text-[12px] text-text placeholder:text-text-dim outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 w-52 ml-auto"
+          />
         )}
       </div>
 
       {/* ─── TABLE VIEW ─────────────────────────────────── */}
       {view === "table" && (
-        <div className="space-y-4">
-
-          {/* Status tabs + search */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex rounded-lg overflow-hidden border border-border">
-              <button
-                type="button"
-                onClick={() => setStatus("all")}
-                className={[
-                  "px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors",
-                  status === "all" ? "bg-surface-2 text-text" : "text-text-muted hover:text-text",
-                ].join(" ")}
-              >
-                All ({orders.length})
-              </button>
-              {Object.entries(statusCounts).map(([s, n]) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setStatus(status === s ? "all" : s)}
-                  className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors border-l border-border"
-                  style={{
-                    background: status === s ? (STATUS_META[s]?.bg ?? "rgba(255,255,255,0.06)") : "transparent",
-                    color: status === s ? (STATUS_META[s]?.text ?? "#f0f0f8") : "#8888aa",
-                  }}
-                >
-                  {STATUS_META[s]?.label ?? s} ({n})
-                </button>
-              ))}
-            </div>
-
-            <input
-              type="search"
-              placeholder="Search vendor or PO#…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="rounded-lg bg-surface-2 border border-border-bright px-3 py-1.5 text-[12px] text-text placeholder:text-text-dim outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 w-52 ml-auto"
-            />
-          </div>
-
+        <div className="space-y-3">
           <div className="text-[11px] text-text-muted">{filtered.length} of {orders.length} orders</div>
 
           <div className="rounded-xl border border-border overflow-x-auto">
@@ -293,9 +345,14 @@ export function PurchaseOrderClient() {
                     </td>
                   </tr>
                 ) : filtered.map((o) => {
-                  const meta = STATUS_META[o.status];
+                  const meta  = STATUS_META[o.status];
+                  const poUrl = `https://inventory.zoho.com/app/timionnpc#/purchaseorders/${o.id}`;
                   return (
-                    <tr key={o.id} className="border-t border-border hover:bg-surface-2 transition-colors">
+                    <tr
+                      key={o.id}
+                      className="border-t border-border hover:bg-surface-2 transition-colors cursor-pointer"
+                      onClick={() => window.open(poUrl, "_blank", "noopener,noreferrer")}
+                    >
                       <td className="px-4 py-3 font-semibold text-text whitespace-nowrap">{o.number}</td>
                       <td className="px-4 py-3 text-text-muted whitespace-nowrap">{fmtDate(o.date)}</td>
                       <td className="px-4 py-3 text-text max-w-[200px] truncate" title={o.vendor}>{o.vendor || "—"}</td>
@@ -332,9 +389,14 @@ export function PurchaseOrderClient() {
               Orders by Status
             </h3>
             <div className="flex flex-wrap gap-3">
-              {Object.entries(statusCounts).map(([s, n]) => {
+              {Object.entries(
+                dateStatusFiltered.reduce((acc, o) => {
+                  acc[o.status] = (acc[o.status] ?? 0) + 1;
+                  return acc;
+                }, {} as Record<string, number>)
+              ).map(([s, n]) => {
                 const meta = STATUS_META[s];
-                const pct  = Math.round((n / orders.length) * 100);
+                const pct  = Math.round((n / Math.max(dateStatusFiltered.length, 1)) * 100);
                 return (
                   <div
                     key={s}

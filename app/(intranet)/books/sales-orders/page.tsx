@@ -2,7 +2,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { SalesOrderClient } from "./SalesOrderClient";
 
 export const metadata = {
-  title: "Sales Order Report — Timion HQ",
+  title: "Sales Order Dashboard — Timion HQ",
   description: "Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM links.",
 };
 
@@ -11,7 +11,7 @@ export default function SalesOrdersPage() {
     <>
       <SectionHeader
         eyebrow="Books"
-        title="Sales Order Report"
+        title="Sales Order Dashboard"
         subtitle="Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM deal links."
       />
       <SalesOrderClient />

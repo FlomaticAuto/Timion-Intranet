@@ -2,7 +2,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { PurchaseOrderClient } from "./PurchaseOrderClient";
 
 export const metadata = {
-  title: "Purchase Order Report — Timion HQ",
+  title: "Purchase Order Dashboard — Timion HQ",
   description: "Current-year purchase orders from Zoho Inventory — status, outstanding balances and vendor overview.",
 };
 
@@ -11,7 +11,7 @@ export default function PurchaseOrdersPage() {
     <>
       <SectionHeader
         eyebrow="Books"
-        title="Purchase Order Report"
+        title="Purchase Order Dashboard"
         subtitle="Current-year purchase orders from Zoho Inventory — status, outstanding balances and vendor overview."
       />
       <PurchaseOrderClient />
