@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/lib/supabase/profile";
 import { ROLES, ROLE_LABELS, type Role } from "@/lib/permissions";
 import { UserRow } from "./UserRow";
+import { InviteModal } from "./InviteModal";
 
 export const metadata = { title: "Users — Admin — Timion HQ" };
 
@@ -51,11 +52,16 @@ export default async function UsersPage() {
         <span className="text-text">Users</span>
       </div>
 
-      <SectionHeader
-        eyebrow="Admin"
-        title="Users"
-        subtitle="Everyone who has signed in. Change a user's role with the dropdown; the database stores the change immediately."
-      />
+      <div className="flex items-start justify-between gap-4 mb-0">
+        <SectionHeader
+          eyebrow="Admin"
+          title="Users"
+          subtitle="Everyone with access to Timion HQ. Invite new staff, assign roles, and toggle active status."
+        />
+        <div className="shrink-0 pt-1">
+          <InviteModal />
+        </div>
+      </div>
 
       {/* Summary chips */}
       <div className="grid gap-3 mb-7 [grid-template-columns:repeat(auto-fill,minmax(150px,1fr))]">
@@ -119,7 +125,8 @@ export default async function UsersPage() {
       )}
 
       <div className="mt-6 text-[12px] text-text-muted">
-        New users are created in Supabase → Authentication → Users. They appear here automatically.
+        Use <span className="text-text font-semibold">Add User</span> above to invite staff by email — they&apos;ll receive a link to set their password.
+        Requires <code className="text-text">SUPABASE_SERVICE_ROLE_KEY</code> in Vercel env vars and the Supabase Site URL set to the production URL.
       </div>
     </>
   );
