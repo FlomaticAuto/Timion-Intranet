@@ -221,7 +221,7 @@ function BarChart({ bars }: { bars: BarDatum[] }) {
 }
 
 export function SalesOrderClient({
-  zohoBaseUrl = "https://books.zoho.com/app/timionnpc",
+  zohoBaseUrl = "https://one.zoho.com/zohoone/timionnpc/home/cxapp/books/app/878382704",
 }: {
   zohoBaseUrl?: string;
 } = {}) {

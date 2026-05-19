@@ -14,7 +14,7 @@ export default function InventorySalesOrdersPage() {
         title="Sales Order Dashboard"
         subtitle="Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM deal links."
       />
-      <SalesOrderClient zohoBaseUrl="https://inventory.zoho.com/app/timionnpc" />
+      <SalesOrderClient zohoBaseUrl="https://one.zoho.com/zohoone/timionnpc/home/cxapp/inventory/app/878382704" />
     </>
   );
 }

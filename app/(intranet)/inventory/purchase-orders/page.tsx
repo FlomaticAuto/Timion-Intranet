@@ -14,7 +14,7 @@ export default function InventoryPurchaseOrdersPage() {
         title="Purchase Order Dashboard"
         subtitle="Current-year purchase orders from Zoho Inventory — status, outstanding balances and vendor overview."
       />
-      <PurchaseOrderClient zohoBaseUrl="https://inventory.zoho.com/app/timionnpc" />
+      <PurchaseOrderClient zohoBaseUrl="https://one.zoho.com/zohoone/timionnpc/home/cxapp/inventory/app/878382704" />
     </>
   );
 }
