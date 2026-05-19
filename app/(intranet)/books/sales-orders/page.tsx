@@ -3,7 +3,7 @@ import { SalesOrderClient } from "./SalesOrderClient";
 
 export const metadata = {
   title: "Sales Order Dashboard — Timion HQ",
-  description: "Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM links.",
+  description: "Current-year sales orders from Zoho Books — status, outstanding balances and CRM links.",
 };
 
 export default function SalesOrdersPage() {
@@ -12,7 +12,7 @@ export default function SalesOrdersPage() {
       <SectionHeader
         eyebrow="Books"
         title="Sales Order Dashboard"
-        subtitle="Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM deal links."
+        subtitle="Current-year sales orders from Zoho Books — status, outstanding balances and CRM deal links."
       />
       <SalesOrderClient />
     </>

@@ -20,6 +20,20 @@ export default function InventoryPage() {
           description="Open the live Zoho Inventory workspace — items, stock movements and adjustments."
         />
         <Tile
+          variant="live"
+          href="/inventory/sales-orders"
+          icon="🧾"
+          title="Sales Order Dashboard"
+          description="Current-year sales orders from Zoho Inventory — status, outstanding balances and CRM deal links."
+        />
+        <Tile
+          variant="live"
+          href="/inventory/purchase-orders"
+          icon="🛒"
+          title="Purchase Order Dashboard"
+          description="Current-year purchase orders from Zoho Inventory — status, outstanding balances and vendor overview."
+        />
+        <Tile
           variant="comingSoon"
           icon="🔧"
           title="Equipment"

@@ -206,7 +206,11 @@ function BarChart({ bars }: { bars: BarDatum[] }) {
   );
 }
 
-export function PurchaseOrderClient() {
+export function PurchaseOrderClient({
+  zohoBaseUrl = "https://books.zoho.com/app/timionnpc",
+}: {
+  zohoBaseUrl?: string;
+} = {}) {
   const [data,        setData]        = useState<DataFile | null>(null);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState<string | null>(null);
@@ -460,7 +464,7 @@ export function PurchaseOrderClient() {
                   </tr>
                 ) : filtered.map((o) => {
                   const meta  = STATUS_META[o.status];
-                  const poUrl = `https://inventory.zoho.com/app/timionnpc#/purchaseorders/${o.id}`;
+                  const poUrl = `${zohoBaseUrl}#/purchaseorders/${o.id}`;
                   return (
                     <tr
                       key={o.id}
