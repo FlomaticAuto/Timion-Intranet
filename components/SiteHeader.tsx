@@ -27,14 +27,9 @@ export function SiteHeader({ profile }: SiteHeaderProps) {
           className="h-[46px] w-auto"
         />
         <span className="w-px h-8 bg-border-bright shrink-0" aria-hidden="true" />
-        <div>
-          <h1 className="font-[family-name:var(--font-sora)] text-base font-bold tracking-tight text-text leading-none mb-0">
-            Timion HQ
-          </h1>
-          <p className="text-[11px] text-text-muted leading-tight">
-            Internal hub for staff, management &amp; operations
-          </p>
-        </div>
+        <h1 className="font-[family-name:var(--font-sora)] text-base font-bold tracking-tight text-text">
+          Timion HQ
+        </h1>
       </Link>
 
       <div className="flex items-center gap-3">
