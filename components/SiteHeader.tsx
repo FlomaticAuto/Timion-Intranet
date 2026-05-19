@@ -31,7 +31,7 @@ export function SiteHeader({ profile }: SiteHeaderProps) {
           <h1 className="font-[family-name:var(--font-sora)] text-base font-bold tracking-tight text-text leading-tight">
             Timion HQ
           </h1>
-          <span className="text-[11px] text-text-muted">
+          <span className="text-[11px] text-text-muted whitespace-nowrap">
             Internal hub for staff, management &amp; operations
           </span>
         </div>

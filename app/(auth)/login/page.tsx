@@ -13,7 +13,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { next } = await searchParams;
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 py-12">
+    <main className="min-h-screen w-full flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         <div className="rounded-2xl bg-surface border border-border shadow-[0_18px_48px_rgba(0,0,0,0.55)] p-8 md:p-10">
           <div className="flex flex-col items-center gap-4 mb-6">
