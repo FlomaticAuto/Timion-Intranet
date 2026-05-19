@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-19T12:05:35Z",
+  "synced_at": "2026-05-19T14:00:59Z",
   "summary": {
     "total_with_reorder": 327,
     "below_reorder": 189,
@@ -1026,8 +1026,8 @@
     },
     {
       "name": "Sidelyer Base foam 160 SL18",
-      "available": 3.0,
-      "stock_on_hand": 3.0,
+      "available": 1.0,
+      "stock_on_hand": 1.0,
       "reorder_level": 10.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
@@ -1050,16 +1050,16 @@
     },
     {
       "name": "Sidelyer Bottom leg foam 150/160 SL16",
-      "available": 13.0,
-      "stock_on_hand": 13.0,
+      "available": 11.0,
+      "stock_on_hand": 11.0,
       "reorder_level": 20.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
     },
     {
       "name": "Sidelyer Chest pillow foam all SL20",
-      "available": 41.0,
-      "stock_on_hand": 41.0,
+      "available": 39.0,
+      "stock_on_hand": 39.0,
       "reorder_level": 50.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
@@ -1098,16 +1098,16 @@
     },
     {
       "name": "Sidelyer Side foam 160 SL19",
-      "available": 3.0,
-      "stock_on_hand": 3.0,
+      "available": 1.0,
+      "stock_on_hand": 1.0,
       "reorder_level": 10.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
     },
     {
       "name": "Sidelyer Top leg foam 150/160 SL17",
-      "available": 14.0,
-      "stock_on_hand": 14.0,
+      "available": 12.0,
+      "stock_on_hand": 12.0,
       "reorder_level": 20.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
@@ -2290,8 +2290,8 @@
     },
     {
       "name": "Sidelyer 160 bed (wood part only)",
-      "available": 6.0,
-      "stock_on_hand": 6.0,
+      "available": 5.0,
+      "stock_on_hand": 5.0,
       "reorder_level": 2.0,
       "status": "ok",
       "item_type": "Subassemblies"
@@ -4802,8 +4802,8 @@
     },
     {
       "name": "Height Adjustment Footplate (Med/Large)",
-      "available": 5.0,
-      "stock_on_hand": 5.0,
+      "available": 4.0,
+      "stock_on_hand": 4.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"
@@ -5865,6 +5865,22 @@
       "item_type": "Hardware & Materials"
     },
     {
+      "name": "Positioning Chair (Medium)",
+      "available": 6.0,
+      "stock_on_hand": 6.0,
+      "reorder_level": 0.0,
+      "status": "no_reorder_set",
+      "item_type": "Hardware & Materials"
+    },
+    {
+      "name": "Positioning Chair (Small)",
+      "available": 0.0,
+      "stock_on_hand": 0.0,
+      "reorder_level": 0.0,
+      "status": "no_reorder_set",
+      "item_type": "Hardware & Materials"
+    },
+    {
       "name": "Positioning Chair Firm Lateral Support Medium",
       "available": 0.0,
       "stock_on_hand": 0.0,
@@ -5921,25 +5937,9 @@
       "item_type": "Hardware & Materials"
     },
     {
-      "name": "Positioning Chair Medium",
-      "available": 6.0,
-      "stock_on_hand": 6.0,
-      "reorder_level": 0.0,
-      "status": "no_reorder_set",
-      "item_type": "Hardware & Materials"
-    },
-    {
       "name": "Positioning Chair Pommel",
       "available": 3.0,
       "stock_on_hand": 3.0,
-      "reorder_level": 0.0,
-      "status": "no_reorder_set",
-      "item_type": "Hardware & Materials"
-    },
-    {
-      "name": "Positioning Chair Small",
-      "available": 0.0,
-      "stock_on_hand": 0.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"
@@ -7538,16 +7538,16 @@
     },
     {
       "name": "Sidelyer 160cm Cushion Covers",
-      "available": 0.0,
-      "stock_on_hand": 0.0,
+      "available": 5.0,
+      "stock_on_hand": 5.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"
     },
     {
       "name": "Sidelyer 160cm complete cushions (Covers & Foam)",
-      "available": -1.0,
-      "stock_on_hand": -1.0,
+      "available": 0.0,
+      "stock_on_hand": 0.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"
@@ -7994,16 +7994,16 @@
     },
     {
       "name": "Standing frame medium",
-      "available": 37.0,
-      "stock_on_hand": 35.0,
+      "available": 36.0,
+      "stock_on_hand": 34.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"
     },
     {
       "name": "Standing frame medium w/ extra footplate",
-      "available": 0.0,
-      "stock_on_hand": 0.0,
+      "available": 1.0,
+      "stock_on_hand": 1.0,
       "reorder_level": 0.0,
       "status": "no_reorder_set",
       "item_type": "Hardware & Materials"

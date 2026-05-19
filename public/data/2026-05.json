@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T11:58:08Z",
+  "generated_at": "2026-05-19T13:55:42Z",
   "month": "2026-05",
   "finished_products": {
     "in_production": [
@@ -19,6 +19,21 @@
       }
     ],
     "completed": [
+      {
+        "id": "6010567000015479291",
+        "assembly_number": "ASSY-00178",
+        "item_name": "Sidelyer 160",
+        "quantity": 1.0,
+        "date": "2026-05-08",
+        "status": "bundled",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "L008"
+        ],
+        "completed_date": "2026-05-19T15:37:12+0200"
+      },
       {
         "id": "6010567000014725089",
         "assembly_number": "ASSY-00141",
@@ -52,6 +67,21 @@
           "SF441"
         ],
         "completed_date": "2026-05-06T09:54:05+0200"
+      },
+      {
+        "id": "6010567000015479437",
+        "assembly_number": "ASSY-00180",
+        "item_name": "Standing frame medium w/ extra footplate",
+        "quantity": 1.0,
+        "date": "2026-05-08",
+        "status": "bundled",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [
+          "SF285"
+        ],
+        "completed_date": "2026-05-19T15:52:00+0200"
       },
       {
         "id": "6010567000015126001",
@@ -140,6 +170,19 @@
         ],
         "serial_numbers": [],
         "completed_date": "2026-05-11T13:35:58+0200"
+      },
+      {
+        "id": "6010567000015479233",
+        "assembly_number": "ASSY-00177",
+        "item_name": "Sidelyer 160cm complete cushions (Covers & Foam)",
+        "quantity": 2.0,
+        "date": "2026-05-06",
+        "status": "bundled",
+        "production_staff": [
+          "Siya"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-19T15:35:50+0200"
       },
       {
         "id": "6010567000015068143",
