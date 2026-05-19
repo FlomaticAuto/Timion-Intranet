@@ -1,7 +1,7 @@
 {
-  "synced_at": "2026-05-18T17:32:30Z",
+  "synced_at": "2026-05-19T12:05:35Z",
   "summary": {
-    "total_orders": 46,
+    "total_orders": 49,
     "items_insufficient": 15,
     "items_at_risk": 2,
     "items_ok": 6
@@ -571,19 +571,19 @@
       "status": "ok",
       "orders": [
         {
+          "so_number": "SO-00299",
+          "so_id": "6010567000015353075",
+          "crm_deal_id": "6673955000007997344",
+          "crm_deal_name": "Percy Nqoko - Order",
+          "customer": "Percy Nqoko",
+          "quantity": 1.0
+        },
+        {
           "so_number": "SO-00280",
           "so_id": "6010567000015401026",
           "crm_deal_id": "6673955000007958032",
           "crm_deal_name": "kuhlekonke Zakuza - Order",
           "customer": "Kuhlekonke Zakuza",
-          "quantity": 1.0
-        },
-        {
-          "so_number": "SO-00258",
-          "so_id": "6010567000015165003",
-          "crm_deal_id": "6673955000007873001",
-          "crm_deal_name": "Percy Nqoko - Order",
-          "customer": "Percy Nqoko",
           "quantity": 1.0
         }
       ]
@@ -782,6 +782,33 @@
   ],
   "orders": [
     {
+      "so_number": "SO-00302",
+      "so_id": "6010567000015353107",
+      "crm_deal_id": "6673955000008069150",
+      "crm_deal_name": "Mahlatse Mohlala Nest 30/03/2026",
+      "customer": "Mahlatse Mohlala",
+      "date": "2026-03-30",
+      "items": []
+    },
+    {
+      "so_number": "SO-00301",
+      "so_id": "6010567000015396046",
+      "crm_deal_id": "6673955000008069099",
+      "crm_deal_name": "Noluthando Shongwe Nest 24/03/2026",
+      "customer": "Noluthando Shongwe",
+      "date": "2026-03-24",
+      "items": []
+    },
+    {
+      "so_number": "SO-00300",
+      "so_id": "6010567000015396021",
+      "crm_deal_id": "6673955000008069046",
+      "crm_deal_name": "Shivanne Buhle Smit Nest 19/03/2026",
+      "customer": "Shivanne Buhle Smit",
+      "date": "2026-03-19",
+      "items": []
+    },
+    {
       "so_number": "SO-00299",
       "so_id": "6010567000015353075",
       "crm_deal_id": "6673955000007997344",
@@ -802,6 +829,11 @@
         {
           "name": "Positioning Chair (Medium)",
           "donation_name": "(Donation) Positioning Chair (Medium)",
+          "quantity": 1.0
+        },
+        {
+          "name": "Bench L 33-46cm CNC",
+          "donation_name": "(Donation) Bench L 33-46cm CNC",
           "quantity": 1.0
         }
       ]
@@ -1407,21 +1439,6 @@
       ]
     },
     {
-      "so_number": "SO-00258",
-      "so_id": "6010567000015165003",
-      "crm_deal_id": "6673955000007873001",
-      "crm_deal_name": "Percy Nqoko - Order",
-      "customer": "Percy Nqoko",
-      "date": "2026-05-14",
-      "items": [
-        {
-          "name": "Bench L 33-46cm CNC",
-          "donation_name": "(Donation) Bench L 33-46cm CNC",
-          "quantity": 1.0
-        }
-      ]
-    },
-    {
       "so_number": "SO-00257",
       "so_id": "6010567000015120006",
       "crm_deal_id": "6673955000007873049",
@@ -1515,6 +1532,15 @@
       "crm_deal_name": "Marissa Nel & Ass EL QT39 23032026",
       "customer": "Marissa Nel & Associates EL",
       "date": "2026-03-25",
+      "items": []
+    },
+    {
+      "so_number": "SO-00231",
+      "so_id": "6010567000012611019",
+      "crm_deal_id": "6673955000008069005",
+      "crm_deal_name": "Carpe Diem 20/03/2026",
+      "customer": "Carpe Diem Special school",
+      "date": "2026-03-20",
       "items": []
     },
     {

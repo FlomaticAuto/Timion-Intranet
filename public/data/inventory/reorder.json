@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-05-18T17:32:30Z",
+  "synced_at": "2026-05-19T12:05:35Z",
   "summary": {
     "total_with_reorder": 327,
     "below_reorder": 189,
@@ -18,8 +18,8 @@
     },
     {
       "name": "Base Side Plank Standing Frame (CNC cut only)",
-      "available": 81.0,
-      "stock_on_hand": 81.0,
+      "available": 151.0,
+      "stock_on_hand": 151.0,
       "reorder_level": 160.0,
       "status": "below_reorder",
       "item_type": "Subassemblies"
@@ -746,8 +746,8 @@
     },
     {
       "name": "Router bit 3.175mm",
-      "available": 136.98,
-      "stock_on_hand": 136.98,
+      "available": 135.58,
+      "stock_on_hand": 135.58,
       "reorder_level": 150.0,
       "status": "below_reorder",
       "item_type": "Hardware & Materials"
@@ -1586,8 +1586,8 @@
     },
     {
       "name": "Birch Ply 18mm",
-      "available": 40.66,
-      "stock_on_hand": 40.66,
+      "available": 37.16,
+      "stock_on_hand": 37.16,
       "reorder_level": 30.0,
       "status": "near_reorder",
       "item_type": "Hardware & Materials"

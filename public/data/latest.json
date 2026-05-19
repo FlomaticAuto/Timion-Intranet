@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T17:28:05Z",
+  "generated_at": "2026-05-19T11:58:08Z",
   "month": "2026-05",
   "finished_products": {
     "in_production": [
@@ -103,6 +103,19 @@
     ],
     "completed": [
       {
+        "id": "6010567000015470001",
+        "assembly_number": "ASSY-00175",
+        "item_name": "Base Side Plank Standing Frame (CNC cut only)",
+        "quantity": 70.0,
+        "date": "2026-05-19",
+        "status": "bundled",
+        "production_staff": [
+          "Wian/CNC Team"
+        ],
+        "serial_numbers": [],
+        "completed_date": "2026-05-19T13:44:22+0200"
+      },
+      {
         "id": "6010567000014632092",
         "assembly_number": "ASSY-00137",
         "item_name": "Height Adjustment Footplate (Med/Large)",
@@ -139,7 +152,7 @@
           "Wian/CNC Team"
         ],
         "serial_numbers": [],
-        "completed_date": "2026-05-11T13:39:04+0200"
+        "completed_date": "2026-05-19T13:44:22+0200"
       },
       {
         "id": "6010567000015068003",
