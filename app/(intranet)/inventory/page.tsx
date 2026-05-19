@@ -45,7 +45,6 @@ export default function InventoryPage() {
           icon="⚖️"
           title="Stock vs Orders Dashboard"
           description="Stock availability check for In-Production orders — see what's short, at risk, or fully covered."
-          ctaLabel="Open dashboard"
         />
         <Tile
           variant="live"
@@ -61,7 +60,6 @@ export default function InventoryPage() {
           icon="📊"
           title="Production Dashboard"
           description="Monthly assemblies dashboard — Finished Products vs Subassemblies, in production and completed."
-          ctaLabel="Open dashboard"
         />
         <Tile
           variant="comingSoon"

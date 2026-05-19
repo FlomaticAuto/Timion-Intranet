@@ -32,7 +32,6 @@ export default function CrmPage() {
           icon="🦽"
           title="Equipment Ordered Dashboard"
           description="Dashboard for equipment orders — pipeline, approval status, by device type and patient."
-          ctaLabel="Open dashboard"
         />
         <Tile
           variant="live"

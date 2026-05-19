@@ -29,8 +29,8 @@ const STATUS_PRESETS: Record<TileVariant, { label: string; cls: string }> = {
 };
 
 const CTA_LABEL: Record<TileVariant, string> = {
-  live:       "Open here",
-  external:   "Open in new tab",
+  live:       "Open dashboard",
+  external:   "Open in Zoho",
   comingSoon: "In planning",
 };
 
