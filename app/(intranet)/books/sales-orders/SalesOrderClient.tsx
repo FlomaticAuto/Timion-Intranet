@@ -54,6 +54,16 @@ const fmtDate = (s: string) => {
   catch { return s; }
 };
 
+const fmtTs = (iso: string) => {
+  if (!iso) return "Not yet synced";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return `Last synced: ${d.toLocaleString("en-ZA", {
+    day: "numeric", month: "short", year: "numeric",
+    hour: "2-digit", minute: "2-digit", timeZone: "Africa/Johannesburg",
+  })} SAST`;
+};
+
 const monthLabel = (ym: string) => {
   const [, m] = ym.split("-");
   return `${MONTHS[parseInt(m, 10) - 1]} ${ym.slice(2, 4)}`;
@@ -345,7 +355,7 @@ export function SalesOrderClient({
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <span className="text-[11px] text-text-muted">
-            {data?.synced_at ? `Synced ${fmtDate(data.synced_at.slice(0, 10))}` : "No sync time"}
+            {data?.synced_at ? fmtTs(data.synced_at) : "Not yet synced"}
             {" · "}{orders.length} orders · {data?.year ?? "—"}
           </span>
           <SyncButton />

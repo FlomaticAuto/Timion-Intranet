@@ -76,9 +76,12 @@ function renderSynced(synced_at: string): void {
   if (!el) return;
   try {
     const d = new Date(synced_at);
-    el.textContent = `Synced ${d.toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" })} at ${d.toLocaleTimeString("en-ZA", { hour: "2-digit", minute: "2-digit" })}`;
+    el.textContent = `Last synced: ${d.toLocaleString("en-ZA", {
+      day: "numeric", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit", timeZone: "Africa/Johannesburg",
+    })} SAST`;
   } catch {
-    el.textContent = `Synced ${synced_at}`;
+    el.textContent = `Last synced: ${synced_at}`;
   }
 }
 
