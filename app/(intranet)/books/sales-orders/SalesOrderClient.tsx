@@ -343,12 +343,14 @@ export function SalesOrderClient({
 
       {/* Subheader */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <span className="text-[11px] text-text-muted">
-          {data?.synced_at ? `Synced ${fmtDate(data.synced_at.slice(0, 10))}` : "No sync time"}
-          {" · "}{orders.length} orders · {data?.year ?? "—"}
-        </span>
         <div className="flex items-center gap-3">
+          <span className="text-[11px] text-text-muted">
+            {data?.synced_at ? `Synced ${fmtDate(data.synced_at.slice(0, 10))}` : "No sync time"}
+            {" · "}{orders.length} orders · {data?.year ?? "—"}
+          </span>
           <SyncButton />
+        </div>
+        <div className="flex items-center gap-3">
           <div className="flex rounded-lg overflow-hidden border border-border">
             {(["table", "analytics"] as const).map((v) => (
               <button
